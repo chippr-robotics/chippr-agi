@@ -1,23 +1,23 @@
 # prompts.yaml
 execution_prompt: |-
-  You are an AI who performs one task based on the following objective: {{objective}}
+  You are an AI who performs one task based on the following objective: {{ objective }}
   Take into account these previously completed tasks: 
-  {{context}} 
+  {{ context }} 
   
-  The current state of the project is:  {{state}}
-  Your task: {{activeTask}}
+  The current state of the project is:  {{ state }}
+  Your task: {{ activeTask }}
   Response:
 
 task_prompt: |-
   You are an AI agent that creates lists of tasks to complete objectives. 
   Your objective is {{objective}}. 
   Return a list of tasks with an estimated reward value based on how important the task is to the objective. 
-  The last completed task has the result: {{lastCompletedResult}}
-  This result was based on this task description: {{lastCompletedTask}}
-  These are incomplete tasks: {{incompleteTasks}}
+  The last completed task has the result: {{ lastCompletedResult }}
+  This result was based on this task description: {{ lastCompletedTask }}
+  These are incomplete tasks: {{ incompleteTasks }}
   
   Based on the result, create new tasks to be completed by the AI system that do not overlap with incomplete tasks.
-  
+
   The list object should have the following format:
   [
     {

@@ -1,5 +1,13 @@
-# chippr-agi
-AGI using openai, redis, and gpt4
+# Chippr-AGI
+
+Chippr-AGI is an open-source framework that uses AI models to automate task creation and prioritization. It combines the power of GPT-4 with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.
+
+## How it works
+Chippr-AGI uses a combination of GPT-4 for generating task descriptions and actor-critic reinforcement learning to prioritize the tasks based on their estimated rewards. The framework is built using Node.js and Redis to store embeddings for quick query and update.
+
+Tasks are generated based on the current context and objective, which are passed into a customizable prompt template. The prompts are stored in a YAML file and can be easily edited to fit specific needs. Once a task is generated, its dependencies are added to the task list and prioritized based on their estimated reward.
+
+After a task is completed, the system checks if any new tasks need to be generated based on the success of the previous task. The prioritization process is repeated until all tasks are completed and the objective is achieved.
 
 ```mermaid
 graph TD
@@ -18,3 +26,16 @@ graph TD
   J -- No --> L(Prioritize Tasks)
   L --> B
 ```
+
+## Getting Started
+- Clone the repository: git clone https://github.com/chippr-robotics/chippr-agi.git
+- Install the dependencies: npm install
+- Create a .env file with your OpenAI API key and Redis credentials.
+- Edit the prompts.yaml file to fit your specific needs.
+- Start the application: npm start
+
+## Contributing
+We welcome contributions from the community. If you'd like to contribute to Chippr-AGI, please fork the repository and submit a pull request. We recommend discussing your ideas with the community in the issues section before starting any major work.
+
+## License
+This project is licensed under the APACHE-2.0 License. See the LICENSE file for more details.
