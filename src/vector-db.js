@@ -1,77 +1,74 @@
 const redis = require('redis');
+const {createClient, SchemaFieldTypes, VectorAlgorithms } = require("redis");
+const { Buffer } = require('buffer');
 
 class VectorDB {
   constructor(name, redisOptions) {
     this.name = name;
+    this.index = 0;
+    this.indexName = 'idx:taskDB';
     this.redisClient = redis.createClient(redisOptions);
+    this.redisClient.connect();
+    this.redisClient.on('error', (err) => console.log('Redis Client Error', err));
   }
 
   async create() {
-    return new Promise((resolve, reject) => {
-      this.redisClient.send_command('FT.CREATE', [this.name, 'SCHEMA', 'task_id', 'TEXT', 'embedding', 'VECTOR'], (err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      });
-    });
+    try {
+      await this.redisClient.ft.create( this.indexName,{
+        '$.embedding' : {
+          type: SchemaFieldTypes.VECTOR,
+          AS: 'vector',
+          ALGORITHM: VectorAlgorithms.HNSW,
+          COUNT: '7',
+          TYPE: 'FLOAT32',
+          DIM: '1536',
+          DISTANCE_METRIC: 'COSINE'
+        }, 
+        '$.taskid':{
+          type: SchemaFieldTypes.TEXT,
+          AS: 'taskid'
+        },
+      },{
+        ON: 'JSON',
+        PREFIX: 'taskDB'
+      });  
+    } catch (error) {
+      console.error(error);
+    };
+  }
+  
+  async save(_taskId, _embedding) {
+    try {
+      this.redisClient.json.set(
+        'taskDB:'+ this.index, 
+        '$',
+        {
+          embedding : _embedding,
+          taskid : _taskId
+        });
+      this.index++;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  async save(taskId, embedding) {
-    return new Promise((resolve, reject) => {
-      this.redisClient.send_command('FT.ADD', [this.name, taskId, '1.0', 'FIELDS', 'embedding', embedding], (err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      });
-    });
-  }
-
-  async get(taskId) {
-    return new Promise((resolve, reject) => {
-      this.redisClient.send_command('FT.GET', [this.name, taskId], (err, res) => {
-        if (err) {
-          reject(err);
-        } else if (!res) {
-          resolve(null);
-        } else {
-          resolve(res[1]);
-        }
-      });
-    });
-  }
-
-  async update(taskId, embedding) {
-    return new Promise((resolve, reject) => {
-      this.redisClient.send_command('FT.ADD', [this.name, taskId, '1.0', 'REPLACE', 'FIELDS', 'embedding', embedding], (err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      });
-    });
-  }
-
-  async getNeighbors(embedding) {
-    return new Promise((resolve, reject) => {
-      this.redisClient.send_command('FT.SEARCH', [this.name, '*', 'NEARBY', 'NEIGHBOR', 'WITHSCORES', 'MAX', '5', 'FILTER', 'embedding', embedding], (err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          const neighbors = [];
-          for (let i = 0; i < res.length; i += 2) {
-            const taskId = res[i];
-            const distance = res[i + 1];
-            neighbors.push({ taskId, distance });
-          }
-          resolve(neighbors);
-        }
-      });
-    });
+  async getNeighbors(_taskID) {
+    try {
+      let knn = await this.redisClient.ft.search(
+        this.indexName ,
+        '(@taskid:'+_taskID+')=>[KNN 4 @vector $BLOB AS dist]',{
+          PARAMS: {
+            BLOB: Buffer.alloc(1536 * 4)
+          },
+          SORTBY: 'dist',
+          DIALECT: 2,
+          RETURN: ['dist']
+        });
+      console.debug(knn);
+      return knn;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 
