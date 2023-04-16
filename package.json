@@ -1,0 +1,21 @@
+{
+  "name": "chippr-agi",
+  "version": "1.0.0",
+  "description": "Happy helpful autoGPT ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "agi",
+    "gpt4",
+    "autogpt"
+  ],
+  "author": "Cody Burns",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "js-yaml": "^4.1.0",
+    "redis": "^4.6.5"
+  }
+}

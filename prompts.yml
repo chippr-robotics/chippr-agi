@@ -1,0 +1,48 @@
+# prompts.yaml
+execution_prompt: |-
+  You are an AI who performs one task based on the following objective: {{objective}}
+  Take into account these previously completed tasks: 
+  {{context}} 
+  
+  The current state of the project is:  {{state}}
+  Your task: {{activeTask}}
+  Response:
+
+task_prompt: |-
+  You are an AI agent that creates lists of tasks to complete objectives. 
+  Your objective is {{objective}}. 
+  Return a list of tasks with an estimated reward value based on how important the task is to the objective. 
+  The last completed task has the result: {{lastCompletedResult}}
+  This result was based on this task description: {{lastCompletedTask}}
+  These are incomplete tasks: {{incompleteTasks}}
+  
+  Based on the result, create new tasks to be completed by the AI system that do not overlap with incomplete tasks.
+  
+  The list object should have the following format:
+  [
+    {
+        "task_id": "string",
+        "task": "string",
+        "reward": "float",
+        "done": "bool",
+        "dependencies": ["string"],
+        "state": {...},
+                "action": "string",
+        "action_probability": "float",
+        "next_state": {...},
+        "reward_for_action": "float"
+    },
+    ...
+  ]
+  where: 
+  'task_id' is the first 10 bytes of the SHA256 hash of the task string
+  'task' is the description of the task
+  'reward' is an estimated reward value for completing the task
+  'done' is a boolean indicating whether the task is completed 
+  'dependencies' is a list of 'task_id' strings indicating the tasks that must be completed before this task can be started
+  'state' is a dictionary that stores the current state of the task
+  'action' is a string that describes the action to be taken to complete the task
+  'action_probability' is a probability value indicating the likelihood that the action will successfully complete the task
+  'next_state' is a dictionary that stores the expected state of the task after the action is taken
+  'reward_for_action' is the estimated reward for completing the task after taking the action
+
