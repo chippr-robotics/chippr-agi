@@ -18,6 +18,18 @@ class PromptManager {
       .replace('{{ activeTask }}', _activeTask)
     }
   
-    async generate();
+    async generate(openai, _prompt) {
+      let response = await openai.createCompletion({
+          model: process.env.MODEL,
+          messages:[
+              {"role": "system", "content": "You are an intelligent agent with thoughts and memories. You have a memory which stores your past thoughts and actions and also how other users have interacted with you."},
+              {"role": "system", "content": "Keep your thoughts relatively simple and concise"},
+              {"role": "user", "content": _prompt},
+          ] ,
+          temperature: 0.5,
+          max_tokens: 100,
+      });
+     return response.choices[0].text;
   }
+}
   
