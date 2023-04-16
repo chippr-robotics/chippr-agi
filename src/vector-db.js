@@ -75,4 +75,4 @@ class VectorDB {
   }
 }
 
-module.exports = { VectorDB };
+module.exports = VectorDB

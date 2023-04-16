@@ -1,21 +1,29 @@
 require('dotenv').config();
 const fs = require('fs');
 const yaml = require('js-yaml');
-const { VectorDb, PromptManager } = require('./src');
+const { VectorDb, PromptManager, openai_config } = require('./src');
 
-class Autogpt {
+class ChipprAGI {
     constructor(objective) {
       this.objective = objective; //string of the mission of the bot
       this.state = {}; // Initialize state
       this.tasklist = []; // Initialize tasklist
-      this.biases = {}; // Initialize biases
-      this.promptManager = new PromptManager(yaml.safeLoad(fs.readFileSync('./prompts/prompts.yaml', 'utf8'))); // Initialize prompt manager
+      this.biases = {
+        "rewardScore": 1,
+        "difficultyScore" : 1,
+        "importanceScore" : 1,
+        "dependencyScore" : 1,
+      }; // Initialize biases
+      this.promptManager = new PromptManager(yaml.load(fs.readFileSync('./prompts/prompts.yml', 'utf8'))); // Initialize prompt manager
       this.vectorDb = new VectorDb(); // Initialize vector database
+      this.openai = openai_config;
     }
   
     async run() {
       // Initialize the tasklist with the first task
-      this.tasklist.push({ task: this.objective, done: false });
+      this.tasklist.push({ 
+        task: "Create a list of tasks to accomplish the objective.",
+        done: false });
         
       while (this.tasklist.length > 0) {
         // Get the next task to perform
@@ -68,16 +76,27 @@ class Autogpt {
   
     async executeTask(task) {
       //get neighbors of the current task for context
-      const context = this.vectorDb.getContext(task);
+      let vector = this.getEmbeddings(task);
+      let context = this.vectorDb.getNeighbors(vector);
       // Get the execution prompt for the task
-      const executionPrompt = this.promptManager.getExecutionPrompt(this.objective, context, this.state, task);
+      let executionPrompt = this.promptManager.getExecutionPrompt(this.objective, context, this.state, task);
   
       // Execute the task using ChatGPT and return the response
-      const response = await chatGpt.execute(executionPrompt);
-  
+      let response = await this.promptManager.generate( this.openai, executionPrompt);
+      
       return response;
     }
   
+    async getEmbeddings(task){
+      let clean_text = task.replace("\n", " ")
+      let response= await this.openai.createEmbedding({
+          model : "text-embedding-ada-002",
+          input : clean_text
+      });
+      //console.log(response.data.data[0].embedding);
+      return response.data.data[0].embedding;
+    }
+
     isTaskComplete(task, response) {
       // Check if the task is complete based on the response
       // You may want to customize this based on the specific task
@@ -108,7 +127,7 @@ class Autogpt {
     prioritizeTasks() {
       // Prioritize the tasks based on their rewards and biases
       // You may want to customize this based on your specific prioritization algorithm
-      //tasks, rewardBias, difficultyBias, importanceBias, dependencyBias) {
+      // todo add to constructor so we can optimize
       // Filter out tasks that have dependencies that are not done
       const availableTasks = this.tasklist.filter(task => {
         return task.dependencies.every(dep => {
@@ -119,10 +138,10 @@ class Autogpt {
       
       // Calculate the priority score for each task
       const priorityScores = availableTasks.map(task => {
-        const rewardScore = task.reward * this.rewardBias;
-        const difficultyScore = 1 / (task.estimated_difficulty * this.difficultyBias);
-        const importanceScore = task.estimated_importance * this.importanceBias;
-        const dependencyScore = task.dependencies.length * this.dependencyBias;
+        const rewardScore = task.reward * this.biases.rewardBias;
+        const difficultyScore = 1 / (task.estimated_difficulty * this.biases.difficultyBias);
+        const importanceScore = task.estimated_importance * this.biases.importanceBias;
+        const dependencyScore = task.dependencies.length * this.biases.dependencyBias;
       
         return {
           task: task,
@@ -145,3 +164,5 @@ class Autogpt {
     generateTaskEmbedding(task){};
     //async generateNewTasks(
 }
+
+module.exports = { ChipprAGI };

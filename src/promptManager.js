@@ -31,5 +31,6 @@ class PromptManager {
       });
      return response.choices[0].text;
   }
-}
-  
+};
+
+module.exports = PromptManager 
