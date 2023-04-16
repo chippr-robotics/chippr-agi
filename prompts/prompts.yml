@@ -18,7 +18,7 @@ task_prompt: |-
   
   Based on the result, create new tasks to be completed by the AI system that do not overlap with incomplete tasks.
 
-  The list object should have the following format:
+  Return a list of objects having the following format:
   [
     {
         "task_id": "string",
@@ -46,3 +46,4 @@ task_prompt: |-
   'next_state' is a dictionary that stores the expected state of the task after the action is taken
   'reward_for_action' is the estimated reward for completing the task after taking the action
 
+  Response:

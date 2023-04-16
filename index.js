@@ -24,18 +24,24 @@ class ChipprAGI {
       this.tasklist.push({ 
         task: "Create a list of tasks to accomplish the objective.",
         done: false });
-        
+      
+      console.info('Creating first task!');
+
       while (this.tasklist.length > 0) {
         // Get the next task to perform
         const currentTask = this.tasklist.shift();
-  
+      
+        console.info("|---------Current task:--------|");
+        console.info(currentTask);
+      
         // Execute the current task
         const response = await this.executeTask(currentTask);
   
         // Update the state with the response
-        this.state[currentTask.task_id] = response;
+        //this.state[currentTask.task_id] = response;
   
         // Check if the current task is complete
+        console.info("|----- checking if complete -----|");
         if (this.isTaskComplete(currentTask, response)) {
           // Mark the task as done
           currentTask.done = true;
@@ -53,11 +59,15 @@ class ChipprAGI {
           }
         } else {
           // Generate new tasks based on the current task
-          const newTasks = await this.generateNewTasks(currentTask.task, response);
-  
+          console.info("|----- getting new tasks -----|");
+          let newTasks = await this.generateNewTasks(currentTask.task, response);
+          //console.info('newTasks!')
+          //console.log(newTasks);
+
           // Add the new tasks to the tasklist
-          this.tasklist.push(...newTasks);
-  
+          JSON.parse(newTasks).forEach( task => {this.tasklist.push(task)});
+          console.debug('current tasklist');
+          console.debug(this.tasklist);
           // Prioritize the remaining tasks
           this.prioritizeTasks();
         }
@@ -67,28 +77,32 @@ class ChipprAGI {
     async generateNewTasks(currentTask, response) {
       // Get the next task to perform from the prompt manager
       const nextTask = await this.promptManager.getNextTaskPrompt(this.objective, currentTask, response, this.tasklist.filter((t) => !t.done));
-  
+      //console.log(nextTask);
       // Convert the task prompt to a task object
-      const tasks = this.promptManager.generate(nextTask);
-  
+      const tasks = this.promptManager.generate(this.openai, nextTask);
+
       return tasks;
     }
   
     async executeTask(task) {
+      console.info("|-----Executing task!-----|")
       //get neighbors of the current task for context
-      let vector = this.getEmbeddings(task);
-      let context = this.vectorDb.getNeighbors(vector);
+      let vector = this.getEmbeddings(task.task);
+      let context = [];//this.vectorDb.getNeighbors(vector);
       // Get the execution prompt for the task
+      console.info("|----- getting prompt -----|");
       let executionPrompt = this.promptManager.getExecutionPrompt(this.objective, context, this.state, task);
   
       // Execute the task using ChatGPT and return the response
+      console.info("|----- getting response -----|");
       let response = await this.promptManager.generate( this.openai, executionPrompt);
-      
+      //console.debug(response);
       return response;
     }
   
     async getEmbeddings(task){
       let clean_text = task.replace("\n", " ")
+      console.log(clean_text);
       let response= await this.openai.createEmbedding({
           model : "text-embedding-ada-002",
           input : clean_text
@@ -129,12 +143,12 @@ class ChipprAGI {
       // You may want to customize this based on your specific prioritization algorithm
       // todo add to constructor so we can optimize
       // Filter out tasks that have dependencies that are not done
-      const availableTasks = this.tasklist.filter(task => {
+      const availableTasks = this.tasklist;/*.filter(task => {
         return task.dependencies.every(dep => {
           const depTask = this.tasklist.find(t => t.task_id === dep);
           return depTask.done;
         });
-      });
+      });*/
       
       // Calculate the priority score for each task
       const priorityScores = availableTasks.map(task => {

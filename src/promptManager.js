@@ -8,7 +8,7 @@ class PromptManager {
       return this.prompts.task_prompt.replace('{{ objective }}', _objective)
       .replace('{{ lastCompletedResult }}', _response)
       .replace('{{ lastCompletedTask }}', _completedTask)
-      .replace('{{ incompleteTasks }}', _taskList.map((t) => `- ${t.task}`).join('\n'))
+      .replace('{{ incompleteTasks }}', _tasklist.map((t) => `- ${t.task}`).join('\n'))
     };
     
     getExecutionPrompt(_objective, _context, _state, _activeTask){
@@ -19,7 +19,7 @@ class PromptManager {
     }
   
     async generate(openai, _prompt) {
-      let response = await openai.createCompletion({
+      /*let response = await openai.createChatCompletion({
           model: process.env.MODEL,
           messages:[
               {"role": "system", "content": "You are an intelligent agent with thoughts and memories. You have a memory which stores your past thoughts and actions and also how other users have interacted with you."},
@@ -29,7 +29,15 @@ class PromptManager {
           temperature: 0.5,
           max_tokens: 100,
       });
-     return response.choices[0].text;
+      */
+      let response = await openai.createCompletion({
+        model: process.env.MODEL,
+        prompt: _prompt,
+        temperature: 0.5,
+        max_tokens: 2000,
+    });
+      console.debug(response.data.choices[0].text);
+     return response.data.choices[0].text;
   }
 };
 
