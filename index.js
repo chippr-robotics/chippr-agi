@@ -3,6 +3,11 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const { VectorDb, PromptManager, openai_config } = require('./src');
 
+let firstTask={
+  task: "Create a list of tasks to accomplish the objective.",
+  done: false };
+  
+
 class ChipprAGI {
     constructor(objective) {
       this.objective = objective; //string of the mission of the bot
@@ -15,19 +20,19 @@ class ChipprAGI {
         "dependencyScore" : 1,
       }; // Initialize biases
       this.promptManager = new PromptManager(yaml.load(fs.readFileSync('./prompts/prompts.yml', 'utf8'))); // Initialize prompt manager
-      this.vectorDb = new VectorDb(); // Initialize vector database
+      this.vectorDb = new VectorDb( process.env.AGENT_ID, {url: process.env.REDIS_URL} ); // Initialize vector database
       this.openai = openai_config;
     }
   
     async run() {
       // Initialize the tasklist with the first task
-      this.tasklist.push({ 
-        task: "Create a list of tasks to accomplish the objective.",
-        done: false });
-      
-      console.info('Creating first task!');
+      await this.addTask(firstTask);
 
-      while (this.tasklist.length > 0) {
+      console.info('Creating first task!');
+      //try to create the db if needed
+      this.vectorDb.create();
+
+      while (true) {
         // Get the next task to perform
         const currentTask = this.tasklist.shift();
       
@@ -65,7 +70,7 @@ class ChipprAGI {
           //console.log(newTasks);
 
           // Add the new tasks to the tasklist
-          JSON.parse(newTasks).forEach( task => {this.tasklist.push(task)});
+          JSON.parse(newTasks).forEach( async task => {await this.addTask(task)});
           console.debug('current tasklist');
           console.debug(this.tasklist);
           // Prioritize the remaining tasks
@@ -87,8 +92,10 @@ class ChipprAGI {
     async executeTask(task) {
       console.info("|-----Executing task!-----|")
       //get neighbors of the current task for context
-      let vector = this.getEmbeddings(task.task);
-      let context = [];//this.vectorDb.getNeighbors(vector);
+      //let vector = this.getEmbeddings(task.task);
+      console.log(task);
+      let context = this.vectorDb.getNeighbors(task.task);
+      //console.log(context);
       // Get the execution prompt for the task
       console.info("|----- getting prompt -----|");
       let executionPrompt = this.promptManager.getExecutionPrompt(this.objective, context, this.state, task);
@@ -102,13 +109,19 @@ class ChipprAGI {
   
     async getEmbeddings(task){
       let clean_text = task.replace("\n", " ")
-      console.log(clean_text);
+      //console.log(clean_text);
       let response= await this.openai.createEmbedding({
           model : "text-embedding-ada-002",
           input : clean_text
       });
       //console.log(response.data.data[0].embedding);
       return response.data.data[0].embedding;
+    }
+
+    async addTask(task){
+      let vector = await this.getEmbeddings(task.task);
+      this.vectorDb.save(task.task, vector);
+      this.tasklist.push(task);    
     }
 
     isTaskComplete(task, response) {
@@ -143,12 +156,14 @@ class ChipprAGI {
       // You may want to customize this based on your specific prioritization algorithm
       // todo add to constructor so we can optimize
       // Filter out tasks that have dependencies that are not done
-      const availableTasks = this.tasklist;/*.filter(task => {
+      console.log('|--filtering--|')
+      const availableTasks = this.tasklist.filter(task => {
+        //console.log(task);
         return task.dependencies.every(dep => {
           const depTask = this.tasklist.find(t => t.task_id === dep);
           return depTask.done;
         });
-      });*/
+      });
       
       // Calculate the priority score for each task
       const priorityScores = availableTasks.map(task => {
@@ -168,6 +183,8 @@ class ChipprAGI {
       
       // Return the sorted list of tasks
       this.tasklist = priorityScores.map(ps => ps.task);
+      console.log("current state");
+      console.log(this);
     }
       
     isObjectiveComplete() {
