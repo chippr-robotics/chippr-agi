@@ -1,6 +1,7 @@
 require('dotenv').config();
 const fs = require('fs');
 const yaml = require('js-yaml');
+const { VectorDb, PromptManager } = require('./src');
 
 class Autogpt {
     constructor(objective) {
@@ -8,7 +9,7 @@ class Autogpt {
       this.state = {}; // Initialize state
       this.tasklist = []; // Initialize tasklist
       this.biases = {}; // Initialize biases
-      this.promptManager = new PromptManager(yaml.safeLoad(fs.readFileSync('prompts.yaml', 'utf8'))); // Initialize prompt manager
+      this.promptManager = new PromptManager(yaml.safeLoad(fs.readFileSync('./prompts/prompts.yaml', 'utf8'))); // Initialize prompt manager
       this.vectorDb = new VectorDb(); // Initialize vector database
     }
   
