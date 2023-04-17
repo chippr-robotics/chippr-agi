@@ -1,13 +1,13 @@
 const redis = require('redis');
 const {createClient, SchemaFieldTypes, VectorAlgorithms } = require("redis");
-const { Buffer } = require('buffer');
-const { randomUUID } = require('crypto');
+const {createHash} = require('node:crypto');
 
 class VectorDB {
   constructor(name, redisOptions) {
     this.name = name;
     this.index = 0;
     this.indexName = 'idx:vectorDB';
+    this.prefix = "taskDB";
     this.redisClient = redis.createClient(redisOptions);
     this.redisClient.connect();
     this.redisClient.on('error', (err) => console.log('Redis Client Error', err));
@@ -67,21 +67,30 @@ class VectorDB {
         }
       },{
         ON: 'JSON',
-        PREFIX: 'vectorDB'
+        PREFIX: this.prefix,
       });  
     } catch (error) {
       console.error(error);
     };
   }
   
-  async save(_taskId, _embedding) {
+  async save(_task, _embedding) {
+    let hashID = this.getHashId(_task.taskid);
     try {
       await this.redisClient.json.set(
-        `taskDB:${randomUUID}`, 
+        hashID, 
         '$',
         {
           embedding : _embedding,
-          taskid : _taskId
+          taskid : _task.taskid,
+          reward : _task.reward, 
+          done : _task.done, 
+          dependencies : _task.dependencies, 
+          state : _task.state,
+          action : _task.action, 
+          actionProbability : _task.actionProbability,
+          nextState : _task.nextState,
+          rewardForAction : _task.rewardForAction,
         });
       this.index++;
       return true;
@@ -94,7 +103,7 @@ class VectorDB {
     try {
       let knn = await this.redisClient.ft.search(
         this.indexName ,
-        `(@taskid:"${_taskID}")`
+        `(@${_taskID}")`
         );
       console.debug(knn);
       return knn;
@@ -120,6 +129,16 @@ class VectorDB {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  getHashId(_input){
+    //create a hash
+    let hash =  createHash('sha256');
+    hash.write(_input);
+    hash.end();
+    //use the first 10 bytes as id
+    let hashID = this.prefix + ":" + hash.read().toString('hex').slice(0,10)
+    return hashID
   }
 }
 

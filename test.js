@@ -18,5 +18,13 @@ async function main(){
     console.log(results);
 }
 
-main();
+function hashTest(){
+    let testHex = "taskDB:9f86d08188";
+    let test = bot.vectorDb.getHashId('test');
+    console.log(test);
+    (test == testHex) ? console.log('hashes match') : console.log('hashes do not match')  ;
+    
+}
+
+hashTest();
 
