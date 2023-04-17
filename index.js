@@ -190,7 +190,7 @@ class ChipprAGI {
           const depTask = this.tasklist.find(t => t.task_id === dep);
           return depTask.done;
         });
-      });*/
+      });
       console.log(availableTasks);
       // Calculate the priority score for each task
       const priorityScores = availableTasks.map(task => {
