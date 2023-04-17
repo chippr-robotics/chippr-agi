@@ -1,5 +1,5 @@
 require('dotenv').config();
-const {createClient, SchemaFieldTypes, VectorAlgorithms,SearchOptions, transformArguments, transformReply } = require("redis");
+
 const { ChipprAGI } = require('./index.js');
 
 const OBJECTIVE = process.env.OBJECTIVE;
@@ -14,7 +14,7 @@ async function main(){
     console.log("getting vector");
     bot.vectorDb.save("test123", vector);
     console.log("getting results");
-    var results = await bot.vectorDb.getNeighbors("test123");
+    var results = await bot.vectorDb.getNeighbors(vector);
     console.log(results);
 }
 
