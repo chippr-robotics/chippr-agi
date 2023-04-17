@@ -21,16 +21,16 @@ task_prompt: |-
   Return a list of objects having the following format:
   [
     {
-        "task_id": "string",
+        "taskid": "string",
         "task": "string",
         "reward": "float",
         "done": "bool",
         "dependencies": ["string"],
         "state": {},
         "action": "string",
-        "action_probability": "float",
-        "next_state": {},
-        "reward_for_action": "float"
+        "actionProbability": "float",
+        "nextState": {},
+        "rewardForAction": "float"
     },
     ...
   ]
@@ -42,8 +42,8 @@ task_prompt: |-
   'dependencies' is a list of 'task_id' strings indicating the tasks that must be completed before this task can be started
   'state' is a dictionary that stores the current state of the task
   'action' is a string that describes the action to be taken to complete the task
-  'action_probability' is a probability value indicating the likelihood that the action will successfully complete the task
-  'next_state' is a dictionary that stores the expected state of the task after the action is taken
-  'reward_for_action' is the estimated reward for completing the task after taking the action
+  'actionProbability' is a probability value indicating the likelihood that the action will successfully complete the task
+  'nextState' is a dictionary that stores the expected state of the task after the action is taken
+  'rewardForAction' is the estimated reward for completing the task after taking the action
 
   Response:

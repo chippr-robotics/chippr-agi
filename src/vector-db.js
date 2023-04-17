@@ -1,12 +1,13 @@
 const redis = require('redis');
 const {createClient, SchemaFieldTypes, VectorAlgorithms } = require("redis");
 const { Buffer } = require('buffer');
+const { randomUUID } = require('crypto');
 
 class VectorDB {
   constructor(name, redisOptions) {
     this.name = name;
     this.index = 0;
-    this.indexName = 'idx:taskDB';
+    this.indexName = 'idx:vectorDB';
     this.redisClient = redis.createClient(redisOptions);
     this.redisClient.connect();
     this.redisClient.on('error', (err) => console.log('Redis Client Error', err));
@@ -28,9 +29,45 @@ class VectorDB {
           type: SchemaFieldTypes.TEXT,
           AS: 'taskid'
         },
+        '$.task':{
+          type: SchemaFieldTypes.TEXT,
+          AS: 'task'
+        },
+        '$.reward':{
+          type: SchemaFieldTypes.NUMERIC,
+          AS: 'reward'
+        },
+        '$.done':{
+          type: SchemaFieldTypes.TAG,
+          AS: 'done'
+        },
+        '$.dependencies':{
+          type: SchemaFieldTypes.TEXT,
+          AS: 'dependencies'
+        },
+        '$.state':{
+          type: SchemaFieldTypes.TEXT,
+          AS: 'state'
+        },
+        '$.action':{
+          type: SchemaFieldTypes.TEXT,
+          AS: 'action'
+        },
+        '$.actionProbability':{
+          type: SchemaFieldTypes.NUMERIC,
+          AS: 'actionProbability'
+        },
+        '$.nextState':{
+          type: SchemaFieldTypes.TEXT,
+          AS: 'nextState'
+        },
+        '$.rewardForAction':{
+          type: SchemaFieldTypes.NUMERIC,
+          AS: 'rewardForAction'
+        }
       },{
         ON: 'JSON',
-        PREFIX: 'taskDB'
+        PREFIX: 'vectorDB'
       });  
     } catch (error) {
       console.error(error);
@@ -40,7 +77,7 @@ class VectorDB {
   async save(_taskId, _embedding) {
     try {
       await this.redisClient.json.set(
-        'taskDB:'+ this.index, 
+        `taskDB:${randomUUID}`, 
         '$',
         {
           embedding : _embedding,
