@@ -23,8 +23,19 @@ function hashTest(){
     let test = bot.vectorDb.getHashId('test');
     console.log(test);
     (test == testHex) ? console.log('hashes match') : console.log('hashes do not match')  ;
+}
+async function addTaskTest(){
+    let beforeTL = bot.tasklist;
+    console.log(beforeTL);
+    const firstTask = require('./prompts/firstTask.json');
+    //get the current tasklist
+    await bot.addTask(firstTask);
+    let afterTL = bot.tasklist;
     
+    console.log(afterTL);
+    return true;
 }
 
-hashTest();
+//hashTest();
 
+addTaskTest();

@@ -2,12 +2,7 @@ require('dotenv').config();
 const fs = require('fs');
 const yaml = require('js-yaml');
 const { VectorDb, PromptManager, openai_config } = require('./src');
-
-let firstTask={
-  task_id: "DEADBEEF01",
-  task: "Create a list of tasks to accomplish the objective.",
-  done: false };
-  
+const firstTask = require('./prompts/firstTask.json');
 
 class ChipprAGI {
     constructor(objective) {
@@ -132,17 +127,17 @@ class ChipprAGI {
     float32Buffer(arr) {
       return Buffer.from(new Float32Array(arr).buffer);
     }
-    
+
     async addTask(task){
       console.log('|--adding new task--|');
-      console.log(task);
-      //console.log('before');   
-      //console.log(this.tasklist);   
+      //console.debug(task);
+      //console.debug('before');   
+      //console.debug(this.tasklist);   
       this.tasklist.push(task); 
-      //console.log('after');   
-      //console.log(this.tasklist);   
+      //console.debug('after');   
+      //console.debug(this.tasklist);   
       let vector = await this.getEmbeddings(task.task);
-      await this.vectorDb.save(task.task_id, vector);
+      await this.vectorDb.save(task, vector);
     }
 
     isTaskComplete(task, response) {
@@ -216,7 +211,6 @@ class ChipprAGI {
     }
     
     generateTaskEmbedding(task){};
-    //async generateNewTasks(
 }
 
 module.exports = { ChipprAGI };
