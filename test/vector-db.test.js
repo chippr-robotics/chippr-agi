@@ -6,6 +6,8 @@ describe("VectorDB function testing", function() {
     let testAgent = 'testAgent;'
     let redisURL = process.env.REDIS_URL;
     const indexName = 'testDB';
+    const testTask = require('./testTask.json');
+
             
     describe("Basic class testing", function() {
       it("should allow new vectorDB given agentID and redis url", function() {
@@ -47,18 +49,26 @@ describe("VectorDB function testing", function() {
                 expect(test2).to.equal(true);
             })
         });
-
+        describe("Write/Read testing ", function(){
+            let embedding =  Buffer.alloc(1536);
+            it("should write to the db ", async function() {
+                let test = await vectorDb.save(testTask, embedding);
+                expect(test).to.equal(true);
+            });
+            it("should read from the db ", async function() {
+                let task = await vectorDb.get(testTask.taskid);
+                console.log(task);
+                expect(task.taskid).to.equal(testTask.taskid);
+            });
+        });
         describe("HashID testing", function() {
-            let testHex = `${indexName}:9f86d08188`;
-            let testSecret = 'test';
-            let testSecretBad = 'badTestString';
             it("should return a correct hashID given a string", function() {
-                let test = vectorDb.getHashId(testSecret);
-                expect(test).to.equal(testHex);
+                let test = vectorDb.getHashId(testTask.task);
+                expect(test).to.equal(testTask.taskid);
             });
             it("should not return a correct hashID given a random string", function() {
-                let test = vectorDb.getHashId(testSecretBad);
-                expect(test).to.not.equal(testHex);
+                let test = vectorDb.getHashId('testBad');
+                expect(test).to.not.equal(testTask.taskid);
             });
         });
         

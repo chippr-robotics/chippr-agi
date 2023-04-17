@@ -5,7 +5,6 @@ const {createHash} = require('node:crypto');
 class VectorDB {
   constructor(name, indexName, redisOptions) {
     this.name = name;
-    this.index = 0;
     this.indexName = indexName;
     this.redisClient = redis.createClient(redisOptions);
     this.redisClient.connect();
@@ -85,10 +84,10 @@ class VectorDB {
   }
   
   async save(_task, _embedding) {
-    let hashID = this.getHashId(_task.taskid);
+    let hashID = this.getHashId(_task.task);
     try {
       await this.redisClient.json.set(
-        hashID, 
+        this.indexName + ":" + hashID, 
         '$',
         {
           embedding : _embedding,
@@ -102,23 +101,23 @@ class VectorDB {
           nextState : _task.nextState,
           rewardForAction : _task.rewardForAction,
         });
-      this.index++;
       return true;
     } catch (error) {
       console.error(error);
+      return error;
     }
   }
 
   async get(_taskID) {
     try {
-      let knn = await this.redisClient.ft.search(
-        this.indexName ,
-        `(@${_taskID}")`
+      let task = await this.redisClient.ft.search(
+        `idx:${this.indexName}` ,
+        `(@taskid:${_taskID})`
         );
-      console.debug(knn);
-      return knn;
+      return task;
     } catch (error) {
       console.error(error);
+      return error;
     }
   }
 
@@ -147,7 +146,7 @@ class VectorDB {
     hash.write(_input);
     hash.end();
     //use the first 10 bytes as id
-    let hashID = this.indexName + ":" + hash.read().toString('hex').slice(0,10)
+    let hashID = hash.read().toString('hex').slice(0,10)
     return hashID
   }
 }

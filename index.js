@@ -57,6 +57,7 @@ class ChipprAGI {
           // Check if all tasks are complete
           if (this.isObjectiveComplete()) {
             console.log('Objective complete!');
+            await this.vectorDb.quit();
             break;
           }
         } else {
@@ -134,7 +135,7 @@ class ChipprAGI {
       //console.debug(task);
       //console.debug('before');   
       //console.debug(this.tasklist);   
-      this.tasklist.push(task); 
+      //this.tasklist.push(task); 
       //console.debug('after');   
       //console.debug(this.tasklist);   
       let vector = await this.getEmbeddings(task.task);
@@ -144,7 +145,7 @@ class ChipprAGI {
     isTaskComplete(task, response) {
       // Check if the task is complete based on the response
       // You may want to customize this based on the specific task
-      return response !== null && response !== undefined && response.trim() !== '';
+      //return response !== null && response !== undefined && response.trim() !== '';
     }
   
     updateParentReward(task) {

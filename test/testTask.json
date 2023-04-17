@@ -1,0 +1,12 @@
+{
+    "taskid": "9f8a4b8df3",
+    "task": "This is a task to test the system",
+    "reward": 10,
+    "done": false,
+    "dependencies": [],
+    "state": {},
+    "action": "This is a task to test the system",
+    "actionProbability": 1,
+    "nextState": {},
+    "rewardForAction": 1
+}
