@@ -3,12 +3,14 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const { VectorDb, PromptManager, openai_config } = require('./src');
 const firstTask = require('./prompts/firstTask.json');
+const { get } = require('https');
 
 class ChipprAGI {
     constructor(objective) {
       this.objective = objective; //string of the mission of the bot
       this.state = {}; // Initialize state
       this.tasklist = []; // Initialize tasklist (todo:)move this to the db so that it is more efficent
+      this.activeTask;
       this.biases = {
         "rewardScore": 1,
         "difficultyScore" : 1,
@@ -18,38 +20,36 @@ class ChipprAGI {
       this.promptManager = new PromptManager(yaml.load(fs.readFileSync('./prompts/prompts.yml', 'utf8'))); // Initialize prompt manager
       this.vectorDb = new VectorDb( process.env.AGENT_ID, process.env.INDEX_NAME, {url: process.env.REDIS_URL} ); // Initialize vector database
       this.openai = openai_config;
-      this.vectorDb.create(); //create the index for the db
     }
   
     async run() {
       // Initialize the tasklist with the first task
-      await this.addTask(firstTask);
-
       console.info('Creating first task!');
-      //try to create the db if needed
-      //await this.vectorDb.create();
-
+      await this.addTask(firstTask);
+      this.activeTask = firstTask;
+    
       while (true) {
         // Get the next task to perform
-        const currentTask = this.tasklist.shift();
+        // get highest priority task add the id to this.activeTask
+        // this.activeTask = this.tasklist.shift();
       
         console.info("|---------Current task:--------|");
-        console.info(currentTask);
+        console.info(this.activeTask);
       
         // Execute the current task
-        const response = await this.executeTask(currentTask);
+        const response = await this.executeTask(this.activeTask);
   
         // Update the state with the response
-        //this.state[currentTask.task_id] = response;
+        //this.state[currentTask.taskid] = response;
   
         // Check if the current task is complete
         console.info("|----- checking if complete -----|");
-        if (this.isTaskComplete(currentTask, response)) {
-          // Mark the task as done
-          currentTask.done = true;
+        if (this.isTaskComplete(this.activeTask, response)) {
+          // Mark the task as done for now
+          this.activeTask.done = true;
   
           // Update parent tasks' reward_for_action
-          this.updateParentReward(currentTask);
+          this.updateParentReward(this.activeTask);
   
           // Prioritize the remaining tasks
           this.prioritizeTasks();
@@ -63,17 +63,18 @@ class ChipprAGI {
         } else {
           // Generate new tasks based on the current task
           console.info("|----- getting new tasks -----|");
-          let newTasks = await this.generateNewTasks(currentTask.task, response);
+          let newTasks = await this.generateNewTasks(this.activeTask.task, response);
           
-          console.info('newTasks!')
-          console.log(newTasks);
+          console.info('newTasks created!')
+          //console.log(newTasks);
 
-          // Add the new tasks to the tasklist
+          // Add the new tasks to the task db
           await JSON.parse(newTasks).forEach( async task => {
             await this.addTask(task);
           });
-          console.debug('current tasklist');
-          console.debug(this.tasklist);
+
+          //console.debug('current tasklist');
+          //console.debug(this.tasklist);
           // Prioritize the remaining tasks
           this.prioritizeTasks();
         }
@@ -96,11 +97,9 @@ class ChipprAGI {
       let vector = await this.getEmbeddings(task.task);
       //console.log(vector);
       //get the closest neighbors
-      let neighbors = await this.vectorDb.getNeighbors(vector);
-      //console.log(context);
-      //get and store the tasks
-      let context = [];
-      neighbors.documents.forEach(t => { context.push(this.tasklist.find(o => o.taskid === t.id)) });
+      let neighbors = await this.vectorDb.getNeighbors(vector.floatbuffer);
+      let context = await this.getContext(neighbors);
+      
       // Get the execution prompt for the task
       console.info("|----- getting prompt -----|");
       let executionPrompt = this.promptManager.getExecutionPrompt(this.objective, JSON.stringify(context), JSON.stringify(this.state), JSON.stringify(task.action));
@@ -108,7 +107,7 @@ class ChipprAGI {
       // Execute the task using ChatGPT and return the response
       console.info("|----- getting response -----|");
       let response = await this.promptManager.generate( this.openai, executionPrompt);
-      //console.debug(response);
+      console.debug(response);
       //mark task complete?
       task.done = true;
       return response;
@@ -123,23 +122,32 @@ class ChipprAGI {
       });
       //console.log(response.data.data[0].embedding);
       let floatbuffer = this.float32Buffer(response.data.data[0].embedding);
-      return floatbuffer;
+      let clean = response.data.data[0].embedding;
+      return {floatbuffer, clean};
+    }
+
+    async getContext(neighbors){
+      //console.log(context);
+      //get and store the tasks
+      //console.log(neighbors.documents);
+      neighbors.context = [];
+      for(const doc of neighbors.documents){
+        let temp = await this.vectorDb.get(doc.id);
+        if(temp.done) neighbors.context.push(temp.task);
+      };
+      //console.log(neighbors);
+      return neighbors.context.join(", ").replace(".","");
     }
 
     float32Buffer(arr) {
-      return Buffer.from(new Float32Array(arr).buffer);
+      return Buffer.from(new Float32Array(arr).buffer)
     }
 
     async addTask(task){
       console.log('|--adding new task--|');
-      //console.debug(task);
-      //console.debug('before');   
-      //console.debug(this.tasklist);   
-      //this.tasklist.push(task); 
-      //console.debug('after');   
-      //console.debug(this.tasklist);   
+      console.log(task);
       let vector = await this.getEmbeddings(task.task);
-      await this.vectorDb.save(task, vector);
+      await this.vectorDb.save(task, vector.clean);
     }
 
     isTaskComplete(task, response) {
@@ -169,19 +177,20 @@ class ChipprAGI {
       });
     }
   
-    prioritizeTasks() {
+    prioritizeTasks(tasks) {
       // Prioritize the tasks based on their rewards and biases
       // You may want to customize this based on your specific prioritization algorithm
       // todo add to constructor so we can optimize
       // Filter out tasks that have dependencies that are not done
       console.log('|--filtering--|')
+      //GET TASKS WHERE DEPS ARE '[]' FROM DB
       const availableTasks = this.tasklist.filter(task => {
         //console.log(task);
         return task.dependencies.every(dep => {
           const depTask = this.tasklist.find(t => t.task_id === dep);
           return depTask.done;
         });
-      });
+      });*/
       console.log(availableTasks);
       // Calculate the priority score for each task
       const priorityScores = availableTasks.map(task => {

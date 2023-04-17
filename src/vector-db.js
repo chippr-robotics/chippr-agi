@@ -8,6 +8,7 @@ class VectorDB {
     this.indexName = indexName;
     this.redisClient = redis.createClient(redisOptions);
     this.redisClient.connect();
+    this.create();
     this.redisClient.on('error', (err) => console.log('Redis Client Error', err));
   }
 
@@ -20,8 +21,8 @@ class VectorDB {
     } else {
     //create a new index if none exists
       try {
-        await this.redisClient.ft.create( 
-          `idx:${this.indexName}`,
+        let test = await this.redisClient.ft.create( 
+          this.indexName,
           {
           '$.embedding' : {
             type: SchemaFieldTypes.VECTOR,
@@ -32,7 +33,7 @@ class VectorDB {
             DIM: '1536',
             DISTANCE_METRIC: 'COSINE'
           }, 
-          '$.taskid':{
+          '$.taskid': {
             type: SchemaFieldTypes.TEXT,
             AS: 'taskid'
           },
@@ -40,42 +41,35 @@ class VectorDB {
             type: SchemaFieldTypes.TEXT,
             AS: 'task'
           },
-          '$.reward':{
+          '$.reward' :{
             type: SchemaFieldTypes.NUMERIC,
             AS: 'reward'
           },
-          '$.done':{
+          '$.done.*':{
             type: SchemaFieldTypes.TAG,
             AS: 'done'
           },
-          '$.dependencies':{
-            type: SchemaFieldTypes.TEXT,
+          '$.dependencies.*' :{
+            type: SchemaFieldTypes.TAG,
             AS: 'dependencies'
           },
-          '$.state':{
-            type: SchemaFieldTypes.TEXT,
-            AS: 'state'
-          },
-          '$.action':{
+          '$.action' :{
             type: SchemaFieldTypes.TEXT,
             AS: 'action'
           },
-          '$.actionProbability':{
+          '$.actionProbability' :{
             type: SchemaFieldTypes.NUMERIC,
             AS: 'actionProbability'
           },
-          '$.nextState':{
-            type: SchemaFieldTypes.TEXT,
-            AS: 'nextState'
-          },
-          '$.rewardForAction':{
+          '$.rewardForAction' :{
             type: SchemaFieldTypes.NUMERIC,
             AS: 'rewardForAction'
           }
         },{
           ON: 'JSON',
-          PREFIX: this.indexName,
+          PREFIX: 'vectorDB:TASK:',
         });  
+        console.log(test);
       } catch (error) {
         console.error(error);
       };
@@ -84,36 +78,38 @@ class VectorDB {
   }
   
   async save(_task, _embedding) {
+    console.log('saving task');
     let hashID = this.getHashId(_task.task);
     try {
       await this.redisClient.json.set(
-        this.indexName + ":" + hashID, 
+        this.indexName + ":TASK:" + hashID, 
         '$',
         {
-          embedding : _embedding,
-          taskid : _task.taskid,
-          reward : _task.reward, 
-          done : _task.done, 
-          dependencies : _task.dependencies, 
-          state : _task.state,
-          action : _task.action, 
-          actionProbability : _task.actionProbability,
-          nextState : _task.nextState,
-          rewardForAction : _task.rewardForAction,
+          'embedding' : _embedding,
+          'taskid' : hashID,
+          'task': _task.task,
+          'reward' : _task.reward, 
+          'done' : _task.done, 
+          'dependencies' : _task.dependencies, 
+          'action' : _task.action, 
+          'actionProbability' : _task.actionProbability,
+          'rewardForAction' : _task.rewardForAction,
         });
       return true;
-    } catch (error) {
-      console.error(error);
-      return error;
+    } catch (e) {
+      if (e.message === 'Index already exists') {
+        console.log('Index exists already, skipped creation.');
+      } else {
+        // Something went wrong, perhaps RediSearch isn't installed...
+        console.error(e);
+        process.exit(1);
+      }
     }
   }
 
   async get(_taskID) {
     try {
-      let task = await this.redisClient.ft.search(
-        `idx:${this.indexName}` ,
-        `(@taskid:${_taskID})`
-        );
+      let task = await this.redisClient.json.get( _taskID );
       return task;
     } catch (error) {
       console.error(error);
@@ -122,9 +118,11 @@ class VectorDB {
   }
 
   async getNeighbors(_embedding) {
+    console.log('getting neighbors')
+    //console.log(_embedding)
     try {
       let knn = await this.redisClient.ft.search(
-        `idx:${this.indexName}` ,
+        this.indexName ,
         `*=>[KNN 4 @vector $BLOB AS dist]`,{
           PARAMS: {
             BLOB: _embedding 
