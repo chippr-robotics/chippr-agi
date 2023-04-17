@@ -16,8 +16,9 @@ class ChipprAGI {
         "dependencyScore" : 1,
       }; // Initialize biases
       this.promptManager = new PromptManager(yaml.load(fs.readFileSync('./prompts/prompts.yml', 'utf8'))); // Initialize prompt manager
-      this.vectorDb = new VectorDb( process.env.AGENT_ID, {url: process.env.REDIS_URL} ); // Initialize vector database
+      this.vectorDb = new VectorDb( process.env.AGENT_ID, process.env.INDEX_NAME, {url: process.env.REDIS_URL} ); // Initialize vector database
       this.openai = openai_config;
+      this.vectorDb.create(); //create the index for the db
     }
   
     async run() {
