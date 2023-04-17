@@ -12,6 +12,7 @@ class PromptManager {
     };
     
     getExecutionPrompt(_objective, _context, _state, _activeTask){
+      
       return this.prompts.execution_prompt.replace('{{ objective }}', _objective)
       .replace('{{ context }}', _context)
       .replace('{{ state }}', _state)
