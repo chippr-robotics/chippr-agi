@@ -26,10 +26,10 @@ task_prompt: |-
         "reward": "float",
         "done": "bool",
         "dependencies": ["string"],
-        "state": {...},
-                "action": "string",
+        "state": {},
+        "action": "string",
         "action_probability": "float",
-        "next_state": {...},
+        "next_state": {},
         "reward_for_action": "float"
     },
     ...

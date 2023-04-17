@@ -39,7 +39,7 @@ class VectorDB {
   
   async save(_taskId, _embedding) {
     try {
-      this.redisClient.json.set(
+      await this.redisClient.json.set(
         'taskDB:'+ this.index, 
         '$',
         {
@@ -47,18 +47,32 @@ class VectorDB {
           taskid : _taskId
         });
       this.index++;
+      return true;
     } catch (error) {
       console.error(error);
     }
   }
 
-  async getNeighbors(_taskID) {
+  async get(_taskID) {
     try {
       let knn = await this.redisClient.ft.search(
         this.indexName ,
-        '(@taskid:'+_taskID+')=>[KNN 4 @vector $BLOB AS dist]',{
+        `(@taskid:"${_taskID}")`
+        );
+      console.debug(knn);
+      return knn;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getNeighbors(_embedding) {
+    try {
+      let knn = await this.redisClient.ft.search(
+        this.indexName ,
+        `*=>[KNN 4 @vector $BLOB AS dist]`,{
           PARAMS: {
-            BLOB: Buffer.alloc(1536 * 4)
+            BLOB: _embedding 
           },
           SORTBY: 'dist',
           DIALECT: 2,
