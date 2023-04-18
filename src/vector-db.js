@@ -45,12 +45,12 @@ class VectorDB {
             type: SchemaFieldTypes.NUMERIC,
             AS: 'reward'
           },
-          '$.done.*':{
+          '$.done':{
             type: SchemaFieldTypes.TAG,
             AS: 'done'
           },
           '$.dependencies.*' :{
-            type: SchemaFieldTypes.TAG,
+            type: SchemaFieldTypes.TEXT,
             AS: 'dependencies'
           },
           '$.action' :{
@@ -116,14 +116,14 @@ class VectorDB {
       return error;
     }
   }
-
-  async getNeighbors(_embedding) {
+  //@dev done is a bool to fetch either tasks that are done or not
+  async getNeighbors(_embedding, done) {
     console.log('getting neighbors')
     //console.log(_embedding)
     try {
       let knn = await this.redisClient.ft.search(
         this.indexName ,
-        `*=>[KNN 4 @vector $BLOB AS dist]`,{
+        `@done:{${done}}=>[KNN 4 @vector $BLOB AS dist]`,{
           PARAMS: {
             BLOB: _embedding 
           },

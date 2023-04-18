@@ -44,9 +44,9 @@ class ChipprAGI {
   
         // Check if the current task is complete
         console.info("|----- checking if complete -----|");
-        if (this.isTaskComplete(this.activeTask, response)) {
+        if (await this.isTaskComplete(this.activeTask, response)) {
           // Mark the task as done for now
-          this.activeTask.done = true;
+          //this.activeTask.done = true;
   
           // Update parent tasks' reward_for_action
           this.updateParentReward(this.activeTask);
@@ -96,20 +96,20 @@ class ChipprAGI {
       //get neighbors of the current task for context
       let vector = await this.getEmbeddings(task.task);
       //console.log(vector);
-      //get the closest neighbors
-      let neighbors = await this.vectorDb.getNeighbors(vector.floatbuffer);
+      //get the closest neighbors that are done
+      let neighbors = await this.vectorDb.getNeighbors(vector.floatbuffer, "true");
       let context = await this.getContext(neighbors);
       
       // Get the execution prompt for the task
       console.info("|----- getting prompt -----|");
-      let executionPrompt = this.promptManager.getExecutionPrompt(this.objective, JSON.stringify(context), JSON.stringify(this.state), JSON.stringify(task.action));
+      let executionPrompt = this.promptManager.getExecutionPrompt(this.objective, context.join(", ").replace(".",""), JSON.stringify(this.state), JSON.stringify(task.action));
       console.log(executionPrompt);
       // Execute the task using ChatGPT and return the response
       console.info("|----- getting response -----|");
       let response = await this.promptManager.generate( this.openai, executionPrompt);
       console.debug(response);
       //mark task complete?
-      task.done = true;
+      //task.done = true;
       return response;
     }
   
@@ -133,10 +133,10 @@ class ChipprAGI {
       neighbors.context = [];
       for(const doc of neighbors.documents){
         let temp = await this.vectorDb.get(doc.id);
-        if(temp.done) neighbors.context.push(temp.task);
+        neighbors.context.push(temp.task);
       };
       //console.log(neighbors);
-      return neighbors.context.join(", ").replace(".","");
+      return neighbors.context;
     }
 
     float32Buffer(arr) {
@@ -150,10 +150,21 @@ class ChipprAGI {
       await this.vectorDb.save(task, vector.clean);
     }
 
-    isTaskComplete(task, response) {
+    async isTaskComplete(task, response) {
       // Check if the task is complete based on the response
       // You may want to customize this based on the specific task
-      //return response !== null && response !== undefined && response.trim() !== '';
+      if(this.tasklist.length > 3){
+        //get nnearest tasks to the active task
+        let vector = await this.getEmbeddings(task.task);
+        let n =  await this.vectorDb.getNeighbors(vector.floatbuffer, "false");
+        let context = await this.getContext(n);
+        return (context.length > 3);
+      } else {
+        //(todo) send the response to to gpt to ask if it is done
+        //for now if we dont have more than 3 tasks in the task list we can add more
+
+        return false;
+      }
     }
   
     updateParentReward(task) {
@@ -218,7 +229,7 @@ class ChipprAGI {
       
     isObjectiveComplete() {
       // Check if all tasks in the objective are complete
-      return this.tasklist.filter((t) => !t.done).length === 0;
+      return false;//this.tasklist.filter((t) => !t.done).length === 0;
     }
     
     generateTaskEmbedding(task){};
