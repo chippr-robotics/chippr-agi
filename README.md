@@ -30,6 +30,7 @@ graph TD
   L --> B
 ```
 
+
 ## Getting Started
 - Clone the repository:` git clone https://github.com/chippr-robotics/chippr-agi.git`
 - Install the dependencies: `npm install`
