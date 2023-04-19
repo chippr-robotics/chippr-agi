@@ -7,10 +7,10 @@ class ChipprAGI {
   constructor() {
     this.entities = {};
     this.components = {};
-    this.systems = [];
+    this.systems = {};
     this.eventEmitter = new EventEmitter();
     this.langModel = LangModel;
-    this.vectorDb = new VectorDb( process.env.AGENT_ID, process.env.INDEX_NAME, {url: process.env.REDIS_URL} ); // Initialize vector database
+    this.vectorDb = new VectorDb( process.env.INDEX_NAME, {url: process.env.REDIS_URL} ); // Initialize vector database
   }
 
   createEntity(_entityID) {
@@ -26,17 +26,9 @@ class ChipprAGI {
     this.components[componentName] = component;
   }
 
-  registerSystem(system) {
-    this.systems.push(system);
-  }
-
-  loadSystem(_systemFile) {
-    let sys = _systemFile.split('.')[0];
-    let s = require("./systems/" + _systemFile);
-    //run the init function on a system
-    s.init(this.eventEmitter);
-    //register the new system 
-    this.registerSystem(sys);
+  registerSystem(systemName, systemFuncs) {
+    this.systems[systemName] = systemFuncs;
+    this.systems[systemName].init(this.eventEmitter);
   }
   
   emit(eventType, eventData) {

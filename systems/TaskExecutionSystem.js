@@ -1,18 +1,9 @@
-var System = require('../core/system');
-class TaskExecutionSystem extends System {
-    constructor(eventEmitter) {
-      super(eventEmitter);
-    }
-  
-    registerEventListeners() {
-      this.eventEmitter.on('executeTask', (taskId) => {
+CHIPPRAGI.registerSystem('TaskExecutionSystem', {
+    init: function (_eventEmitter) {
+      _eventEmitter.on('executeTask', (taskId) => {
         this.executeTask(taskId);
       });
-    }
-  
-    update() {
-      // Implement task execution logic here
-    }
+    },
   
     executeTask(taskId) {
       // Execute the task associated with the given taskId
@@ -24,6 +15,4 @@ class TaskExecutionSystem extends System {
       // 5) emit storeTask( taskID, response,)
       // 6) emit taskCheck( taskID )
     }
-  }
-  
-  module.exports.init = (eventEmitter) => {new TaskExecutionSystem(eventEmitter)};
+  });
