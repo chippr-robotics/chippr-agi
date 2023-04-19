@@ -3,7 +3,7 @@ const { createHash } = require('node:crypto');
 CHIPPRAGI.registerSystem('TaskCreationSystem', {
   init: function (_eventEmitter) {
       _eventEmitter.on('createTask', (taskDescription) => {
-        this.createTask(taskId);
+        this.createTask(taskDescription);
       });
   },
 
@@ -38,6 +38,7 @@ CHIPPRAGI.registerSystem('TaskCreationSystem', {
       done : false,
       dependencies : [],
     });
+    CHIPPRAGI.emit('newEntity', { entityID : taskID });
   },
  
   getHashId(_taskDescription){

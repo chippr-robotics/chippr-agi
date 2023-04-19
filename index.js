@@ -14,12 +14,12 @@ class ChipprAGI {
   }
 
   createEntity(_entityID) {
-    this.entities[entityId] = {};
-    return entityId;
+    this.entities[_entityID] = {};
   }
 
   addComponent(entityId, componentName, componentData) {
     this.entities[entityId][componentName] = componentData;
+    this.components[componentName].init(entityId, componentData);
   }
 
   registerComponent(componentName, component) {

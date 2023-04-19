@@ -22,7 +22,11 @@ class VectorDB {
         let test = await this.redisClient.ft.create( 
           this.indexName,
           {
-          '$.embedding' : {
+          '$.taskId': {
+              type: SchemaFieldTypes.TEXT,
+              AS: 'taskid'
+            },
+          '$.clean' : {
             type: SchemaFieldTypes.VECTOR,
             AS: 'vector',
             ALGORITHM: VectorAlgorithms.HNSW,
@@ -31,10 +35,15 @@ class VectorDB {
             DIM: '1536',
             DISTANCE_METRIC: 'COSINE'
           }, 
-          '$.taskid': {
-            type: SchemaFieldTypes.TEXT,
-            AS: 'taskid'
-          },
+          '$.floatbuffer' : {
+            type: SchemaFieldTypes.VECTOR,
+            AS: 'vector',
+            ALGORITHM: VectorAlgorithms.HNSW,
+            COUNT: '7',
+            TYPE: 'FLOAT32',
+            DIM: '1536',
+            DISTANCE_METRIC: 'COSINE'
+          }, 
         },{
           ON: 'JSON',
           PREFIX: 'vectorDB:TASK:',
