@@ -1,7 +1,10 @@
 const EventEmitter = require('events');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 require('./systems/system');
 require('./components/component');
+
+
 
 class ChipprAGI {
   constructor() {
@@ -9,6 +12,7 @@ class ChipprAGI {
     this.components = {};
     this.systems = [];
     this.eventEmitter = new EventEmitter();
+    this.systemLoader();
   }
 
   createEntity() {
@@ -28,6 +32,17 @@ class ChipprAGI {
   registerSystem(system) {
     this.systems.push(system);
     system.init(this);
+  }
+
+  systemLoader(){
+     setInterval(() => {
+          fs.readdirSync('./systems').forEach(file => { 
+             require(file);
+          });  
+          fs.readdirSync('./components').forEach(file => { 
+             require(file);
+          });  
+    }, 5000);
   }
 
   emit(eventType, eventData) {
