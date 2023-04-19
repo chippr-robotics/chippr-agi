@@ -1,5 +1,7 @@
 const EventEmitter = require('events');
 const { v4: uuidv4 } = require('uuid');
+require('./systems/system');
+require('./components/component');
 
 class ChipprAGI {
   constructor() {
