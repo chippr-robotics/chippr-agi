@@ -13,7 +13,6 @@ class TaskCreationSystem extends System {
     }
   
     update() {
-      // Implement task execution logic here
       // should do nothing on update call, the event listner triggers this function
     }
   

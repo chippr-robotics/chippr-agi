@@ -9,7 +9,6 @@ class ChipprAGI {
     this.components = {};
     this.systems = [];
     this.eventEmitter = new EventEmitter();
-    this.systemLoader();
     this.langModel = LangModel;
     this.vectorDb = new VectorDb( process.env.AGENT_ID, process.env.INDEX_NAME, {url: process.env.REDIS_URL} ); // Initialize vector database
   }
@@ -31,24 +30,15 @@ class ChipprAGI {
     this.systems.push(system);
   }
 
-  systemLoader(){
-    let systems = './systems/';
-    let components = './components/';
-     setInterval(() => {
-          fs.readdirSync(systems).forEach(file => {  
-            let sys = file.split('.')[0];
-            if(!this.systems.includes(sys)){
-              let s = require(systems+file);
-              s.init(this.eventEmitter);
-              this.registerSystem(sys);
-            };
-          });  
-          fs.readdirSync('./components').forEach(file => { 
-             require(components+file);
-          });  
-    }, 5000);
+  loadSystem(_systemFile) {
+    let sys = _systemFile.split('.')[0];
+    let s = require("./systems/" + _systemFile);
+    //run the init function on a system
+    s.init(this.eventEmitter);
+    //register the new system 
+    this.registerSystem(sys);
   }
-
+  
   emit(eventType, eventData) {
     this.eventEmitter.emit(eventType, eventData);
   }
