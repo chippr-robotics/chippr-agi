@@ -1,8 +1,12 @@
+//set the environmental variables
+//(todo) have a test env config
 require('dotenv').config();
-const OBJECTIVE = process.env.OBJECTIVE;
 
-require('./vector-db.test');
+//test core functions
+require('./core');
 
-//const { ChipprAGI } = require('./index.js');
+//tests for systems
+require('./systems');
 
-//var bot = new ChipprAGI(OBJECTIVE);
+//test for components
+require('./components');

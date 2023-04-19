@@ -1,5 +1,6 @@
 module.exports = {
     PromptManager : require('./promptManager.js'),
     VectorDb : require('./vector-db'),
-    openai_config : require("./openai_config.js"),
+    LangModel : require("./langModel.js"),
+    System : require("./system"),
 }

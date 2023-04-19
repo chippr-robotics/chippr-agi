@@ -1,4 +1,5 @@
 //manage prompts befor sending
+//v1 file
 class PromptManager {
     constructor(prompts) {
       this.prompts = prompts;

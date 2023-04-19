@@ -3,7 +3,7 @@
 
 # Chippr-AGI
 
-Chippr-AGI is an open-source framework that uses AI models to automate task creation and prioritization. It combines the power of GPT-4 with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.
+Chippr-AGI is an open-source ECS framework that uses AI models to automate task creation and prioritization. It combines the power of GPT-4 with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective. 
 
 ## How it works
 Chippr-AGI uses a combination of GPT-4 for generating task descriptions and actor-critic reinforcement learning to prioritize the tasks based on their estimated rewards. The framework is built using Node.js and Redis to store embeddings for quick query and update.

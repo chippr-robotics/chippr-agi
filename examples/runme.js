@@ -1,5 +1,5 @@
 require('dotenv').config();
 
-const { ChipprAGI } = require('../index.js');
+const { ChipprAGI } = require('./index.js');
 
-const bot = new ChipprAGI();
+const CHIPPRAGI = new ChipprAGI();

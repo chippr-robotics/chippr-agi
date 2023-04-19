@@ -1,6 +1,7 @@
 const EventEmitter = require('events');
-const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+const { VectorDb, LangModel } = require('./core');
+
 
 class ChipprAGI {
   constructor() {
@@ -9,10 +10,11 @@ class ChipprAGI {
     this.systems = [];
     this.eventEmitter = new EventEmitter();
     this.systemLoader();
+    this.langModel = LangModel;
+    this.vectorDb = new VectorDb( process.env.AGENT_ID, process.env.INDEX_NAME, {url: process.env.REDIS_URL} ); // Initialize vector database
   }
 
-  createEntity() {
-    const entityId = uuidv4();
+  createEntity(_entityID) {
     this.entities[entityId] = {};
     return entityId;
   }
