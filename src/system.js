@@ -21,3 +21,5 @@ class System {
     // Override this method in child classes to implement system-specific logic
   }
 }
+
+module.exports =  System ;

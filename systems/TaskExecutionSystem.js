@@ -1,3 +1,4 @@
+var System = require('../src/system');
 class TaskExecutionSystem extends System {
     constructor(eventEmitter) {
       super(eventEmitter);
@@ -19,3 +20,4 @@ class TaskExecutionSystem extends System {
     }
   }
   
+  module.exports.init = (eventEmitter) => {new TaskExecutionSystem(eventEmitter)};

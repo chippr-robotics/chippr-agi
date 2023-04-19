@@ -1,4 +1,4 @@
-ChipprAGI.registerComponent('foo', {
+CHIPPRAGI.registerComponent('foo', {
     schema: {
       bar: {type: 'number'},
       baz: {type: 'string'}
