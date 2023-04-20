@@ -1,3 +1,5 @@
+import { CHIPPRAGI } from "../index.js";
+
 CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     init: function (_eventEmitter) {
         _eventEmitter.on('newObjective', (data) => {

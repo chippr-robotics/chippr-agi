@@ -1,4 +1,6 @@
-const { createHash } = require('node:crypto');
+import { CHIPPRAGI } from "../index.js";
+
+import { createHash } from 'node:crypto';
 
 CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
   init: function (_eventEmitter) {

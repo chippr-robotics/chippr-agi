@@ -1,7 +1,7 @@
-const redis = require('redis');
-const {createClient, SchemaFieldTypes, VectorAlgorithms } = require("redis");
+import * as redis from 'redis';
+import {createClient, SchemaFieldTypes, VectorAlgorithms } from "redis";
 
-class VectorDB {
+export class VectorDB {
   constructor( indexName, redisOptions) {
     this.indexName = indexName;
     this.redisClient = redis.createClient(redisOptions);
@@ -109,4 +109,4 @@ class VectorDB {
  
 }
 
-module.exports = VectorDB
+

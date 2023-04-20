@@ -1,4 +1,4 @@
-const { CHIPPRAGI } = require("../examples/runme");
+import { CHIPPRAGI } from "../index.js";
 
 CHIPPRAGI.registerSystem('TaskEmbeddingSystem', {
     init: function (_eventEmitter) {

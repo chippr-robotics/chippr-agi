@@ -1,16 +1,21 @@
+import { CHIPPRAGI } from "../index.js";
+import * as path from 'path';
+import * as fs from 'fs';
+
+
 CHIPPRAGI.registerSystem('CoreSystemLoader', {
   init: function () {
     {
       console.log('CoreSystemLoader running');
       let systems = './systems/';
       let components = './components/';
-      console.log(require("path").dirname("./"));
+      console.log(path.dirname("./"));
       setInterval(() => {
           fs.readdirSync(systems).forEach(file => {  
-            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) require('./' + file);
+            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) import ('./' + file);
           });  
           fs.readdirSync(components).forEach(file => { 
-            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) require('../components/'+file);
+            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) import ('../components/'+file);
           });  
       }, 5000);
     }
@@ -34,3 +39,4 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
     // timeDelta is the time in milliseconds since the last tick.
   }
 });
+

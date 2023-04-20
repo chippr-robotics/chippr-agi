@@ -1,3 +1,5 @@
+import { CHIPPRAGI } from "../index.js";
+
 CHIPPRAGI.registerSystem('TaskExecutionSystem', {
     init: function (_eventEmitter) {
       _eventEmitter.on('executeTask', (taskId) => {

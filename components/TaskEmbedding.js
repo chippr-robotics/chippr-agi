@@ -1,3 +1,5 @@
+import { CHIPPRAGI } from "../index.js";
+
 CHIPPRAGI.registerComponent('TaskEmbedding', {
     schema: {
       taskId: { type: 'string' },

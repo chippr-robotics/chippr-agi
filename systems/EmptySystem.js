@@ -1,3 +1,5 @@
+import { CHIPPRAGI } from "../index.js";
+
 CHIPPRAGI.registerSystem('EmptySystem', {
     init: function (_eventEmitter) {
         _eventEmitter.on('emptySystem', (data) => {

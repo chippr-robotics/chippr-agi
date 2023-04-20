@@ -1,3 +1,5 @@
+import { CHIPPRAGI } from "../index.js";
+
 CHIPPRAGI.registerComponent('TaskDescription', {
     schema: {
       taskId: { type: 'string' },

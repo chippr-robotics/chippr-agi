@@ -1,3 +1,5 @@
+import { CHIPPRAGI } from "../index.js";
+
 CHIPPRAGI.registerComponent('ObjectiveDescription',{
     schema: {
         objectiveId: { type: 'string' },
@@ -28,4 +30,4 @@ CHIPPRAGI.registerComponent('ObjectiveDescription',{
     // time is the current time in milliseconds.
     // timeDelta is the time in milliseconds since the last tick.
      }
-};
+});
