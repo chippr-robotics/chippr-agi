@@ -1,4 +1,7 @@
 import { CHIPPRAGI } from "../index.js";
+import * as yaml from 'js-yaml';
+import * as fs from 'fs';
+import { createHash } from 'node:crypto';
 
 CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     init: function (_eventEmitter) {
@@ -26,13 +29,40 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //2) get context
         //none needed for fresh tasks....
         //3) replace varaible with context
-        let prompt = GenerateTasksPrompt.task_prompt.replace('{{ objective }}', _objective);
+        let prompt = GenerateTasksPrompt.task_prompt.replace('{{ objective }}', data.objectiveDescription);
         //4) generate tasks
+        //todo loop until a valid object is returned
+        let success = false;
         let newTasks = await this.generate(prompt);
+        while (!success){
         //5) generate event to create for each tasks 
-        JSON.parse(newTasks).forEach( async task => {
-            CHIPPRAGI.emit('createTask', task);
-        })         
+        try {
+          JSON.parse(newTasks).forEach( async task => {
+            let taskID = this.getHashId(task.task);
+            //create an entity
+            CHIPPRAGI.createEntity(taskID);
+            //add the description component
+            CHIPPRAGI.addComponent( taskID, 'TaskDescription', {
+              taskId : taskID,
+              task : task.task,
+              done : false,
+            });
+            //add a parent component
+            CHIPPRAGI.addComponent( taskID, 'TaskParent', {
+              taskId : taskID,
+              parentId : data.objectiveID,
+            });
+            //announce the task
+            CHIPPRAGI.emit('newEntity', { entityID : taskID });  
+          });
+          success = true;
+        } catch(error) {
+          // the response was not json so we need to try again console.logging for trouble shoooting
+          //console.log(newTasks);
+          //console.log(error);
+          newTasks = await this.generate(prompt);
+        }         
+      }
     },
     async generate(_prompt) {
         let response = await CHIPPRAGI.langModel.createCompletion({
@@ -43,6 +73,16 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         });
         return response.data.choices[0].text;
     },
+    
+    getHashId(_taskDescription){
+      //create a hash
+      let hash =  createHash('sha256');
+      hash.write(_taskDescription);
+      hash.end();
+      //use the first 10 bytes of the hash as the hashID
+      let hashID = hash.read().toString('hex').slice(0,10)
+      return hashID
+    }
 
   
   });

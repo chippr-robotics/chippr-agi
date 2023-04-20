@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv'
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { EventEmitter } from 'events'; 
@@ -37,10 +37,11 @@ class ChipprAGI {
   
   emit(eventType, eventData) {
     this.eventEmitter.emit(eventType, eventData);
+    this.eventEmitter.emit('*', eventData); //system monitoring
   }
 
   on(eventType, listener) {
-    this.eventEmitter.on(eventType, listener);
+    this.eventEmitter.on(eventType, listener);;
   }
 }
 

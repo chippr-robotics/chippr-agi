@@ -1,9 +1,10 @@
 task_prompt: |-
   You are an AI agent that creates lists of tasks to complete objectives. 
-  Your objective is {{objective}}. 
+  Your objective is {{ objective }}. 
   Return a list of tasks with an estimated reward value based on how important the task is to the objective. 
   
-  Return a list of objects having the following format:
+  Return a properly formated JSON list of objects having the following format:
+  ```
   [
     {
         "taskid": "string",
@@ -13,6 +14,7 @@ task_prompt: |-
     },
     ...
   ]
+  ```
   where: 
   'task_id' is the first 10 bytes of the SHA256 hash of the task string
   'task' is the description of the task
