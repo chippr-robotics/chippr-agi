@@ -3,9 +3,19 @@
 
 # Chippr-AGI
 
-Chippr-AGI is an open-source ECS framework that uses AI models to automate task creation and prioritization. It combines the power of GPT-4 with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective. * In the process of moving from v1 to stable ECS framework *
+Chippr-AGI is an open-source event-driven ECS framework that uses AI models to automate task creation and prioritization. This system is designed to run solo or as a swarm of containers. It combines the power of GPT-4 with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.  
 
-## How it works
+**Dev Updates**
+- [x] v1 >> ecs
+- [x] add testing framework (mocha)
+- [x] allow distrubuted task handeling(swarm mode)
+- [x] functional core system loader
+- [ ] All functional core functions 
+- [x] Docker container. 
+- [ ] Docker compose w/ redis *is next*. 
+- [ ] Better Documentation *I am working on updating documentation friday and saturday.
+
+## Basic Flow
 Chippr-AGI uses a combination of GPT-4 for generating task descriptions and actor-critic reinforcement learning to prioritize the tasks based on their estimated rewards. The framework is built using Node.js and Redis to store embeddings for quick query and update.
 
 Tasks are generated based on the current context and objective, which are passed into a customizable prompt template. The prompts are stored in a YAML file and can be easily edited to fit specific needs. Once a task is generated, its dependencies are added to the task list and prioritized based on their estimated reward.
@@ -30,8 +40,71 @@ graph TD
   L --> B
 ```
 
+## ECS task lifecycle
 
-## Getting Started
+```mermaid
+graph TB
+  A[Objective]
+  A --> B[Generate Initial Tasks]
+  B --> C[Store Tasks as Entities with Components]
+  C --> D[Emit Event to Prioritize Tasks]
+  D -->|Event| E[System: Task Prioritization]
+  E --> F[Update Task Priorities]
+  F --> G[Emit Event to Execute Next Task]
+  G -->|Event| H[System: Task Execution]
+  H --> I[Execute Task based on Components]
+  I --> J[Store Task Result]
+  J --> K[Mark Task as Done]
+  K --> L[Check if Objective is Complete]
+  L -->|No| M[Emit Event to Generate New Tasks]
+  M -->|Event| N[System: Task Generation]
+  N --> O[Generate New Tasks based on Components]
+  O --> P[Store New Tasks as Entities with Components]
+  P --> D
+  L -->|Yes| Q[Objective Complete]
+
+```
+
+In this flowchart:
+
+The objective is used to generate the initial tasks.
+Tasks are stored as entities with associated components.
+An event is emitted to prioritize tasks, which is handled by the Task Prioritization system.
+Task priorities are updated based on the system's logic.
+An event is emitted to execute the next task, which is handled by the Task Execution system.
+The task is executed based on the relevant components.
+The result of the task is stored, and the task is marked as done.
+The system checks if the objective is complete.
+If the objective is not complete, an event is emitted to generate new tasks, which is handled by the Task Generation system.
+New tasks are generated based on the components and the previous task's result.
+The new tasks are stored as entities with components, and the process repeats from step 3.
+
+## ECS events
+The ChipprAGI class emits an event using the EventEmitter.
+The EventEmitter distributes the event to all registered systems.
+Each system handles the event if it's relevant to that system.
+The system performs its specific action based on the event and updates the relevant components.
+This diagram shows a high-level overview of how events are propagated through the ChipprAGI system and how systems handle and react to events.
+
+```mermaid
+graph TD
+  A(ChipprAGI) -->|Emit event| B(EventEmitter)
+  B -->|Distribute event| C(System 1)
+  B -->|Distribute event| D(System 2)
+  B -->|Distribute event| E(System N)
+  C -->|Handle event| F(Perform System 1 specific action)
+  D -->|Handle event| G(Perform System 2 specific action)
+  E -->|Handle event| H(Perform System N specific action)
+  F --> I(Update relevant components)
+  G --> J(Update relevant components)
+  H --> K(Update relevant components)
+
+```
+
+
+
+
+## Getting Started(needs updates)
 - Clone the repository:` git clone https://github.com/chippr-robotics/chippr-agi.git`
 - Install the dependencies: `npm install`
 - Create a `.env` file with your OpenAI API key and Redis credentials.
