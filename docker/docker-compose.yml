@@ -29,5 +29,5 @@ volumes:
     driver: local
     driver_opts:
       type: bind
-      device: $VECTOR_DATA
+      device: $VECTOR_DATA 
       o: bind
