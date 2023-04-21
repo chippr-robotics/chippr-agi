@@ -1,5 +1,7 @@
 import { CHIPPRAGI } from "../index.js";
 
+import { SchemaFieldTypes, VectorAlgorithms } from "redis";
+
 CHIPPRAGI.registerComponent('TaskEmbedding', {
     schema:{
       '$.entityID': {

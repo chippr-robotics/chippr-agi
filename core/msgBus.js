@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import { EventEmitter } from 'events';
 dotenv.config();
 
-class MessageBus {
+export class MessageBus {
   constructor() {
     this.eventEmitter = new EventEmitter();
     if (process.env.MSG_BUS === 'redis') {
@@ -30,6 +30,5 @@ class MessageBus {
   }  // Add other methods as needed
 }
 
-export const MsgBus = new MessageBus();
 
 

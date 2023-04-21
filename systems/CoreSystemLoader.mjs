@@ -1,7 +1,5 @@
 import { CHIPPRAGI } from "../index.js";
-import * as path from 'path';
 import * as fs from 'fs';
-
 
 CHIPPRAGI.registerSystem('CoreSystemLoader', {
   info: {
@@ -38,12 +36,19 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
     console.log('CoreSystemLoader running');
     let systems = './systems/';
     let components = './components/';
-    //console.log(path.dirname("./"));
     setInterval(() => {
+      //console.log(`found ${fs.readdirSync(systems)}`); 
       fs.readdirSync(systems).forEach(file => {  
         if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) {
+          
           import ('./' + file);  
-          CHIPPRAGI.systems[file.split(".")[0]].init(CHIPPRAGI.eventEmitter)
+          console.log(`ran import on ${file}`); 
+          //sleep to let the system rest then init
+          setTimeout(()=>{
+            //console.log('inside timeout')
+            //console.log(file);
+            CHIPPRAGI.systems[file.split(".")[0]].init(CHIPPRAGI.eventEmitter);
+          }, 3000, file);
         }
       });
       fs.readdirSync(components).forEach(file => { 
