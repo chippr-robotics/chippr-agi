@@ -2,16 +2,24 @@ import { CHIPPRAGI } from "../index.js";
 
 CHIPPRAGI.registerComponent('ObjectiveDescription',{
     schema: {
-        objectiveId: { type: 'string' },
-        objective: { type: 'string' },
-        complete: { type: 'boolean' },
+        '$.entityID': {
+            type: SchemaFieldTypes.TEXT,
+            AS: 'entityID'
+        },
+        '$.objective': {
+            type: SchemaFieldTypes.TEXT,
+            AS: 'objective'
+        },
+        '$.complete': {
+            type: SchemaFieldTypes.TAG,
+            AS: 'complete'
+        },     
     },
 
     init: function (entityId, componentData) {
         // Do something when the component is first attached, if needed.
         // entityId is the ID of the entity this component is attached to.
         // componentData contains the initial data for the component.
-        
     },
 
     update: function (entityId, componentData) {

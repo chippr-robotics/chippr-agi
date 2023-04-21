@@ -2,10 +2,10 @@ import { CHIPPRAGI } from "../index.js";
 
 CHIPPRAGI.registerComponent('TaskEmbedding', {
     schema:{
-      '$.taskId': {
-          type: SchemaFieldTypes.TEXT,
-          AS: 'taskid'
-        },
+      '$.entityID': {
+        type: SchemaFieldTypes.TEXT,
+        AS: 'entityID'
+      },
       '$.clean' : {
         type: SchemaFieldTypes.VECTOR,
         AS: 'vector',
