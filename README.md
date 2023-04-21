@@ -5,17 +5,69 @@
 
 Chippr-AGI is an open-source event-driven ECS framework that uses AI models to automate task creation and prioritization. This system is designed to run solo or as a swarm of containers. It combines the power of GPT-4 with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.  
 
+## This repo is under active development, clone often or use the docker image
+
+## Getting Started
+### Github
+- Clone the repository:` git clone https://github.com/chippr-robotics/chippr-agi.git`
+- Install the dependencies: `npm install`
+- Create a `.env` file with your OpenAI API key and Redis credentials.
+- Update the OBJECTIVE
+- start redis
+- Start the application: `npm start`
+
+
+### Docker( Easier )
+#### Pull the Image
+
+First, pull the Chippr-AGI Docker image from Docker Hub:
+```
+docker pull chipprbots/chippr-agi:latest
+```
+
+#### Run the Container
+
+To run the Chippr-AGI container, you'll need to set up environment variables for your OpenAI API key and Redis credentials. Create a `.env` file with the following variables:
+```
+#redis setup
+AGENT_ID="SOMETHING_CLEVER"
+INDEX_NAME='vectorDB'
+REDIS_URL="redis://REDISIP:6379"
+
+# Language model setup
+OPENAI_API_KEY="YOURKEY"
+MODEL="text-davinci-003"
+DEFAULT_TEMP=0.5
+MAX_TOKEN_LENGTH=100
+MATCH_LENGTH=3
+
+# update this if needed....
+OBJECTIVE="Write a best selling novel about a robot detective."
+```
+
+
+Replace `your_api_key`, `your_redis_host`, `your_redis_port`, and `your_redis_password` with your actual values.
+
+Now, run the container with the following command:
+
+```
+docker run -d --name chippr-agi --env-file .env  chipprbots/chippr-agi:latest
+```
+
+This will start the Chippr-AGI container in detached mode and load the environment variables from the `.env` file.
+
+### Docker-compose (Best)
+#### Update the docker-compose.yml
+
+Use the Docker compose file in the `docker` folder 
+
+
+--- 
+
 **Dev Updates**
-- [x] v1 >> ecs
-- [x] add testing framework (mocha)
-- [x] allow distrubuted task handeling(swarm mode)
-- [x] functional core system loader
-- [ ] All core systems and componens 
-- [x] Docker container. 
-- [x] Docker compose w/ redis
-- [x] Jenkins pipelines 
-- [x] Distrubuted message bus system 
-- [ ] Better Documentation *I am working on updating documentation friday and saturday.
+moved to docs
+
+---
 
 ## Basic Flow
 Chippr-AGI uses a combination of GPT-4 for generating task descriptions and actor-critic reinforcement learning to prioritize the tasks based on their estimated rewards. The framework is built using Node.js and Redis to store embeddings for quick query and update.
@@ -106,12 +158,7 @@ graph TD
 
 
 
-## Getting Started(needs updates)
-- Clone the repository:` git clone https://github.com/chippr-robotics/chippr-agi.git`
-- Install the dependencies: `npm install`
-- Create a `.env` file with your OpenAI API key and Redis credentials.
-- Edit the `prompts.yaml` file to fit your specific needs.
-- Start the application: `npm start`
+
 
 ## Contributing
 We welcome contributions from the community. If you'd like to contribute to Chippr-AGI, please fork the repository and submit a pull request. We recommend discussing your ideas with the community in the issues section before starting any major work.
