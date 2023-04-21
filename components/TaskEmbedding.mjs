@@ -10,7 +10,7 @@ CHIPPRAGI.registerComponent('TaskEmbedding', {
       },
       '$.clean' : {
         type: SchemaFieldTypes.VECTOR,
-        AS: 'vector',
+        AS: 'clean',
         ALGORITHM: VectorAlgorithms.HNSW,
         COUNT: '7',
         TYPE: 'FLOAT32',
@@ -19,7 +19,7 @@ CHIPPRAGI.registerComponent('TaskEmbedding', {
       }, 
       '$.floatbuffer' : {
         type: SchemaFieldTypes.VECTOR,
-        AS: 'vector',
+        AS: 'floatbuffer',
         ALGORITHM: VectorAlgorithms.HNSW,
         COUNT: '7',
         TYPE: 'FLOAT32',

@@ -8,6 +8,7 @@ import { MessageBus } from './msgBus.js';
 
 class ChipprAGI {
   constructor() {
+    this.SWARM_MODE = process.env.SWARM_MODE;
     this.entities = {};
     this.components = {};
     this.systems ={};
@@ -17,8 +18,8 @@ class ChipprAGI {
   }
 
   createEntity(_entityID) {
-    if(process.env.SWARM_MODE != true){
-      console.log('creating entity');
+    if(this.SWARM_MODE != true){
+      //console.log('creating entity');
       this.entities[_entityID] = {};
       return true;
     } else {
@@ -28,7 +29,7 @@ class ChipprAGI {
 
   addComponent(entityId, componentName, componentData) {
     //check if we store components in the db or not
-    if(process.env.SWARM_MODE != true){
+    if(this.SWARM_MODE != true){
       this.entities[entityId][componentName] = componentData;
       this.components[componentName].init(entityId, componentData);
       return true;
@@ -41,16 +42,16 @@ class ChipprAGI {
     }
   }
 
-  registerComponent(componentName, component) {
-    //console.log(`swarmmode:${process.env.SWARM_MODE}`);
+  async registerComponent(componentName, component) {
+    //console.log(`swarmmode:${this.SWARM_MODE}`);
     //console.log(componentName);
-    if(process.env.SWARM_MODE != true){
-      console.log('swarm is not on');
+    if(this.SWARM_MODE != true){
+      //console.log('swarm is not on');
       this.components[componentName] = component;
       return true;
     } else {
-      console.log('swarm is on');
-      this.vectorDb.create( `idx:${componentName}`, component.schema , {
+      //console.log('swarm is on');
+      await this.vectorDb.create( `idx:${componentName}`, component.schema , {
         ON: 'JSON',
         PREFIX: `idx:${componentName}:`,
       });
@@ -75,6 +76,6 @@ class ChipprAGI {
     this.eventEmitter.on(eventType, listener);
   }  // Add other methods as needed
 }
-
+//start in swarm mode
 export const CHIPPRAGI = new ChipprAGI();
 
