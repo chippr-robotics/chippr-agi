@@ -21,7 +21,7 @@ CHIPPRAGI.on('*', (data) => {events.push(JSON.stringify(data))});
 
 setTimeout(()=>{
     //emit an objective
-    CHIPPRAGI.emit('CreateObjective', { objectiveDescription: process.env.OBJECTIVE || "Test the automation system!"});
+    CHIPPRAGI.emit('createObjective', { objectiveDescription: process.env.OBJECTIVE || "Test the automation system!"});
 }, 7000);
 
 export { CHIPPRAGI }
