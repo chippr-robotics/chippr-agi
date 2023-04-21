@@ -28,6 +28,10 @@ class ChipprAGI {
     }
   }
 
+  async getAllEntities(componentName){
+    return await this.vectorDb.query(`idx:${componentName}:*`);
+  }
+
   addComponent(entityId, componentName, componentData) {
     //check if we store components in the db or not
     if(this.SWARM_MODE != true){
@@ -51,7 +55,6 @@ class ChipprAGI {
       return this.vectorDb.get(`idx:${componentName}:${entityId}`);
     }
   }
-
 
   async registerComponent(componentName, component) {
     //console.log(`swarmmode:${this.SWARM_MODE}`);
