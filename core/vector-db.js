@@ -91,6 +91,15 @@ export class VectorDB {
     }
   }
   
+  async query(componentIndex){
+    try {
+      let task = await this.client.KEYS(componentIndex);
+      return task;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   createNoOpClient() {
     return {
       on: () => {},
