@@ -4,12 +4,18 @@ import * as fs from 'fs';
 import { createHash } from 'node:crypto';
 
 CHIPPRAGI.registerSystem('GenerateTasksSystem', {
-    init: function (_eventEmitter) {
-        _eventEmitter.on('newObjective', (data) => {
-          this.GenerateTasksSystem(data);
-        });
+  info: {
+    version : "",
+    license : "",
+    developer: "",
+    description : "",
+  },
 
-    },
+  init: function () {
+    CHIPPRAGI.on('newObjective', (data) => {
+      this.handleNewObjective(data);
+    });
+  },
   
     update: function (entityId, componentData) {
       // Do something when the component's data is updated, if needed.
@@ -20,10 +26,8 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     remove: function () {
       // Do something when the component or its entity is detached, if needed.
     },
-  
-    //methods go here
-    async GenerateTasksSystem(data){
-        //(_objective, _completedTask, _response, _tasklist){
+    
+    handleNewObjective : async function (data) {
         //1) get prompt for generate task
         let GenerateTasksPrompt = yaml.load(fs.readFileSync('./prompts/GenerateTasksPrompt.yml', 'utf8')); 
         //2) get context
@@ -64,7 +68,8 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         }         
       }
     },
-    async generate(_prompt) {
+    
+    generate: async function (_prompt) {
         let response = await CHIPPRAGI.langModel.createCompletion({
             model: process.env.MODEL,
             prompt: _prompt,
@@ -74,7 +79,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         return response.data.choices[0].text;
     },
     
-    getHashId(_taskDescription){
+    getHashId: function (_taskDescription){
       //create a hash
       let hash =  createHash('sha256');
       hash.write(_taskDescription);
@@ -83,7 +88,5 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
       let hashID = hash.read().toString('hex').slice(0,10)
       return hashID
     }
-
-  
   });
   

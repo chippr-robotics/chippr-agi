@@ -1,12 +1,31 @@
 import { CHIPPRAGI } from "../index.js";
 
 CHIPPRAGI.registerComponent('TaskEmbedding', {
-    schema: {
-      taskId: { type: 'string' },
-      clean: { type: 'array' },
-      floatbuffer: { type: 'buffer' },
+    schema:{
+      '$.taskId': {
+          type: SchemaFieldTypes.TEXT,
+          AS: 'taskid'
+        },
+      '$.clean' : {
+        type: SchemaFieldTypes.VECTOR,
+        AS: 'vector',
+        ALGORITHM: VectorAlgorithms.HNSW,
+        COUNT: '7',
+        TYPE: 'FLOAT32',
+        DIM: '1536',
+        DISTANCE_METRIC: 'COSINE'
+      }, 
+      '$.floatbuffer' : {
+        type: SchemaFieldTypes.VECTOR,
+        AS: 'vector',
+        ALGORITHM: VectorAlgorithms.HNSW,
+        COUNT: '7',
+        TYPE: 'FLOAT32',
+        DIM: '1536',
+        DISTANCE_METRIC: 'COSINE'
+      }, 
     },
-  
+       
     init: function (entityId, componentData) {
       // Do something when the component is first attached, if needed.
       // entityId is the ID of the entity this component is attached to.

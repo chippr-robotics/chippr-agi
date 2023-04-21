@@ -4,21 +4,16 @@ import * as fs from 'fs';
 
 
 CHIPPRAGI.registerSystem('CoreSystemLoader', {
+  info: {
+    version : "",
+    license : "",
+    developer: "",
+    description : "",
+  },
+  
   init: function () {
-    {
-      console.log('CoreSystemLoader running');
-      let systems = './systems/';
-      let components = './components/';
-      console.log(path.dirname("./"));
-      setInterval(() => {
-          fs.readdirSync(systems).forEach(file => {  
-            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) import ('./' + file);
-          });  
-          fs.readdirSync(components).forEach(file => { 
-            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) import ('../components/'+file);
-          });  
-      }, 5000);
-    }
+    // do something when the system is first loaded  
+    this.handleLoadSystem();
   },
 
   update: function (entityId, componentData) {
@@ -37,6 +32,21 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
     // entityId is the ID of the entity this component is attached to.
     // time is the current time in milliseconds.
     // timeDelta is the time in milliseconds since the last tick.
+  },
+
+  handleLoadSystem : function () {
+    console.log('CoreSystemLoader running');
+      let systems = './systems/';
+      let components = './components/';
+      console.log(path.dirname("./"));
+      setInterval(() => {
+          fs.readdirSync(systems).forEach(file => {  
+            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) import ('./' + file);
+          });  
+          fs.readdirSync(components).forEach(file => { 
+            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) import ('../components/'+file);
+          });  
+      }, 5000);
   }
 });
 
