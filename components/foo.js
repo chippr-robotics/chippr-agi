@@ -5,7 +5,8 @@ CHIPPRAGI.registerComponent('foo', {
   schema: {
     '$.entityID': {
       type: SchemaFieldTypes.TEXT,
-      AS: 'taskid'
+      AS: 'entityID'
+    },
   },
 
   init: function () {
