@@ -1,46 +1,37 @@
-import { CHIPPRAGI } from "../index.js";
-
+import { CHIPPRAGI } from "../../index.js";
 import { SchemaFieldTypes } from "redis";
 
-CHIPPRAGI.registerComponent('TaskDescription', {
-    schema: {
-      '$.entityID': {
-          type: SchemaFieldTypes.TEXT,
-          AS: 'entityID'
-      },
-      '$.task': {
-          type: SchemaFieldTypes.TEXT,
-          AS: 'task'
-      },
-      '$.complete': {
-          type: SchemaFieldTypes.TAG,
-          AS: 'complete'
-      },
-      '$.dependencies': {
-        type: SchemaFieldTypes.TEXT,
-        AS: 'dependencies'
+CHIPPRAGI.registerComponent('TaskParent', {
+  schema:{
+    '$.entityID': {
+      type: SchemaFieldTypes.TEXT,
+      AS: 'entityid'
     },
-    //TODO ADD SCHEMA VERSIONING     
+    '$.parentID': {
+      type: SchemaFieldTypes.TEXT,
+      AS: 'parentID'
+    }, 
   },
   
-  init: function (entityId, componentData) {
+  init: function (entityID, componentData) {
       // Do something when the component is first attached, if needed.
       // entityId is the ID of the entity this component is attached to.
       // componentData contains the initial data for the component.
+    console.log(`Task ${entityID} is a child of ${componentData.entityID}`);
   },
   
-  update: function (entityId, componentData) {
+  update: function (entityID, componentData) {
       // Do something when the component's data is updated, if needed.
       // entityId is the ID of the entity this component is attached to.
       // componentData contains the updated data for the component.
   },
   
-  remove: function (entityId) {
+  remove: function (entityID) {
       // Do something when the component or its entity is detached, if needed.
       // entityId is the ID of the entity this component is attached to.
   },
   
-  tick: function (entityId, time, timeDelta) {
+  tick: function (entityID, time, timeDelta) {
       // Do something on every scene tick or frame, if needed.
       // entityId is the ID of the entity this component is attached to.
       // time is the current time in milliseconds.

@@ -1,12 +1,12 @@
-import { CHIPPRAGI } from "../index.js";
+import { CHIPPRAGI } from "../../index.js";
 import * as fs from 'fs';
 
 CHIPPRAGI.registerSystem('CoreSystemLoader', {
   info: {
-    version : "0.1.0",
+    version : "0.1.1",
     license : "Apache-2.0",
     developer: "",
-    description : "",
+    description : "Auto load and unload systems and components!",
   },
   
   init: function () {
@@ -34,27 +34,43 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
 
   handleLoadSystem : function () {
     console.log('CoreSystemLoader running');
-    let systems = './systems/';
-    let components = './components/';
+    let systems = './systems/active/';
+    let components = './components/active/';
     setInterval(() => {
-      //console.log(`found ${fs.readdirSync(systems)}`); 
-      fs.readdirSync(systems).forEach(file => {  
+      const systemFiles = fs.readdirSync(systems);
+      const componentFiles = fs.readdirSync(components);
+
+      // Load systems
+      systemFiles.forEach(file => {  
         if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) {
-          
           import ('./' + file);  
-          //console.log(`ran import on ${file}`); 
-          //sleep to let the system rest then init
-          setTimeout(()=>{
-            //console.log('inside timeout')
-            //console.log(file);
+          setTimeout(() => {
             CHIPPRAGI.systems[file.split(".")[0]].init(CHIPPRAGI.eventEmitter);
           }, 3000, file);
         }
       });
-      fs.readdirSync(components).forEach(file => { 
-        if(CHIPPRAGI.components[file.split(".")[0]] == undefined) import ('../components/'+file);
-      });  
-      }, 5000);
+
+      // Remove systems not present in the directory
+      for (const systemName in CHIPPRAGI.systems) {
+        if (!systemFiles.includes(systemName + '.mjs')) {
+          CHIPPRAGI.removeSystem(systemName);
+        }
+      }
+
+      // Load components
+      componentFiles.forEach(file => { 
+        if(CHIPPRAGI.components[file.split(".")[0]] == undefined) {
+          import ('../../components/active/'+file);
+        }
+      });
+
+      // Remove components not present in the directory
+      for (const componentName in CHIPPRAGI.components) {
+        if (!componentFiles.includes(componentName + '.mjs')) {
+          CHIPPRAGI.removeComponent(componentName);
+        }
+      }
+
+    }, 5000);
   }
 });
-
