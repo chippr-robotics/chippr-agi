@@ -9,6 +9,7 @@ import ('./systems/CoreSystemLoader.mjs');
 var events = [];
 console.clear();
 
+/// show stats if bored
 function dashboard(){
 setInterval(() => {
     console.clear();
