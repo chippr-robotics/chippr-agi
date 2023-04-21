@@ -4,10 +4,18 @@ import {createClient, SchemaFieldTypes, VectorAlgorithms } from "redis";
 export class VectorDB {
   constructor( indexName, redisOptions) {
     this.indexName = indexName;
-    this.redisClient = redis.createClient(redisOptions);
-    this.redisClient.connect();
-    this.create();
-    this.redisClient.on('error', (err) => console.log('Redis Client Error', err));
+    this.client;
+    if (!process.env.TESTING) {
+      this.client = redis.createClient({redisOptions});
+      this.create();
+      client.on('error', (error) => { 
+        console.error('Redis error:', error);
+      });
+    } else {
+      this.client = null;
+      this.publisher = this.createNoOpClient();
+      this.subscriber = this.createNoOpClient();
+    }
   }
 
   async create() {
@@ -106,7 +114,15 @@ export class VectorDB {
       console.error(error);
     }
   }
- 
+  
+  createNoOpClient() {
+    return {
+      on: () => {},
+      publish: () => {},
+      // Add any other methods that you need to mock during testing
+    };
+  }
+
 }
 
 
