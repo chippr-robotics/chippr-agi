@@ -4,7 +4,7 @@ dotenv.config();
 import 'fs';
 import 'vm';
 import { CHIPPRAGI } from './core/ChipprAGI.js';
-import ('./systems/CoreSystemLoader.mjs');
+import ('./systems/active/CoreSystemLoader.mjs');
 
 var events = [];
 console.clear();
