@@ -11,6 +11,7 @@ CHIPPRAGI.registerComponent('ObjectiveDescription',{
         // Do something when the component is first attached, if needed.
         // entityId is the ID of the entity this component is attached to.
         // componentData contains the initial data for the component.
+        
     },
 
     update: function (entityId, componentData) {

@@ -10,14 +10,19 @@ class ChipprAGI {
   constructor() {
     this.entities = {};
     this.components = {};
-    this.systems = [];
+    this.systems ={};
     this.eventEmitter = MsgBus;
     this.langModel = LangModel;
     this.vectorDb = new VectorDB( process.env.INDEX_NAME, {url: process.env.REDIS_URL} ); // Initialize vector database
   }
 
   createEntity(_entityID) {
-    this.entities[_entityID] = {};
+    if(!process.env.SWARM_MODE){
+      this.entities[_entityID] = {};
+      return true;
+    } else {
+      this.vectorDb.save( `idx:entities:${entityId}`, '$',  {});
+    }
   }
 
   addComponent(entityId, componentName, componentData) {
@@ -33,7 +38,6 @@ class ChipprAGI {
         this.components[componentName].init(entityId, componentData);
       })
     }
-
   }
 
   registerComponent(componentName, component) {
@@ -47,14 +51,14 @@ class ChipprAGI {
       });
       //save for loacl use
       this.components[componentName] = component;
-    }
-    
+    } 
   }
 
-  registerSystem(system) {
-    this.systems.push(system);
-    system.init(this);
+  registerSystem(systemName, system) {
+    //all systems are local so store it at its name
+    this.systems[systemName]= system;
   }
+
   // Proxy methods to the underlying model
   emit(eventType, eventData) {
     this.eventEmitter.emit(eventType, eventData);

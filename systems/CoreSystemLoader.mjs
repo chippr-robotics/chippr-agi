@@ -5,8 +5,8 @@ import * as fs from 'fs';
 
 CHIPPRAGI.registerSystem('CoreSystemLoader', {
   info: {
-    version : "",
-    license : "",
+    version : "0.1.0",
+    license : "Apache-2.0",
     developer: "",
     description : "",
   },
@@ -36,16 +36,19 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
 
   handleLoadSystem : function () {
     console.log('CoreSystemLoader running');
-      let systems = './systems/';
-      let components = './components/';
-      console.log(path.dirname("./"));
-      setInterval(() => {
-          fs.readdirSync(systems).forEach(file => {  
-            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) import ('./' + file);
-          });  
-          fs.readdirSync(components).forEach(file => { 
-            if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) import ('../components/'+file);
-          });  
+    let systems = './systems/';
+    let components = './components/';
+    //console.log(path.dirname("./"));
+    setInterval(() => {
+      fs.readdirSync(systems).forEach(file => {  
+        if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) {
+          import ('./' + file);  
+          CHIPPRAGI.systems[file.split(".")[0]].init(CHIPPRAGI.eventEmitter)
+        }
+      });
+      fs.readdirSync(components).forEach(file => { 
+        if(CHIPPRAGI.components[file.split(".")[0]] == undefined) import ('../components/'+file);
+      });  
       }, 5000);
   }
 });
