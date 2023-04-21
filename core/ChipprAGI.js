@@ -20,11 +20,12 @@ class ChipprAGI {
   async createEntity(_entityID) {
     //console.log('creating entity');
     if(this.SWARM_MODE != true){
-      console.log('creating entity');
+      //console.log('creating entity');
       this.entities[_entityID] = {};
       return true;
     } else {
       await this.vectorDb.save( `idx:entities:${_entityID}`, '$',  {});
+      CHIPPRAGI.emit('newEntity', { entityID : _entityID });
     }
   }
 

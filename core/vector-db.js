@@ -3,19 +3,13 @@ import * as redis from 'redis';
 
 export class VectorDB {
   constructor( redisOptions) {
-    console.log('loading vector-db');
-    console.log(process.env.TESTING);
     if (process.env.TESTING != true) {
-      console.log('creating redis db')
       this.client = redis.createClient(redisOptions);
-      console.log(redisOptions);
       this.client.connect();
       this.client.on('error', (error) => { 
         console.error('Redis error:', error);
       });
     } else {
-      console.log('redis not loaded');
-      console.log(redisOptions);
       this.client = null;
       this.publisher = this.createNoOpClient();
       this.subscriber = this.createNoOpClient();
@@ -71,7 +65,7 @@ export class VectorDB {
   }
   //@dev done is a bool to fetch either tasks that are done or not
   async getNeighbors(_embedding, done) {
-    console.log('getting neighbors')
+    //console.log('getting neighbors')
     //console.log(_embedding)
     try {
       let knn = await this.client.ft.search(
