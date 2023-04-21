@@ -1,14 +1,12 @@
 import * as redis from 'redis';
 import {createClient, SchemaFieldTypes, VectorAlgorithms } from "redis";
 
+
 export class VectorDB {
-  constructor( indexName, redisOptions) {
-    this.indexName = indexName;
-    this.client;
+  constructor( redisOptions) {
     if (!process.env.TESTING) {
       this.client = redis.createClient({redisOptions});
-      this.create();
-      client.on('error', (error) => { 
+      this.client.on('error', (error) => { 
         console.error('Redis error:', error);
       });
     } else {
@@ -18,45 +16,16 @@ export class VectorDB {
     }
   }
 
-  async create() {
+  async create(index, schema, options) {
     //get a list of index in the DB
-    let list = await this.redisClient.ft._list();
-    // escape if the list contains the current index
-    if(list.indexOf(this.indexName) > -1){
+    let list = await this.client.ft._list();
+    // escape if the index exists
+    if(list.indexOf(index) > -1){
       return false;
     } else {
     //create a new index if none exists
       try {
-        let test = await this.redisClient.ft.create( 
-          this.indexName,
-          {
-          '$.taskId': {
-              type: SchemaFieldTypes.TEXT,
-              AS: 'taskid'
-            },
-          '$.clean' : {
-            type: SchemaFieldTypes.VECTOR,
-            AS: 'vector',
-            ALGORITHM: VectorAlgorithms.HNSW,
-            COUNT: '7',
-            TYPE: 'FLOAT32',
-            DIM: '1536',
-            DISTANCE_METRIC: 'COSINE'
-          }, 
-          '$.floatbuffer' : {
-            type: SchemaFieldTypes.VECTOR,
-            AS: 'vector',
-            ALGORITHM: VectorAlgorithms.HNSW,
-            COUNT: '7',
-            TYPE: 'FLOAT32',
-            DIM: '1536',
-            DISTANCE_METRIC: 'COSINE'
-          }, 
-        },{
-          ON: 'JSON',
-          PREFIX: 'vectorDB:TASK:',
-        });  
-        console.log(test);
+        await this.client.ft.create(index, schema, options)  
       } catch (error) {
         console.error(error);
       };
@@ -67,7 +36,7 @@ export class VectorDB {
   async save(_componentName, _taskID, _data) {
     //console.log('saving task');
     try {
-      await this.redisClient.json.set(
+      await this.client.json.set(
         this.indexName + ":" + _componentName +":" + _taskID, 
         '$',
         _data,
@@ -86,7 +55,7 @@ export class VectorDB {
 
   async get(_componentName, _taskID) {
     try {
-      let task = await this.redisClient.json.get( this.indexName + ":" + _componentName +":" + _taskID );
+      let task = await this.client.json.get( this.indexName + ":" + _componentName +":" + _taskID );
       return task;
     } catch (error) {
       console.error(error);
@@ -98,7 +67,7 @@ export class VectorDB {
     console.log('getting neighbors')
     //console.log(_embedding)
     try {
-      let knn = await this.redisClient.ft.search(
+      let knn = await this.client.ft.search(
         this.indexName ,
         `@done:{${done}}=>[KNN 4 @vector $BLOB AS dist]`,{
           PARAMS: {
@@ -119,6 +88,14 @@ export class VectorDB {
     return {
       on: () => {},
       publish: () => {},
+      ft : {
+        search: () => {},
+        create: () => {},
+      },
+      json:{
+        get: ()=>{},
+        set: ()=>{},
+      },
       // Add any other methods that you need to mock during testing
     };
   }

@@ -10,7 +10,7 @@ class ChipprAGI {
   constructor() {
     this.entities = {};
     this.components = {};
-    this.systems = {};
+    this.systems = [];
     this.eventEmitter = MsgBus;
     this.langModel = LangModel;
     this.vectorDb = new VectorDB( process.env.INDEX_NAME, {url: process.env.REDIS_URL} ); // Initialize vector database
@@ -21,21 +21,37 @@ class ChipprAGI {
   }
 
   addComponent(entityId, componentName, componentData) {
-    this.entities[entityId][componentName] = componentData;
-    this.components[componentName].init(entityId, componentData);
+    //check if we store components in the db or not
+    if(!process.env.SWARM_MODE){
+      this.entities[entityId][componentName] = componentData;
+      this.components[componentName].init(entityId, componentData);
+      return true;
+    } else {
+      this.vectorDb.create( `idx:${componentName}:entityId ` + , , componentData)
+    }
+
   }
 
   registerComponent(componentName, component) {
-    this.components[componentName] = component;
+    if(!process.env.SWARM_MODE){
+      this.components[componentName] = component;
+      return true;
+    } else {
+      this.vectorDb.create( `idx:${componentName}`, component.schema , {
+        ON: 'JSON',
+        PREFIX: `idx:${componentName}:`,
+      });
+    }
+    
   }
 
-  registerSystem(systemName, systemFuncs) {
-    this.systems[systemName] = systemFuncs;
-    this.systems[systemName].init(this);
+  registerSystem(system) {
+    this.systems.push(system);
+    system.init(this);
   }
   // Proxy methods to the underlying model
   emit(eventType, eventData) {
-    this.eventEmitter.emit(eventType, eventData)
+    this.eventEmitter.emit(eventType, eventData);
     if (process.env.WATCH) this.eventEmitter.emit('*', eventData); //system monitoring  
   }
   
