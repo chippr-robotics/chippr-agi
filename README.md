@@ -10,9 +10,11 @@ Chippr-AGI is an open-source event-driven ECS framework that uses AI models to a
 - [x] add testing framework (mocha)
 - [x] allow distrubuted task handeling(swarm mode)
 - [x] functional core system loader
-- [ ] All functional core functions 
+- [ ] All core systems and componens 
 - [x] Docker container. 
-- [ ] Docker compose w/ redis *is next*. 
+- [x] Docker compose w/ redis
+- [x] Jenkins pipelines 
+- [x] Distrubuted message bus system 
 - [ ] Better Documentation *I am working on updating documentation friday and saturday.
 
 ## Basic Flow
