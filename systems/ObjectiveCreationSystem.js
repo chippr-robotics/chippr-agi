@@ -3,9 +3,16 @@ import { CHIPPRAGI } from "../index.js";
 import { createHash } from 'node:crypto';
 
 CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
+  info: {
+    version : "",
+    license : "",
+    developer: "",
+    description : "",
+  },
+
   init: function (_eventEmitter) {
-      _eventEmitter.on('CreateObjective', (data) => {
-        this.createObjective(data);
+      _eventEmitter.on('createObjective', (data) => {
+        this.handleCreateObjective(data);
       });
   },
 
@@ -17,7 +24,7 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
 
   remove: function () {
     // Do something when the component or its entity is detached, if needed.
-    clearInterval();
+    this.CHIPPRAGI.eventBus.off('createObjective', this.handleCreateObjective);
   },
 
   tick: function (entityId, time, timeDelta) {
@@ -27,10 +34,10 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
     // timeDelta is the time in milliseconds since the last tick.
   },
   
-  createObjective (data) {
+  handleCreateObjective: function (data) {
     // create the task associated with the given taskId
     // 0) create a objective ID
-    console.log(data);
+    //console.log(data);
     let objectiveID = this.getHashId(data.objectiveDescription);
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(objectiveID);

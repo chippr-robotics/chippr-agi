@@ -1,13 +1,26 @@
 import { CHIPPRAGI } from "../index.js";
 
 CHIPPRAGI.registerSystem('TaskExecutionSystem', {
+    info: {
+      version : "",
+      license : "",
+      developer: "",
+      description : "",
+    },
+
     init: function (_eventEmitter) {
-      _eventEmitter.on('executeTask', (taskId) => {
-        this.executeTask(taskId);
+      _eventEmitter.on('executeTask', (data) => {
+        this.handleExecuteTask(data);
       });
     },
   
-    executeTask(taskId) {
+    remove: function (entityID) {
+      // Do something when the component or its entity is detached, if needed.
+      this.CHIPPRAGI.eventBus.off('executeTask', this.handleExecuteTask);
+    },
+    
+
+    handleExecuteTask(data) {
       // Execute the task associated with the given taskId
       // You can access the components associated with the taskId to perform the task execution
       // 1) get embedding which should be stored in the db
