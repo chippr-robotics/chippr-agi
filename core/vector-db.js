@@ -8,8 +8,6 @@ export class VectorDB {
     if (!process.env.TESTING) {
       this.client = redis.createClient({redisOptions});
       this.create();
-      this.publisher = redis.createClient({redisOptions});
-      this.subscriber = redis.createClient({redisOptions});
       client.on('error', (error) => { 
         console.error('Redis error:', error);
       });
