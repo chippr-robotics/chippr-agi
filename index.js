@@ -17,7 +17,7 @@ setInterval(() => {
     }); 
 }, 1000);
 
-CHIPPRAGI.on('*', (data) => { events.push(JSON.stringify(data))});
+CHIPPRAGI.on('*', (data) => {events.push(JSON.stringify(data))});
 
 setTimeout(()=>{
     //emit an objective

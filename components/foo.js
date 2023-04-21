@@ -7,7 +7,7 @@ CHIPPRAGI.registerComponent('foo', {
       type: SchemaFieldTypes.TEXT,
       AS: 'taskid'
   },
-  
+
   init: function () {
     // Do something when component first attached.
   },
