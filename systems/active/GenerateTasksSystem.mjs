@@ -63,7 +63,6 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
               parentId : data.objectiveID,
             });
             //announce the task
-            CHIPPRAGI.emit('newEntity', { entityID : taskID });  
           });
           success = true;
         } catch(error) {

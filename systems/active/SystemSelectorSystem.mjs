@@ -1,6 +1,6 @@
-import { CHIPPRAGI } from "../index.js";
-import { LangModel } from "../langmodel.js";
+import { CHIPPRAGI } from "../../index.js";
 import * as yaml from 'js-yaml';
+import * as fs from 'fs';
 
 CHIPPRAGI.registerSystem('SystemSelectorSystem', {
   info: {
@@ -10,11 +10,18 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     description: "A system that selects the most appropriate system for a given task description.",
   },
 
-  function (_eventEmitter) {
-    _eventEmitter.on('newEntity', (data) => { this.handleSelectSystem(data); })
-    },
+  init: function (_eventEmitter) {
+    _eventEmitter.on('newEntity', (data) => {
+      this.handleSelectSystem(data);
+    });
+  },
+  
+  remove: function () {
+    // Do something when the component or its entity is detached, if needed.
+    this.CHIPPRAGI.eventBus.off('newEntity', this.handleSelectSystem);
+  },
 
-  HandleSelectSystem: async function (taskDescription) {
+  handleSelectSystem: async function (taskDescription) {
     const systemDescriptions = [];
 
     // Iterate through all registered systems and extract the description
@@ -30,20 +37,23 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     // Prepare the prompt with the list of system descriptions
     const SystemPrompt = yaml.load(fs.readFileSync('./prompts/SystemSelectorPrompt.yml', 'utf8')); 
     let prompt = SystemPrompt.task_prompt.replace('{{ taskDescription }}', taskDescription);
-    prompt = prompt.task_prompt.replace('{{ taskDescription }}', JSON.stringify(systemDescriptions));
-    
+    prompt = prompt.replace('{{ taskDescription }}', JSON.stringify(systemDescriptions));
+    console.log('|----outgoing----|' );
+    console.log(prompt);    
     // Send the prompt to the language model
-    const response = await LangModel.createCompletion({
+    const response = await CHIPPRAGI.langModel.createCompletion({
+      model: process.env.MODEL,
       prompt: prompt,
       max_tokens: 50,
       n: 1,
       stop: null,
       temperature: 0.7,
     });
-
+    
     // Extract the system name from the response
-    const systemName = response.choices[0].text.trim();
+    const systemName = response.data.choices[0].text.trim();
     console.log(systemName);
+    CHIPPRAGI.emit('Systemselector', { system : systemName });  
     return systemName;
   }
 });
