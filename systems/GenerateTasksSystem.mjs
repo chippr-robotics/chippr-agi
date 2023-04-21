@@ -30,6 +30,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     
     handleNewObjective : async function (data) {
         //1) get prompt for generate task
+        console.log('creating tasks')
         let GenerateTasksPrompt = yaml.load(fs.readFileSync('./prompts/GenerateTasksPrompt.yml', 'utf8')); 
         //2) get context
         //none needed for fresh tasks....
@@ -39,8 +40,10 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //todo loop until a valid object is returned
         let success = false;
         let newTasks = await this.generate(prompt);
+        console.log(newTasks);
         while (!success){
         //5) generate event to create for each tasks 
+        //console.log(success);
         try {
           JSON.parse(newTasks).forEach( async task => {
             let taskID = this.getHashId(task.task);
@@ -48,13 +51,14 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
             CHIPPRAGI.createEntity(taskID);
             //add the description component
             CHIPPRAGI.addComponent( taskID, 'TaskDescription', {
-              taskId : taskID,
+              entityID : taskID,
               task : task.task,
-              done : false,
+              complete : false,
+              dependencies : [],
             });
             //add a parent component
             CHIPPRAGI.addComponent( taskID, 'TaskParent', {
-              taskId : taskID,
+              entityID : taskID,
               parentId : data.objectiveID,
             });
             //announce the task

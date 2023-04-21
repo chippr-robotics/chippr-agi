@@ -2,9 +2,9 @@ import { Configuration, OpenAIApi } from "openai";
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-class LanguageModel {
+export class LanguageModel {
   constructor() {
-    if (!process.env.TESTING) {
+    if (process.env.TESTING != true) {
       if (process.env.LANG_MODEL === 'openai') {
         const configuration = new Configuration({
           apiKey: process.env.OPENAI_API_KEY,
@@ -50,4 +50,3 @@ class LanguageModel {
   // Add other methods as needed
 }
 
-export const LangModel = new LanguageModel();

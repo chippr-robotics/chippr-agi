@@ -32,19 +32,11 @@ CHIPPRAGI.registerSystem('TaskEmbeddingSystem', {
       //console.log(response.data.data[0].embedding);
       let floatbuffer = this.float32Buffer(response.data.data[0].embedding);
         let clean = response.data.data[0].embedding;
-        await CHIPPRAGI.vectorDb.save(
-            'TaskEmbedding', 
-            data.entityID, 
-            {
-                taskid: data.entityID,
-                clean: clean,
-                floatbuffer: floatbuffer,
-            });
         //keep until everything is moved to db
         CHIPPRAGI.addComponent(data.entityID, 'TaskEmbedding', {
-            taskid: data.entityID,
-            clean: clean,
-            floatbuffer: floatbuffer,
+          entityID: data.entityID,
+          clean: clean,
+          floatbuffer: floatbuffer,
         })
     },
     

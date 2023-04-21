@@ -3,31 +3,32 @@ dotenv.config();
  
 import  'fs';
 import { VectorDB } from './vector-db.js'
-import { LangModel } from './langModel.js';
-import { MsgBus } from './msgBus.js';
+import { LanguageModel } from './langModel.js';
+import { MessageBus } from './msgBus.js';
 
 class ChipprAGI {
   constructor() {
     this.entities = {};
     this.components = {};
     this.systems ={};
-    this.eventEmitter = MsgBus;
-    this.langModel = LangModel;
-    this.vectorDb = new VectorDB( process.env.INDEX_NAME, {url: process.env.REDIS_URL} ); // Initialize vector database
+    this.eventEmitter = new MessageBus();
+    this.langModel = new LanguageModel();
+    this.vectorDb = new VectorDB( {url: process.env.REDIS_URL} ); // Initialize vector database
   }
 
   createEntity(_entityID) {
-    if(!process.env.SWARM_MODE){
+    if(process.env.SWARM_MODE != true){
+      console.log('creating entity');
       this.entities[_entityID] = {};
       return true;
     } else {
-      this.vectorDb.save( `idx:entities:${entityId}`, '$',  {});
+      this.vectorDb.save( `idx:entities:${_entityID}`, '$',  {});
     }
   }
 
   addComponent(entityId, componentName, componentData) {
     //check if we store components in the db or not
-    if(!process.env.SWARM_MODE){
+    if(process.env.SWARM_MODE != true){
       this.entities[entityId][componentName] = componentData;
       this.components[componentName].init(entityId, componentData);
       return true;
@@ -41,10 +42,14 @@ class ChipprAGI {
   }
 
   registerComponent(componentName, component) {
-    if(!process.env.SWARM_MODE){
+    //console.log(`swarmmode:${process.env.SWARM_MODE}`);
+    //console.log(componentName);
+    if(process.env.SWARM_MODE != true){
+      console.log('swarm is not on');
       this.components[componentName] = component;
       return true;
     } else {
+      console.log('swarm is on');
       this.vectorDb.create( `idx:${componentName}`, component.schema , {
         ON: 'JSON',
         PREFIX: `idx:${componentName}:`,
@@ -55,6 +60,7 @@ class ChipprAGI {
   }
 
   registerSystem(systemName, system) {
+    //console.log(systemName);
     //all systems are local so store it at its name
     this.systems[systemName]= system;
   }
@@ -62,7 +68,7 @@ class ChipprAGI {
   // Proxy methods to the underlying model
   emit(eventType, eventData) {
     this.eventEmitter.emit(eventType, eventData);
-    if (process.env.WATCH) this.eventEmitter.emit('*', eventData); //system monitoring  
+    if (process.env.WATCH) this.eventEmitter.emit('*', eventData);//system monitoring  
   }
   
   on(eventType, listener) {

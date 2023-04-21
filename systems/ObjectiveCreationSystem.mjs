@@ -37,13 +37,13 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
   handleCreateObjective: function (data) {
     // create the task associated with the given taskId
     // 0) create a objective ID
-    //console.log(data);
+    //console.log('createObjective');
     let objectiveID = this.getHashId(data.objectiveDescription);
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(objectiveID);
     // 2) add a objectiveDescription component
     CHIPPRAGI.addComponent( objectiveID, 'ObjectiveDescription', {
-      objectiveId : objectiveID,
+      entityID : objectiveID,
       objective : data.objectiveDescription,
       complete : false,
     });

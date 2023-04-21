@@ -1,10 +1,10 @@
 import * as redis from 'redis';
-import {createClient, SchemaFieldTypes, VectorAlgorithms } from "redis";
 
 
 export class VectorDB {
   constructor( redisOptions) {
-    if (!process.env.TESTING) {
+    if (process.env.TESTING != true) {
+      console.log('creating redis db')
       this.client = redis.createClient({redisOptions});
       this.client.on('error', (error) => { 
         console.error('Redis error:', error);

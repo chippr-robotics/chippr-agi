@@ -1,5 +1,7 @@
 import { CHIPPRAGI } from "../index.js";
 
+import { SchemaFieldTypes } from "redis";
+
 CHIPPRAGI.registerComponent('TaskDescription', {
     schema: {
       '$.entityID': {
