@@ -7,7 +7,7 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
     version : "",
     license : "",
     developer: "",
-    description : "",
+    description : "This system listens for an event containg a new objective and creates an entity for the objective.",
   },
 
   init: function (_eventEmitter) {

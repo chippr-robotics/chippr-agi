@@ -8,7 +8,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     version : "",
     license : "",
     developer: "",
-    description : "",
+    description : "This system listens for new objectives and creates a list of tasks. It then creates entities for those tasks",
   },
 
   init: function () {
