@@ -22,8 +22,9 @@ CHIPPRAGI.registerSystem('TaskEmbeddingSystem', {
   //methods go here
   handleNewEntity: async function (data){
       //look at how to do this with db
-      let taskDescription = CHIPPRAGI.entities[data.entityID]['TaskDescription'].task;
-      let clean_text = taskDescription.replace("\n", " ")
+      let taskDescription = await CHIPPRAGI.getComponent(data.entityID,'TaskDescription');
+      console.log(taskDescription);
+      let clean_text = taskDescription.task.replace("\n", " ")
       //console.log(clean_text);
       let response= await CHIPPRAGI.langModel.createEmbedding({
           model : "text-embedding-ada-002",

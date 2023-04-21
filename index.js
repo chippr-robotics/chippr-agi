@@ -26,9 +26,6 @@ setInterval(() => {
 
 dashboard();
 CHIPPRAGI.on('*', (data) => {events.push(JSON.stringify(data))});
-CHIPPRAGI.on('createObjective', (data) => {
-   console.log(data);
-  });
 
 setTimeout(()=>{
     //emit an objective

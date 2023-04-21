@@ -8,7 +8,7 @@ import { MessageBus } from './msgBus.js';
 
 class ChipprAGI {
   constructor() {
-    this.SWARM_MODE = process.env.SWARM_MODE;
+    this.SWARM_MODE = true;
     this.entities = {};
     this.components = {};
     this.systems ={};
@@ -17,13 +17,14 @@ class ChipprAGI {
     this.vectorDb = new VectorDB( {url: process.env.REDIS_URL} ); // Initialize vector database
   }
 
-  createEntity(_entityID) {
+  async createEntity(_entityID) {
+    //console.log('creating entity');
     if(this.SWARM_MODE != true){
-      //console.log('creating entity');
+      console.log('creating entity');
       this.entities[_entityID] = {};
       return true;
     } else {
-      this.vectorDb.save( `idx:entities:${_entityID}`, '$',  {});
+      await this.vectorDb.save( `idx:entities:${_entityID}`, '$',  {});
     }
   }
 
@@ -41,6 +42,16 @@ class ChipprAGI {
       })
     }
   }
+
+  getComponent(entityId, componentName) {
+    //check if we store components in the db or not
+    if(this.SWARM_MODE != true){
+      return this.entities[entityId][componentName] = componentData;
+    } else {
+      return this.vectorDb.get(`idx:${componentName}:${entityId}`);
+    }
+  }
+
 
   async registerComponent(componentName, component) {
     //console.log(`swarmmode:${this.SWARM_MODE}`);
