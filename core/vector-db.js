@@ -15,8 +15,8 @@ export class VectorDB {
       });
     } else {
       this.client = null;
-      this.publisher = null;
-      this.subscriber = null;
+      this.publisher = this.createNoOpClient();
+      this.subscriber = this.createNoOpClient();
     }
   }
 
@@ -117,6 +117,13 @@ export class VectorDB {
     }
   }
   
+  createNoOpClient() {
+    return {
+      on: () => {},
+      publish: () => {},
+      // Add any other methods that you need to mock during testing
+    };
+  }
 
 }
 
