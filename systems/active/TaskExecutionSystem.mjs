@@ -5,7 +5,7 @@ CHIPPRAGI.registerSystem('TaskExecutionSystem', {
       version : "",
       license : "",
       developer: "",
-      description : "",
+      description : "This system listens for execute task message and sends the task along with context to get longer text ",
     },
 
     init: function (_eventEmitter) {

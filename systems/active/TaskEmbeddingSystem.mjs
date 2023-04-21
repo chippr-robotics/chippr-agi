@@ -5,7 +5,7 @@ CHIPPRAGI.registerSystem('TaskEmbeddingSystem', {
     version : "",
     license : "",
     developer: "",
-    description : "",
+    description : "This system creates an embedding for a task description that can be used for next neighbor lookup",
   },
 
   init: function (_eventEmitter) {
