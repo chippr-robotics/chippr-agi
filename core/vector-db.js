@@ -33,14 +33,11 @@ export class VectorDB {
     }
   }
   
-  async save(_componentName, _taskID, _data) {
+  async save(_index, _string, _data) {
     //console.log('saving task');
     try {
-      await this.client.json.set(
-        this.indexName + ":" + _componentName +":" + _taskID, 
-        '$',
-        _data,
-        );
+      //save to the db
+      await this.client.json.set(_index, _string, _data);
       return true;
     } catch (e) {
       if (e.message === 'Index already exists') {
@@ -53,9 +50,9 @@ export class VectorDB {
     }
   }
 
-  async get(_componentName, _taskID) {
+  async get(_index) {
     try {
-      let task = await this.client.json.get( this.indexName + ":" + _componentName +":" + _taskID );
+      let task = await this.client.json.get(_index);
       return task;
     } catch (error) {
       console.error(error);

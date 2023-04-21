@@ -27,7 +27,11 @@ class ChipprAGI {
       this.components[componentName].init(entityId, componentData);
       return true;
     } else {
-      this.vectorDb.create( `idx:${componentName}:entityId ` + , , componentData)
+      this.vectorDb.save( `idx:${componentName}:${entityId}`, '$',  componentData);
+      this.vectorDb.get(`idx:${componentName}:${entityId}`).then((component)=>{
+        //run the local function on the component
+        this.components[componentName].init(entityId, componentData);
+      })
     }
 
   }
@@ -41,6 +45,8 @@ class ChipprAGI {
         ON: 'JSON',
         PREFIX: `idx:${componentName}:`,
       });
+      //save for loacl use
+      this.components[componentName] = component;
     }
     
   }
