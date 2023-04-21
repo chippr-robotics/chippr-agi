@@ -48,6 +48,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
           JSON.parse(newTasks).forEach( async task => {
             let taskID = this.getHashId(task.task);
             //create an entity
+            console.log(`making task ${task.task}`)
             CHIPPRAGI.createEntity(taskID);
             //add the description component
             CHIPPRAGI.addComponent( taskID, 'TaskDescription', {
