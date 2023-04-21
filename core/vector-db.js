@@ -15,6 +15,8 @@ export class VectorDB {
       });
     } else {
       this.client = null;
+      this.publisher = null;
+      this.subscriber = null;
     }
   }
 
