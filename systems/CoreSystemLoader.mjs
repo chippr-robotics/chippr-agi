@@ -42,7 +42,7 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
         if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) {
           
           import ('./' + file);  
-          console.log(`ran import on ${file}`); 
+          //console.log(`ran import on ${file}`); 
           //sleep to let the system rest then init
           setTimeout(()=>{
             //console.log('inside timeout')

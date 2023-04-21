@@ -40,7 +40,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //todo loop until a valid object is returned
         let success = false;
         let newTasks = await this.generate(prompt);
-        console.log(newTasks);
+        //console.log(newTasks);
         while (!success){
         //5) generate event to create for each tasks 
         //console.log(success);

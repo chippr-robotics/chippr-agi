@@ -3,13 +3,19 @@ import * as redis from 'redis';
 
 export class VectorDB {
   constructor( redisOptions) {
+    console.log('loading vector-db');
+    console.log(process.env.TESTING);
     if (process.env.TESTING != true) {
       console.log('creating redis db')
-      this.client = redis.createClient({redisOptions});
+      this.client = redis.createClient(redisOptions);
+      console.log(redisOptions);
+      this.client.connect();
       this.client.on('error', (error) => { 
         console.error('Redis error:', error);
       });
     } else {
+      console.log('redis not loaded');
+      console.log(redisOptions);
       this.client = null;
       this.publisher = this.createNoOpClient();
       this.subscriber = this.createNoOpClient();
@@ -18,18 +24,22 @@ export class VectorDB {
 
   async create(index, schema, options) {
     //get a list of index in the DB
+    //console.log(this.client);
     let list = await this.client.ft._list();
     // escape if the index exists
+    //console.log(index);
     if(list.indexOf(index) > -1){
       return false;
     } else {
     //create a new index if none exists
       try {
-        await this.client.ft.create(index, schema, options)  
+        //console.log('creating index');
+        await this.client.ft.create(index, schema, options);  
+      //console.log(createIndex);
       } catch (error) {
         console.error(error);
       };
-      return true
+      
     }
   }
   
