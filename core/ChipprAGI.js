@@ -38,10 +38,12 @@ class ChipprAGI {
   emit(eventType, eventData) {
     this.eventEmitter.emit(eventType, eventData);
     this.eventEmitter.emit('*', eventData); //system monitoring
+    this.vectorDb.publisher.publish(eventType, eventData); //redis pub/sub
   }
 
   on(eventType, listener) {
     this.eventEmitter.on(eventType, listener);;
+    this.vectorDb.subscriber.on('message', (eventType, listener));
   }
 }
 
