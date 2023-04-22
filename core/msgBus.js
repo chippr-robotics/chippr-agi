@@ -1,27 +1,23 @@
 import { EventEmitter } from 'events';
 
 export class MessageBus {
-  constructor(messageBusConfig) {
+  constructor(chipprConfig) {
     //decide if needed
     this.eventEmitter = new EventEmitter();
-    switch (messageBusConfig.MESSAGE_BUS_TYPE)   {
-      case'mysql':
-      break;
-      default:
-        
-    if (process.env.MSG_BUS === 'redis') {
+    switch (chipprConfig.CORE.MSG_BUS)   {
+      case'redis':
         this.publisher = redis.createClient({redisOptions});
         this.subscriber = redis.createClient({redisOptions});
         //receive message from redis
         this.subscriber.on('message', (eventType, listener)=>{
-            this.eventEmitter.emit(eventType, listener);
-        });
-        //send to redis
+        this.eventEmitter.emit(eventType, listener);
+      break
+      default:
         this.eventEmitter.on((eventType, eventData) => {
-            this.publisher.publish(eventType, eventData);
-        });
+        this.publisher.publish(eventType, eventData);
+        })
     } 
-    //more buses to come...
+    //more buses to come after mvp...
   }
 
   // Proxy methods to the underlying model

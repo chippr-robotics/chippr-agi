@@ -8,10 +8,13 @@ import { MessageBus } from './msgBus.js';
 
 export class ChipprAGI {
   constructor(chipprConfig) {
-    this.SWARM_MODE = chipprConfig.SWARM_MODE;
-    this.eventEmitter = new MessageBus();
-    this.langModel = new LanguageModel();
-    this.vectorDb = new VectorDB( {url: chipprConfig.REDIS_URL} ); // Initialize vector database
+    this.SWARM_MODE = chipprConfig.CORE.SWARM_MODE;
+    this.DASHBOARD = chipprConfig.CORE.DASHBOARD;
+    this.WATCH = chipprConfig.CORE.WATCH;
+    this.TESTING = chipprConfig.TESTING;
+    this.eventEmitter = new MessageBus(chipprConfig);
+    this.langModel = new LanguageModel(chipprConfig);
+    this.vectorDb = new VectorDB(chipprConfig); // Initialize vector database
     this.entities = {};
     this.components = {};
     this.systems ={};
@@ -84,7 +87,7 @@ export class ChipprAGI {
   // Proxy methods to the underlying model
   emit(eventType, eventData) {
     this.eventEmitter.emit(eventType, eventData);
-    if (process.env.WATCH) this.eventEmitter.emit('*', eventData);//system monitoring  
+    if (this.WATCH) this.eventEmitter.emit('*', eventData);//system monitoring  
   }
   
   on(eventType, listener) {
