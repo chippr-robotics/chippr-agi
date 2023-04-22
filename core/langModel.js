@@ -1,13 +1,11 @@
 import { Configuration, OpenAIApi } from "openai";
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 export class LanguageModel {
-  constructor() {
-    if (process.env.TESTING != true) {
-      if (process.env.LANG_MODEL === 'openai') {
+  constructor(chipprConfig) {
+    if (chipprConfig.TESTING != true) {
+      if (chipprConfig,LANGUAGE_MODEL.LANGUAGE_MODEL_MODEL_ID === 'openai') {
         const configuration = new Configuration({
-          apiKey: process.env.OPENAI_API_KEY,
+          apiKey: chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_API_KEY,
         });
         this.model = new OpenAIApi(configuration);
       }
@@ -16,6 +14,7 @@ export class LanguageModel {
       //   // Initialize GPT-X model
       // }
     } else {
+      //USE THE NOOP MODEL
       this.model = this.createNoOpClient();
     }
   }
