@@ -77,7 +77,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     
     generate: async function (_prompt) {
         let response = await CHIPPRAGI.langModel.createCompletion({
-            model: process.env.MODEL,
+            model: CHIPPRAGI.langModel.MODEL_NAME,
             prompt: _prompt,
             temperature: 0.5,
             max_tokens: 2000,
