@@ -1,4 +1,4 @@
-import { CHIPPRAGI }  from "./index.js";
+import { CHIPPRAGI }  from "../index.js";
 
 setTimeout(()=> {
     CHIPPRAGI.emit("createObjective",{ objectiveDescription : "This is a test objective",});
