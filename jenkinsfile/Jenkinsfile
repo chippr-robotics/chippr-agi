@@ -70,7 +70,7 @@ pipeline {
 
     stage('Run Docker Compose') {
       steps {
-        sh 'echo "jenkinsfile"'
+        sh 'echo '
       }
     }
   }
