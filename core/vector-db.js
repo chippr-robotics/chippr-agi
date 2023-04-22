@@ -2,9 +2,9 @@ import * as redis from 'redis';
 
 
 export class VectorDB {
-  constructor( redisOptions) {
-    if (process.env.TESTING != true) {
-      this.client = redis.createClient(redisOptions);
+  constructor( chipprOptions ) {
+    if (chipprOptions.TESTING != true) {
+      this.client = redis.createClient({url : `redis://${chippr.VECTORDB.VECTORDB_HOST}:${chippr.VECTORDB.VECTORDB_PORT}`);
       this.client.connect();
       this.client.on('error', (error) => { 
         console.error('Redis error:', error);
