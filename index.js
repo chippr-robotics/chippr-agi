@@ -12,13 +12,13 @@ export const CHIPPRAGI = new ChipprAGI({
     TESTING : process.env.CHIPPRAGI_TESTING || false,
     CORE:{
         SWARM_MODE: process.env.CHIPPRAGI_SWARM_MODE || true,
-        WATCH : process.env.CHIPPRAGI_WATCH || false,
+        WATCH : process.env.CHIPPRAGI_WATCH || true,
         DASHBOARD : process.env.CHIPPRAGI_DASHBOARD || true,
     },
     VECTORDB:{  
-        VECTORDB_TYPE: process.env.CHIPPRAGI_VECTORDB_TYPE || 'local',
+        VECTORDB_TYPE: process.env.CHIPPRAGI_VECTORDB_TYPE || 'redis',
         VECTORDB_HOST: process.env.CHIPPRAGI_REDIS_HOST || 'localhost',
-        VECTORDB_PORT: process.env.CHIPPRAGI_REDIS_PORT || '6965',    
+        VECTORDB_PORT: process.env.CHIPPRAGI_REDIS_PORT || '6379',    
     },
 
     LANGUAGE_MODEL:{
