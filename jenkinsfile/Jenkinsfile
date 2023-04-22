@@ -55,7 +55,7 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh 'docker build -t ${DOCKERHUB_USERNAME}/${DOCKERHUB_IMAGE}:latest .'
+        sh 'docker build -t chipprbots/${CHIPPRAGI_IMAGE}:latest .'
       }
     }
 
@@ -63,14 +63,14 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
           sh 'docker login -u $DH_USER -p $DH_PASS'
-          sh 'docker push ${DOCKERHUB_USERNAME}/${DOCKERHUB_IMAGE}:latest'
+          sh 'docker push chipprbots/${CHIPPRAGI_IMAGE}:latest'
         }
       }
     }
 
     stage('Run Docker Compose') {
       steps {
-        sh 'docker-compose up -d'
+        //sh 'docker-compose up -d'
       }
     }
   }
