@@ -2,6 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 export class LanguageModel {
   constructor(chipprConfig) {
+    this.MODEL_NAME = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_NAME;
     if (chipprConfig.TESTING != true) {
       if (chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_ID === 'openai') {
         const configuration = new Configuration({

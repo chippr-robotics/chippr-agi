@@ -12,14 +12,16 @@ CHIPPRAGI.registerSystem('DashboardSystem', {
         //if (CHIPPRAGI.DASHBOARD == true) {
             console.clear();
             /// show stats if bored
-            let events = [];
-            this.dashboard(events);
-            _eventEmitter.on('*', (data) => {events.push(JSON.stringify(data))});
+            console.log('|--- loading stats --|');
+            this.dashboard(_eventEmitter);
+            
         //}
     },
   
-    dashboard: function (events){
+    dashboard: function (_eventEmitter){
       //display a basic dash board
+      let events = [];
+      _eventEmitter.on('*', (data) => {events.push(JSON.stringify(data))});
         setInterval(() => {
             console.clear();
             console.log('|--- stats --|');
