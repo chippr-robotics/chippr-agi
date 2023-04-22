@@ -1,13 +1,10 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import 'fs';
-import 'vm';
-import { CHIPPRAGI } from './core/ChipprAGI.js';
-import ('./systems/active/CoreSystemLoader.mjs');
+import { ChipprAGI } from './src/core/ChipprAGI.js';
 
 
-export const CHIPPRAGI = new CHIPPRAGI({
+export const CHIPPRAGI = new ChipprAGI({
     //will try process.env then apply defaults
     //defaults will be applied if not found in process.env
     //defaults shopuld make the mvp system runable
@@ -21,7 +18,7 @@ export const CHIPPRAGI = new CHIPPRAGI({
     },
     VECTORDB:{  
         VECTORDB_TYPE: process.env.CHIPPRAGI_VECTORDB_TYPE || 'local',
-        VECTORDB_HOST: process.env.CHIPPRAGI_REDIS_HOST || 'redis://localhost',
+        VECTORDB_HOST: process.env.CHIPPRAGI_REDIS_HOST || 'localhost',
         VECTORDB_PORT: process.env.CHIPPRAGI_REDIS_PORT || '6965',    
     },
 
