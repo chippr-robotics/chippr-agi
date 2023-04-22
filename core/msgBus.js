@@ -1,10 +1,14 @@
-import * as dotenv from 'dotenv';
 import { EventEmitter } from 'events';
-dotenv.config();
 
 export class MessageBus {
-  constructor() {
+  constructor(messageBusConfig) {
+    //decide if needed
     this.eventEmitter = new EventEmitter();
+    switch (messageBusConfig.MESSAGE_BUS_TYPE)   {
+      case'mysql':
+      break;
+      default:
+        
     if (process.env.MSG_BUS === 'redis') {
         this.publisher = redis.createClient({redisOptions});
         this.subscriber = redis.createClient({redisOptions});

@@ -6,15 +6,15 @@ import { VectorDB } from './vector-db.js'
 import { LanguageModel } from './langModel.js';
 import { MessageBus } from './msgBus.js';
 
-class ChipprAGI {
-  constructor() {
-    this.SWARM_MODE = true;
+export class ChipprAGI {
+  constructor(chipprConfig) {
+    this.SWARM_MODE = chipprConfig.SWARM_MODE;
     this.entities = {};
     this.components = {};
     this.systems ={};
     this.eventEmitter = new MessageBus();
     this.langModel = new LanguageModel();
-    this.vectorDb = new VectorDB( {url: process.env.REDIS_URL} ); // Initialize vector database
+    this.vectorDb = new VectorDB( {url: chipprConfig.REDIS_URL} ); // Initialize vector database
   }
 
   async createEntity(_entityID) {
@@ -91,6 +91,5 @@ class ChipprAGI {
     this.eventEmitter.on(eventType, listener);
   }  // Add other methods as needed
 }
-//start in swarm mode
-export const CHIPPRAGI = new ChipprAGI();
+
 
