@@ -18,17 +18,18 @@ export class ChipprAGI {
     this.entities = {};
     this.components = {};
     this.systems ={};
+    this.init();
   }
 
-  init() {
+  async init() {
     if(this.TESTING != true){
       //this.langModel.init();
       //this.vectorDb.init();
       //this.eventEmitter.init();
     };
     //load the core systems
-    import ('../systems/active/CoreSystemLoader.mjs');
-    //import ('../systems/active/.mjs');
+    await import ('../systems/active/CoreSystemLoader.mjs');
+    this.systems['CoreSystemLoader'].init();//import ('../systems/active/.mjs');
   }
   async createEntity(_entityID) {
     //console.log('creating entity');

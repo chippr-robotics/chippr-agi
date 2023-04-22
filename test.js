@@ -1,9 +1,5 @@
 import { CHIPPRAGI }  from "./index.js";
 
-//console.log(CHIPPRAGI);
-async function main() {
-    await CHIPPRAGI.init();
-}
-
-
-main();
+setTimeout(()=> {
+    CHIPPRAGI.emit("createObjective", "This is a test objective");
+},5000);
