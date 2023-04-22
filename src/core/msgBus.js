@@ -5,17 +5,18 @@ export class MessageBus {
     //decide if needed
     this.eventEmitter = new EventEmitter();
     switch (chipprConfig.CORE.MSG_BUS)   {
-      case'redis':
+      case'redis'://do not use
         this.publisher = redis.createClient({redisOptions});
         this.subscriber = redis.createClient({redisOptions});
         //receive message from redis
-        this.subscriber.on('message', (eventType, listener)=>{
+        this.subscriber.on('message', (eventType, listener)=>{});
         this.eventEmitter.emit(eventType, listener);
-      break
+      break;
       default:
-        this.eventEmitter.on((eventType, eventData) => {
-        this.publisher.publish(eventType, eventData);
-        })
+        //update in messagebus updates
+        //this.eventEmitter.on((eventType, eventData) => {
+        //this.publisher.publish(eventType, eventData);
+        //})
     } 
     //more buses to come after mvp...
   }

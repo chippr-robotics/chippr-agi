@@ -2,17 +2,22 @@ import * as redis from 'redis';
 
 
 export class VectorDB {
-  constructor( chipprOptions ) {
-    if (chipprOptions.TESTING != true) {
-      this.client = redis.createClient({url : `redis://${chippr.VECTORDB.VECTORDB_HOST}:${chippr.VECTORDB.VECTORDB_PORT}`);
-      this.client.connect();
-      this.client.on('error', (error) => { 
-        console.error('Redis error:', error);
-      });
+  constructor( chipprConfig ) {
+    if (chipprConfig.TESTING != true) {
+      switch (chipprConfig.VECTORDB.VECTORDB_TYPE) {
+        case 'redis':
+          this.client = redis.createClient({url : `"redis://${chipprConfig.VECTORDB.VECTORDB_HOST}:${chipprConfig.VECTORDB.VECTORDB_PORT}"`});
+          this.client.connect();
+          this.client.on('error', (error) => { 
+            console.error('Redis error:', error);
+          });
+          break;
+
+        default:
+          this.client = null;
+      }
     } else {
       this.client = null;
-      this.publisher = this.createNoOpClient();
-      this.subscriber = this.createNoOpClient();
     }
   }
 
