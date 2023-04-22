@@ -6,7 +6,7 @@ export class VectorDB {
     if (chipprConfig.TESTING != true) {
       switch (chipprConfig.VECTORDB.VECTORDB_TYPE) {
         case 'redis':
-          this.client = redis.createClient({url : `"redis://${chipprConfig.VECTORDB.VECTORDB_HOST}:${chipprConfig.VECTORDB.VECTORDB_PORT}"`});
+          this.client = redis.createClient({url : `redis://${chipprConfig.VECTORDB.VECTORDB_HOST}:${chipprConfig.VECTORDB.VECTORDB_PORT}`});
           this.client.connect();
           this.client.on('error', (error) => { 
             console.error('Redis error:', error);

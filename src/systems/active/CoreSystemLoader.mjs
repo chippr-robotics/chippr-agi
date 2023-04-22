@@ -1,4 +1,4 @@
-import { CHIPPRAGI } from "../../index.js";
+import { CHIPPRAGI } from "../../../index.js";
 import * as fs from 'fs';
 
 CHIPPRAGI.registerSystem('CoreSystemLoader', {
@@ -22,7 +22,6 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
 
   remove: function () {
     // Do something when the component or its entity is detached, if needed.
-    clearInterval();
   },
 
   tick: function (entityId, time, timeDelta) {
