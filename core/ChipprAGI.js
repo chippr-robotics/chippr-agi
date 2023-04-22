@@ -9,12 +9,12 @@ import { MessageBus } from './msgBus.js';
 export class ChipprAGI {
   constructor(chipprConfig) {
     this.SWARM_MODE = chipprConfig.SWARM_MODE;
-    this.entities = {};
-    this.components = {};
-    this.systems ={};
     this.eventEmitter = new MessageBus();
     this.langModel = new LanguageModel();
     this.vectorDb = new VectorDB( {url: chipprConfig.REDIS_URL} ); // Initialize vector database
+    this.entities = {};
+    this.components = {};
+    this.systems ={};
   }
 
   async createEntity(_entityID) {
