@@ -10,11 +10,11 @@ export class LanguageModel {
         this.model = new OpenAIApi(configuration);
       }
       // Add other language models here, e.g., 'gptx':
-      // else if (process.env.LANG_MODEL === 'gptx') {
+      // else if (chipprConfig === 'gptx') {
       //   // Initialize GPT-X model
       // }
     } else {
-      //USE THE NOOP MODEL
+      //USE THE NOOP MODEL if testing is enabled
       this.model = this.createNoOpClient();
     }
   }
