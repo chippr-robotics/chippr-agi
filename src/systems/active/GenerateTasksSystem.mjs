@@ -30,8 +30,9 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     
     handleNewObjective : async function (data) {
         //1) get prompt for generate task
-        console.log('creating tasks')
-        let GenerateTasksPrompt = yaml.load(fs.readFileSync('./prompts/GenerateTasksPrompt.yml', 'utf8')); 
+        console.log('creating tasks');
+        console.log(fs.readdirSync('./'));
+        let GenerateTasksPrompt = yaml.load(fs.readFileSync('./src/prompts/GenerateTasksPrompt.yml', 'utf8')); 
         //2) get context
         //none needed for fresh tasks....
         //3) replace varaible with context

@@ -35,7 +35,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
 
     
     // Prepare the prompt with the list of system descriptions
-    const SystemPrompt = yaml.load(fs.readFileSync('./prompts/SystemSelectorPrompt.yml', 'utf8')); 
+    const SystemPrompt = yaml.load(fs.readFileSync('./src/prompts/SystemSelectorPrompt.yml', 'utf8')); 
     let prompt = SystemPrompt.task_prompt.replace('{{ taskDescription }}', taskDescription);
     prompt = prompt.replace('{{ taskDescription }}', JSON.stringify(systemDescriptions));
     console.log('|----outgoing----|' );

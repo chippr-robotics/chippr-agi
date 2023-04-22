@@ -28,6 +28,8 @@ export class ChipprAGI {
       //this.eventEmitter.init();
     };
     //load the core systems
+    console.log('|-- Welcome to Chippr AGI! --|');
+    console.log('Loading core systems');
     await import ('../systems/active/CoreSystemLoader.mjs');
     this.systems['CoreSystemLoader'].init();//import ('../systems/active/.mjs');
   }
@@ -98,7 +100,7 @@ export class ChipprAGI {
   // Proxy methods to the underlying model
   emit(eventType, eventData) {
     this.eventEmitter.emit(eventType, eventData);
-    if (this.WATCH) this.eventEmitter.emit('*', eventData);//system monitoring  
+    if (this.WATCH == true) this.eventEmitter.emit('*', eventData);//system monitoring  
   }
   
   on(eventType, listener) {
