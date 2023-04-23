@@ -21,7 +21,6 @@ CHIPPRAGI.registerSystem('TaskEmbeddingSystem', {
 
   remove: function () {
     // Do something when the component or its entity is detached, if needed.
-    this.CHIPPRAGI.eventBus.off('newEntity', this.handleNewEntity);
   },
   
   //methods go here

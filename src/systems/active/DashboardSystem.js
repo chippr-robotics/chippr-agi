@@ -8,20 +8,18 @@ CHIPPRAGI.registerSystem('DashboardSystem', {
         description : "this system displays a cli dashboard for system testing purposes",
     },
 
-    init: function (_eventEmitter) {
-        //if (CHIPPRAGI.DASHBOARD == true) {
-            console.clear();
-            /// show stats if bored
-            console.log('|--- loading stats --|');
-            if (CHIPPRAGI.DASHBOARD == true) this.dashboard(_eventEmitter);
-            
-        //}
+    init: function () {
+        if (CHIPPRAGI.DASHBOARD == true){
+            CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
+                this.dashboard(eventData);
+            });
+        }
     },
   
-    dashboard: function (_eventEmitter){
+    dashboard: function (eventData){
       //display a basic dash board
-      let events = [];
-      _eventEmitter.on('*', (data) => {events.push(JSON.stringify(data))});
+        let events = [];
+        (eventData) => {events.push(JSON.stringify(data))};
         setInterval(() => {
             console.clear();
             console.log('|--- stats --|');
@@ -35,12 +33,6 @@ CHIPPRAGI.registerSystem('DashboardSystem', {
             }); 
         }, 1000);
     },
-  
-  remove: function (entityID) {
-    // Do something when the component or its entity is detached, if needed.
-    CHIPPRAGI.eventEmitter.off('emptySystem', this.handleEmptySystem);
-    },
-  
 });
   
 
