@@ -1,0 +1,20 @@
+{
+  "info" : {
+    "name" : "AI Agent",
+    "author" : "",
+    "version" : "1.0.0",
+    "description" : "",
+    "website" : "",
+  },
+  
+  "task_prompt" : [ 
+    "Given the task description {{ taskDescription }},", 
+    "find the most appropriate system from the following list:",
+    "{{ systemDescriptions }}",
+    "",
+    "Your response should be in the format:", 
+    "```",
+    "{ system : \"system name\" }",
+    "```"
+  ]
+}
