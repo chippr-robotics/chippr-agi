@@ -13,7 +13,10 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     //should trigger only if a entity has a description
     _eventEmitter.on('newEntity', (data) => {
       console.log('SystemSelectorSystem: newEntity');
-      this.handleSelectSystem(data);
+      setTimeout(async ()=>{
+        this.handleSelectSystem(data)}
+        ,7000,
+        data);
     });
   },
   
@@ -45,10 +48,16 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     //2) get context
     //none needed yet for fresh tasks....
     //3) replace varaible with context
-    console.log(`event data: ${JSON.stringify(data)}`);
-    let taskDescription = CHIPPRAGI.getComponentData(data.objectiveID, 'TaskDescription');
+    //console.log(`event data: ${JSON.stringify(data)}`);
+    let taskDescription;
+    if (CHIPPRAGI.getComponentData(data.entityID, 'TaskDescription') != null){
+      taskDescription = CHIPPRAGI.getComponentData(data.entityID, 'TaskDescription').task;
+    } else if (CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription') != null){
+      taskDescription = CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription').objective;
+    };
     
-    //console.log(`objetive: ${objectiveDescription}`);
+    //console.log(`SSS: objetive: ${JSON.stringify(taskDescription)}`);
+    //console.log(`SSS: objetive: ${JSON.stringify(CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription'))}`);
     let prompt = [];
     JSON.parse(outbound).task_prompt.forEach( t => {
       t = t.replace('{{ taskDescription }}', taskDescription);
@@ -56,11 +65,11 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
       prompt.push(t);
       },prompt);
 
-      console.log(`SystemSelectorSystem : outbound prompt: ${prompt.join('\n')}`);
-      throw error;
+    //console.log(`SystemSelectorSystem : outbound prompt: ${prompt.join('\n')}`);
+      
     // Send the prompt to the language model
     const response = await CHIPPRAGI.langModel.createCompletion({
-      model: process.env.MODEL,
+      model: CHIPPRAGI.langModel.MODEL_NAME,
       prompt: prompt.join('\n'),
       max_tokens: 50,
       n: 1,
@@ -70,8 +79,8 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     
     // Extract the system name from the response
     const systemName = response.data.choices[0].text.trim();
-    console.log(systemName);
-    CHIPPRAGI.emit('Systemselector', { system : systemName });  
+    //console.log(`SystemSelectorSystem : ${JSON.stringify(systemName)}`);
+    CHIPPRAGI.emit('SystemSelector', { systemName : systemName });  
     return systemName;
   }
 });
