@@ -13,7 +13,7 @@ export class ChipprAGI {
     this.DASHBOARD = chipprConfig.CORE.DASHBOARD;
     this.WATCH = chipprConfig.CORE.WATCH;
     this.TESTING = chipprConfig.TESTING;
-    this.eventEmitter = new MessageBus(chipprConfig);
+    this.MessageBus = new MessageBus(chipprConfig);
     this.langModel = new LanguageModel(chipprConfig);
     this.vectorDb = new VectorDB(chipprConfig); // Initialize vector database
     this.entities = {};
@@ -30,7 +30,7 @@ export class ChipprAGI {
     };
     //load the core systems
     console.log('|-- Welcome to Chippr AGI! --|');
-    console.log('Loading core systems');
+    //console.log('Loading core systems');
     await import ('../systems/active/CoreSystemLoader.mjs');
     this.systems['CoreSystemLoader'].init();//import ('../systems/active/.mjs');
   }
@@ -102,15 +102,13 @@ export class ChipprAGI {
     this.systems[systemName]= system;
   }
 
-  // Proxy methods to the underlying model
-  emit(eventType, eventData) {
-    this.eventEmitter.emit(eventType, eventData);
-    if (this.WATCH == true) this.eventEmitter.emit('*', eventData);//system monitoring  
+  subscribe(eventType, listener){
+    this.MessageBus.subscriber.subscribe(eventType, listener);
   }
-  
-  on(eventType, listener) {
-    this.eventEmitter.on(eventType, listener);
-  }  // Add other methods as needed
+
+  publish(eventType, eventData) {
+    this.MesageBus.publisher.publish(eventType, eventData);
+  }
 }
 
 
