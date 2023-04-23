@@ -11,8 +11,12 @@ CHIPPRAGI.registerSystem('TaskEmbeddingSystem', {
   init: function (_eventEmitter) {
         _eventEmitter.on('newEntity', (data) => {
           console.log('TaskEmbeddingSystem: newEntity');
-          this.handleNewEntity(data);
-        });
+          setTimeout(async () => {
+            this.handleNewEntity(data)    
+          },
+          5000,
+          data)
+          });
   },
 
   remove: function () {
@@ -23,7 +27,7 @@ CHIPPRAGI.registerSystem('TaskEmbeddingSystem', {
   //methods go here
   handleNewEntity: async function (data){
       //look at how to do this with db
-      let taskDescription = await CHIPPRAGI.getComponent(data.entityID,'TaskDescription');
+      let taskDescription = await CHIPPRAGI.getComponentData(data.entityID,'TaskDescription');
       console.log(taskDescription);
       let clean_text = taskDescription.task.replace("\n", " ")
       //console.log(clean_text);
