@@ -10,6 +10,7 @@ CHIPPRAGI.registerSystem('TaskEmbeddingSystem', {
 
   init: function (_eventEmitter) {
         _eventEmitter.on('newEntity', (data) => {
+          console.log('TaskEmbeddingSystem: newEntity');
           this.handleNewEntity(data);
         });
   },

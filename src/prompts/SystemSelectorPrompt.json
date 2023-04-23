@@ -4,7 +4,7 @@
     "author" : "",
     "version" : "1.0.0",
     "description" : "",
-    "website" : "",
+    "website" : ""
   },
   
   "task_prompt" : [ 
@@ -14,7 +14,7 @@
     "",
     "Your response should be in the format:", 
     "```",
-    "{ system : \"system name\" }",
+    "{ systemName : \"system name\" }",
     "```"
   ]
 }

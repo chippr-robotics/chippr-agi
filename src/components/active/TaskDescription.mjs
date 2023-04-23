@@ -16,10 +16,6 @@ CHIPPRAGI.registerComponent('TaskDescription', {
           type: SchemaFieldTypes.TAG,
           AS: 'complete'
       },
-      '$.dependencies': {
-        type: SchemaFieldTypes.TEXT,
-        AS: 'dependencies'
-    },
     //TODO ADD SCHEMA VERSIONING     
   },
   

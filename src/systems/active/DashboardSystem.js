@@ -13,7 +13,7 @@ CHIPPRAGI.registerSystem('DashboardSystem', {
             console.clear();
             /// show stats if bored
             console.log('|--- loading stats --|');
-            this.dashboard(_eventEmitter);
+            if (CHIPPRAGI.DASHBOARD == true) this.dashboard(_eventEmitter);
             
         //}
     },

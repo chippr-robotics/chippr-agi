@@ -1,5 +1,5 @@
 import { CHIPPRAGI } from "../../../index.js";
-import * as yaml from 'js-yaml';
+//import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 import { createHash } from 'node:crypto';
 
@@ -13,6 +13,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
 
   init: function () {
     CHIPPRAGI.on('newObjective', (data) => {
+      console.log('GenerateTaskSystem: newObjective');
       this.handleNewObjective(data);
     });
   },
@@ -31,46 +32,57 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     handleNewObjective : async function (data) {
         //1) get prompt for generate task
         console.log('creating tasks');
-        console.log(fs.readdirSync('./'));
-        let GenerateTasksPrompt = yaml.load(fs.readFileSync('./src/prompts/GenerateTasksPrompt.yml', 'utf8')); 
+        //console.log(fs.readdirSync('./src/prompts'));
+        let outbound = fs.readFileSync('./src/prompts/GenerateTasksPrompt.json','utf-8', (error, data) => {
+          if (error) throw error;
+          return data;
+        }); 
         //2) get context
-        //none needed for fresh tasks....
+        //none needed yet for fresh tasks....
         //3) replace varaible with context
-        let prompt = GenerateTasksPrompt.task_prompt.replace('{{ objective }}', data.objectiveDescription);
+        //console.log(`event data: ${JSON.stringify(data)}`);
+        let objectiveDescription = CHIPPRAGI.getComponentData(data.objectiveID, 'ObjectiveDescription');
+        //console.log(`objetive: ${objectiveDescription}`);
+        let prompt = [];
+        JSON.parse(outbound).task_prompt.forEach( t => {
+            prompt.push(t.replace('{{ objective }}', objectiveDescription.objective));
+          },prompt);
+        //console.log(`outbound prompt: ${prompt.join('\n')}`);
+        
         //4) generate tasks
         //todo loop until a valid object is returned
         let success = false;
-        let newTasks = await this.generate(prompt);
+        //throw error;
+        let newTasks = await this.generate(prompt.join('\n'));
         //console.log(newTasks);
         while (!success){
         //5) generate event to create for each tasks 
         //console.log(success);
-        try {
-          JSON.parse(newTasks).forEach( async task => {
-            let taskID = this.getHashId(task.task);
-            //create an entity
-            console.log(`making task ${task.task}`)
-            CHIPPRAGI.createEntity(taskID);
-            //add the description component
-            CHIPPRAGI.addComponent( taskID, 'TaskDescription', {
-              entityID : taskID,
-              task : task.task,
-              complete : false,
-              dependencies : [],
+          try {
+            JSON.parse(newTasks).forEach( async task => {
+              let taskID = this.getHashId(task.task);
+              //create an entity
+              //console.log(`making task ${task.task}`)
+              CHIPPRAGI.createEntity(taskID);
+              //add the description component
+              CHIPPRAGI.addComponent( taskID, 'TaskDescription', {
+               entityID : taskID,
+               task : task.task,
+               complete : false,
+              });
+              //add a parent component
+              CHIPPRAGI.addComponent( taskID, 'TaskParent', {
+               entityID : taskID,
+               parentId : data.objectiveID,
+              });
+              //announce the task
             });
-            //add a parent component
-            CHIPPRAGI.addComponent( taskID, 'TaskParent', {
-              entityID : taskID,
-              parentId : data.objectiveID,
-            });
-            //announce the task
-          });
-          success = true;
-        } catch(error) {
+            success = true;
+          } catch(error) {
           // the response was not json so we need to try again console.logging for trouble shoooting
           //console.log(newTasks);
           //console.log(error);
-          newTasks = await this.generate(prompt);
+            newTasks = await this.generate(prompt.join('\n'));
         }         
       }
     },

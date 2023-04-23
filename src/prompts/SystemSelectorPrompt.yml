@@ -1,9 +1,0 @@
-task_prompt: |-
-  Given the task description {{ taskDescription }}, 
-  find the most appropriate system from the following list: 
-  {{ systemDescriptions }}`
-
-  Your response should be in the format: 
-  ```
-  { system : "system name" }
-  ```

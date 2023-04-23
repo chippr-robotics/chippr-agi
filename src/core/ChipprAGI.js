@@ -5,6 +5,7 @@ import  'fs';
 import { VectorDB } from './vector-db.js'
 import { LanguageModel } from './langModel.js';
 import { MessageBus } from './msgBus.js';
+import { CHIPPRAGI } from '../../index.js';
 
 export class ChipprAGI {
   constructor(chipprConfig) {
@@ -38,11 +39,10 @@ export class ChipprAGI {
     if(this.SWARM_MODE != true){
       //console.log('creating entity');
       this.entities[_entityID] = {};
-      return true;
     } else {
       await this.vectorDb.save( `idx:entities:${_entityID}`, '$',  {});
-      CHIPPRAGI.emit('newEntity', { entityID : _entityID });
     }
+    this.emit('newEntity', { entityID : _entityID });
   }
 
   async getAllEntities(componentName){
@@ -64,12 +64,17 @@ export class ChipprAGI {
     }
   }
 
-  getComponent(entityId, componentName) {
+  getComponentData(entityId, componentName) {
     //check if we store components in the db or not
-    if(this.SWARM_MODE != true){
-      return this.entities[entityId][componentName] = componentData;
-    } else {
-      return this.vectorDb.get(`idx:${componentName}:${entityId}`);
+    try {
+      if(this.SWARM_MODE != true){
+        return this.entities[entityId][componentName];
+      } else {
+        return this.vectorDb.get(`idx:${componentName}:${entityId}`);
+      }  
+    } catch (error) {
+     console.log(`CHIPPRAGI : getcomponentdata error: ${error}`);
+     return null; 
     }
   }
 

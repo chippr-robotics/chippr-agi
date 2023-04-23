@@ -4,9 +4,9 @@
     "author" : "",
     "version" : "1.0.0",
     "description" : "",
-    "website" : "",
+    "website" : ""
   },
-  
+
   "task_prompt" : [ 
     "You are an AI agent that creates lists of tasks to complete objectives.",
     "Your objective is {{ objective }}.", 

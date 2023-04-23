@@ -12,6 +12,7 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
 
   init: function (_eventEmitter) {
       _eventEmitter.on('createObjective', (data) => {
+        console.log('ObjectiveCreationSystem: createObjective');
         this.handleCreateObjective(data);
       });
   },
