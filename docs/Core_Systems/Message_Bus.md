@@ -4,11 +4,11 @@ ChipprAGI uses a pubsub system
 
 The system topics are:
 
-system
-update
-remove
-tick
-pause
+| SYSTEM | topics from systems
+| UPDATE | Used to update components and systems with update functions
+| REMOVE | used to remove systems and components 
+| TICK |    system generated tick events
+| PAUSE | system generated pause events
 
 
 Schema for message objects
@@ -23,8 +23,7 @@ Schema for message objects
       "data": {}
     },
     "metadata": {
-      "timestamp": "1633028743789",
-      "sourceSystem": "ObjectiveCreationSystem"
+      "timestamp": "1633028743789"
     }
   }
   ```
@@ -34,10 +33,12 @@ To use the message Schema in a system, import the following:
 ```
 
 // Use the message schema to create a new message
-const newMessage = { ...CHIPPRAGI.MessageBus.MessageSchema };
+let newMessage = { ...CHIPPRAGI.MessageBus.MessageSchema };
 
 // Update the relevant fields for the new message
-newMessage.eventType = 'someEvent';
-newMessage.payload.entityId = 456;
+newMessage.eventType = 'newEntity';
+newMessage.payload.entityID = _entityID;
+newMessage.payload.component = 'SomeComponent';    
 // ... and so on
+CHIPPRAGI.publish('SYSTEM', [newMessage]);
 ```

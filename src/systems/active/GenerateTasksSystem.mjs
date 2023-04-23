@@ -1,5 +1,4 @@
 import { CHIPPRAGI } from "../../../index.js";
-//import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 import { createHash } from 'node:crypto';
 
@@ -12,26 +11,28 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
   },
 
   init: function () {
-    CHIPPRAGI.on('newObjective', (data) => {
-      console.log('GenerateTaskSystem: newObjective');
-      this.handleNewObjective(data);
+    CHIPPRAGI.subscribe('UPDATE',update(eventData));
+    CHIPPRAGI.subscribe('REMOVE',update(eventData));
+    CHIPPRAGI.subscribe('TICK',update(eventData));
+    CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
+      if (eventData.eventType === 'newObjective') this.handleNewObjective(eventData.payload);
     });
   },
   
-    update: function (entityId, componentData) {
+    update: function (eventData) {
       // Do something when the component's data is updated, if needed.
       // entityId is the ID of the entity this component is attached to.
       // componentData contains the updated data for the component.
     },
   
-    remove: function () {
+    remove: function (eventData) {
       // Do something when the component or its entity is detached, if needed.
-      this.CHIPPRAGI.eventBus.off('newObjective', this.handleNewObjective);
+      // add logic to remove an entity arrivesent arrives
     },
     
-    handleNewObjective : async function (data) {
+    handleNewObjective : async function (eventData) {
         //1) get prompt for generate task
-        console.log('creating tasks');
+        //console.log('creating tasks');
         //console.log(fs.readdirSync('./src/prompts'));
         let outbound = fs.readFileSync('./src/prompts/GenerateTasksPrompt.json','utf-8', (error, data) => {
           if (error) throw error;
@@ -41,7 +42,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //none needed yet for fresh tasks....
         //3) replace varaible with context
         //console.log(`event data: ${JSON.stringify(data)}`);
-        let objectiveDescription = CHIPPRAGI.getComponentData(data.objectiveID, 'ObjectiveDescription');
+        let objectiveDescription = CHIPPRAGI.getComponentData(eventData.entityID, 'ObjectiveDescription');
         //console.log(`objetive: ${objectiveDescription}`);
         let prompt = [];
         JSON.parse(outbound).task_prompt.forEach( t => {

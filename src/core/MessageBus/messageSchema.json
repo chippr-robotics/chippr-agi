@@ -1,14 +1,12 @@
 {
     "version": "1.0.0",
-    "eventType": "taskExecution",
+    "eventType": "",
     "payload": {
-      "entityId": "123",
-      "componentName": "TaskDescription",
+      "entityID": "123",
       "data": {}
     },
     "metadata": {
-      "timestamp": "1633028743789",
-      "sourceSystem": "ObjectiveCreationSystem"
+      "timestamp": "1633028743789"
     }
   }
   

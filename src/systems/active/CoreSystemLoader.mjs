@@ -11,20 +11,23 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
   
   init: function () {
     // do something when the system is first loaded  
+    CHIPPRAGI.subscribe('UPDATE',update(eventData));
+    CHIPPRAGI.subscribe('REMOVE',update(eventData));
+    CHIPPRAGI.subscribe('TICK',update(eventData));
     this.handleLoadSystem();
   },
 
-  update: function (entityId, componentData) {
+  update: function (eventData) {
     // Do something when the component's data is updated, if needed.
     // entityId is the ID of the entity this component is attached to.
     // componentData contains the updated data for the component.
   },
 
-  remove: function () {
+  remove: function (eventData) {
     // Do something when the component or its entity is detached, if needed.
   },
 
-  tick: function (entityId, time, timeDelta) {
+  tick: function (eventData) {
     // Do something on every scene tick or frame, if needed.
     // entityId is the ID of the entity this component is attached to.
     // time is the current time in milliseconds.
@@ -32,7 +35,7 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
   },
 
   handleLoadSystem : function () {
-    console.log('CoreSystemLoader running');
+    //console.log('CoreSystemLoader running');
     let systems = './src/systems/active/';
     //console.log(systems);
     let components = './src/components/active/';

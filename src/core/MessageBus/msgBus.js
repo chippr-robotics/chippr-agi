@@ -1,6 +1,6 @@
 //import { EventEmitter } from 'events';
 import * as pubsub from 'pubsub-js';
-import messageSchema from './messageSchema.json';
+import messageSchema from './messageSchema.json' assert { type: 'json' };
 
 export class MessageBus {
   constructor(chipprConfig) {
@@ -24,6 +24,8 @@ export class MessageBus {
   }
 
   publish(eventType, eventData) {
+    let msgData = { ...eventData };
+    msgData.timestamp = Math.floor(Date.now() / 1000);
     this.publisher.publish(eventType, eventData);
   }
 

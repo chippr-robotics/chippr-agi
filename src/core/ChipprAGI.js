@@ -42,7 +42,11 @@ export class ChipprAGI {
     } else {
       await this.vectorDb.save( `idx:entities:${_entityID}`, '$',  {});
     }
-    this.emit('newEntity', { entityID : _entityID });
+    let newMessage = { ...CHIPPRAGI.MessageBus.MessageSchema };
+    newMessage.eventType = 'newEntity';
+    newMessage.payload.entityID = _entityID;
+    newMessage.payload.component = null;    
+    this.MessageBus.publish('SYSTEM', [newMessage]);
   }
 
   async getAllEntities(componentName){
