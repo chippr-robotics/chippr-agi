@@ -1,34 +1,32 @@
-import { EventEmitter } from 'events';
+//import { EventEmitter } from 'events';
+import * as pubsub from 'pubsub-js';
+import messageSchema from './messageSchema.json';
 
 export class MessageBus {
   constructor(chipprConfig) {
     //decide if needed
-    this.eventEmitter = new EventEmitter();
+    this.messageSchema = messageSchema;
     switch (chipprConfig.CORE.MSG_BUS)   {
       case'redis'://do not use
         this.publisher = redis.createClient({redisOptions});
         this.subscriber = redis.createClient({redisOptions});
-        //receive message from redis
-        this.subscriber.on('message', (eventType, listener)=>{});
-        this.eventEmitter.emit(eventType, listener);
-      break;
+        break;
       default:
         //update in messagebus updates
-        //this.eventEmitter.on((eventType, eventData) => {
-        //this.publisher.publish(eventType, eventData);
-        //})
-    } 
+        this.publisher = pubsub;
+        this.subscriber = pubsub;
+      } 
     //more buses to come after mvp...
   }
 
-  // Proxy methods to the underlying model
-  emit(eventType, eventData) {
-    this.eventEmitter.emit(eventType, eventData)
-    }
+  subscribe(eventType, listener){
+    this.subscriber.subscribe(eventType, listener);
+  }
 
-  on(eventType, listener) {
-    this.eventEmitter.on(eventType, listener);
-  }  // Add other methods as needed
+  publish(eventType, eventData) {
+    this.publisher.publish(eventType, eventData);
+  }
+
 }
 
 
