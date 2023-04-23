@@ -4,7 +4,7 @@ dotenv.config();
 import  'fs';
 import { VectorDB } from './vector-db.js'
 import { LanguageModel } from './langModel.js';
-import { MessageBus } from './msgBus.js';
+import { MessageBus } from './MessageBus/msgBus.js';
 import { CHIPPRAGI } from '../../index.js';
 
 export class ChipprAGI {
