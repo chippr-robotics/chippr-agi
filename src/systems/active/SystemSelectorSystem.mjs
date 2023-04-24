@@ -80,9 +80,18 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     });
     
     // Extract the system name from the response
-    const systemName = response.data.choices[0].text.trim();
+    let systemName = response.data.choices[0].text.trim();
     //console.log(`SystemSelectorSystem : ${JSON.stringify(systemName)}`);
-    CHIPPRAGI.emit('SystemSelector', { systemName : systemName });  
-    return systemName;
+
+    let payloadData = {
+      recommendedSystem : systemName,
+    };
+
+    //add a system selector component
+    CHIPPRAGI.addComponent( entityID, 'SystemSelection', payloadData);
+
+    
+    //_eventType, _entityID, _componentName, _sourceSystem, _data
+    CHIPPRAGI.MessageBus.systemMessage( 'systemSelected', data.entityID, 'SystemSelection', this.info, payloadData);
   }
 });

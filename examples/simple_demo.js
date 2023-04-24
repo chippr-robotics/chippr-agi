@@ -2,17 +2,11 @@ import { CHIPPRAGI }  from "../index.js";
 import * as dotenv from 'dotenv';
     dotenv.config();
 
-CHIPPRAGI.subscribe('SYSTEM', (message, data) => {});//console.log(`simple demo message:${message}, data:${JSON.stringify(data[0])}`)});
+
 setTimeout(()=> {
-    let newMessage = { ...CHIPPRAGI.MessageBus.MessageSchema };
-    newMessage.eventType = 'createObjective';
-    newMessage.payload.componentName = 'ObjectiveDescription';
-    newMessage.payload.data = { 
+    //_eventType, _entityID, _componentName, _sourceSystem, _data
+    CHIPPRAGI.MessageBus.systemMessage( 'createObjective', '0000000000', 'ObjectiveDescription', {}, { 
         objectiveDescription : "This is a test objective"
-    };
-    newMessage.metadata.sourceSystem = 'userEntry';
-    //console.log(newMessage);
-    CHIPPRAGI.publish('SYSTEM', [newMessage]);
-  
-    //console.log('Creating test objective');
+    });  
+    console.log('Creating test objective');
 },10000);

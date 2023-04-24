@@ -6,7 +6,8 @@ export class MessageBus {
   constructor(chipprConfig) {
     //decide if needed
     this.MessageSchema = messageSchema;
-    switch (chipprConfig.CORE.MSG_BUS)   {
+    this.Watch = chipprConfig.MESSAGE_BUS.MESSAGE_BUS_WATCH;
+    switch (chipprConfig.MESSAGE_BUS.MESSAGE_BUS_TYPE)   {
       case'redis'://do not use yet
         this.publisher = redis.createClient({redisOptions});
         this.subscriber = redis.createClient({redisOptions});
@@ -25,11 +26,21 @@ export class MessageBus {
   }
 
   publish(eventType, eventData) {
-    let msgData = { ...eventData };
-    msgData.timestamp = Math.floor(Date.now());
     this.publisher.publish(eventType, eventData);
   }
 
+  systemMessage( _eventType, _entityID, _componentName, _sourceSystem, _data ) {
+    let newMessage = { ...this.MessageSchema };
+    newMessage.eventType = _eventType, 'newEntity';
+    newMessage.payload.entityID = _entityID;
+    newMessage.payload.componentName = _componentName || null;    
+    newMessage.payload.data = _data || {};
+    //metadata management
+    newMessage.timestamp = Math.floor(Date.now());
+    newMessage.sourceSystem = _sourceSystem; 
+    if(this.Watch ==true ) console.log(`sending message ${JSON.stringify(newMessage)}`);
+    this.publish('SYSTEM', [newMessage]);
+  }
 }
 
 

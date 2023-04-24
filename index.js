@@ -9,7 +9,6 @@ export const CHIPPRAGI = new ChipprAGI({
     TESTING : process.env.CHIPPRAGI_TESTING || false,
     CORE:{
         SWARM_MODE: process.env.CHIPPRAGI_SWARM_MODE || true,
-        WATCH : process.env.CHIPPRAGI_WATCH || true,
         DASHBOARD : process.env.CHIPPRAGI_DASHBOARD || true,
     },
     VECTORDB:{  
@@ -29,6 +28,7 @@ export const CHIPPRAGI = new ChipprAGI({
     },
     MESSAGE_BUS:{
         MESSAGE_BUS_TYPE: process.env.CHIPPRAGI_MESSAGE_BUS_TYPE || 'local',
+        MESSAGE_BUS_WATCH : process.env.CHIPPRAGI_MESSAGE_BUS_WATCH || true,
     },
 });
 
