@@ -106,7 +106,7 @@ export class ChipprAGI {
   }
 
   publish(eventType, eventData) {
-    this.MesageBus.publish(eventType, eventData);
+    this.MessageBus.publish(eventType, eventData);
   }
 }
 
