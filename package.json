@@ -17,12 +17,10 @@
   "license": "Apache-2.0",
   "dependencies": {
     "dotenv": "^16.0.3",
-    "js-yaml": "^4.1.0",
     "natural": "^6.2.0",
     "openai": "^3.2.1",
     "pubsub-js": "^1.9.4",
-    "redis": "^4.6.5",
-    "uuid": "^9.0.0"
+    "redis": "^4.6.5"
   },
   "devDependencies": {
     "chai": "^4.3.7",

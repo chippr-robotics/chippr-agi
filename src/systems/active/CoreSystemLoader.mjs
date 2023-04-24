@@ -50,7 +50,7 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
           //console.log(`./${file}`);
           setTimeout(() => {
             console.log(`${file}`);
-            CHIPPRAGI.systems[file.split(".")[0]].init(CHIPPRAGI.eventEmitter);
+            CHIPPRAGI.systems[file.split(".")[0]].init();
           }, 3000, file);
         }
       });
