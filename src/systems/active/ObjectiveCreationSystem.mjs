@@ -73,4 +73,3 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
   }
 
 });
-this.this.
