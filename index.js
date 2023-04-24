@@ -17,8 +17,8 @@ export const CHIPPRAGI = new ChipprAGI({
     },
     VECTORDB:{  
         VECTORDB_TYPE: process.env.CHIPPRAGI_VECTORDB_TYPE || 'redis',
-        VECTORDB_HOST: process.env.CHIPPRAGI_REDIS_HOST || 'localhost',
-        VECTORDB_PORT: process.env.CHIPPRAGI_REDIS_PORT || '6379',    
+        VECTORDB_HOST: process.env.CHIPPRAGI_VECTORDB_HOST || 'localhost',
+        VECTORDB_PORT: process.env.CHIPPRAGI_VECTORDB_PORT || '6379',    
     },
 
     LANGUAGE_MODEL:{
