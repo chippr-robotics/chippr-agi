@@ -9,11 +9,11 @@ CHIPPRAGI.registerSystem('TaskExecutionSystem', {
     },
 
     init: function (eventData) {
-      CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
-      CHIPPRAGI.subscribe('REMOVE', (eventData) => {this.remove(eventData)});
-      CHIPPRAGI.subscribe('TICK', (eventData) => {this.tick(eventData)});
-      CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
-          this.handleExecuteTask(eventData.payload.data)    
+      CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
+      CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
+      CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
+      CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
+          this.handleExecuteTask(eventData[0].payload.data)    
         },
         5000);
     },

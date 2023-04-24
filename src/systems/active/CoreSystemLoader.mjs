@@ -11,9 +11,9 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
   
   init: function () {
     // do something when the system is first loaded  
-    CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
-    CHIPPRAGI.subscribe('REMOVE', (eventData) => {this.remove(eventData)});
-    CHIPPRAGI.subscribe('TICK', (eventData) => {this.tick(eventData)});
+    CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
+    CHIPPRAGI.subscribe('REMOVE', (type,eventData) => {this.remove(eventData)});
+    CHIPPRAGI.subscribe('TICK', (type,eventData) => {this.tick(eventData)});
     this.handleLoadSystem();
   },
 
