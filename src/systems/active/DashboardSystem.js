@@ -9,9 +9,9 @@ CHIPPRAGI.registerSystem('DashboardSystem', {
     },
 
     init: function () {
-        console.log(`Dashboard test ${CHIPPRAGI.DASHBOARD == true}`);
+        //console.log(`Dashboard test ${CHIPPRAGI.DASHBOARD == true}`);
         if (CHIPPRAGI.DASHBOARD == true){
-            console.log('dashboard loading');
+            console.log('Dashboard loading');
             CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
                 this.dashboard(eventData[0]);
             });

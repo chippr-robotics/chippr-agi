@@ -55,18 +55,11 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
       objective : data.objectiveDescription,
       complete : false,
     });
-
-    let newMessage = { ...CHIPPRAGI.MessageBus.MessageSchema };
-    newMessage.eventType = 'newObjective';
-    newMessage.payload.entityID = objectiveID;
-    newMessage.payload.component = 'ObjectiveDescription';
-    newMessage.payload.data = { 
+    //_eventType, _entityID, _componentName, _sourceSystem, data
+    CHIPPRAGI.MessageBus.systemMessage( 'newObjective', objectiveID, 'ObjectiveDescription', this.info, { 
       objective : data.objectiveDescription,
       complete : false
-    };
-    newMessage.metadata.sourceSystem = this.info;
-    //console.log(JSON.stringify(newMessage));
-    CHIPPRAGI.publish('SYSTEM', [newMessage]);
+    } );
   },
  
   getHashId(_objectiveDescription){

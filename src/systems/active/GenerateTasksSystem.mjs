@@ -80,7 +80,13 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
                entityID : taskID,
                parentId : eventData.payload.entityID,
               });
+              let entityData = {
+                task : task.task,
+                parentId : eventData.payload.entityID,
+              };
               //announce the task
+              //_eventType, _entityID, _componentName, _sourceSystem, _data
+              CHIPPRAGI.MessageBus.systemMessage( 'newEntity', taskID, 'TaskDescription', this.info, entityData);
             });
             success = true;
           } catch(error) {
