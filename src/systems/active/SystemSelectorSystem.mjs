@@ -15,9 +15,11 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
     CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
-      if (eventData.eventType === 'newEntity') {
+      //console.log(eventData[0].eventType);
+      if (eventData[0].eventType === 'newEntity') {
+        //console.log('System Selector: running now!');
         setTimeout(async ()=>{
-          this.handleSelectSystem(eventData[0].payload.data)}
+          this.handleSelectSystem(eventData[0])}
           ,7000);
         }
         });
@@ -42,13 +44,12 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     
     // Prepare the prompt with the list of system descriptions
     //console.log('|----outgoing----|' );
-    
     let outbound = fs.readFileSync('./src/prompts/SystemSelectorPrompt.json','utf-8', (error, data) => {
       if (error) throw error;
       return data;
     }); 
     //2) get context
-    //none needed yet for fresh tasks....
+    //
     //3) replace varaible with context
     //console.log(`event data: ${JSON.stringify(data)}`);
     let taskDescription;
@@ -81,14 +82,14 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     
     // Extract the system name from the response
     let systemName = response.data.choices[0].text.trim();
-    //console.log(`SystemSelectorSystem : ${JSON.stringify(systemName)}`);
+    console.log(`SystemSelectorSystem : ${JSON.stringify(systemName)}`);
 
     let payloadData = {
       recommendedSystem : systemName,
     };
 
     //add a system selector component
-    CHIPPRAGI.addComponent( entityID, 'SystemSelection', payloadData);
+    CHIPPRAGI.addComponent( data.entityID, 'SystemSelection', payloadData);
 
     
     //_eventType, _entityID, _componentName, _sourceSystem, _data

@@ -3,10 +3,6 @@ import { SchemaFieldTypes } from "redis";
 
 CHIPPRAGI.registerComponent('ObjectiveDescription',{
     schema: {
-        '$.entityID': {
-            type: SchemaFieldTypes.TEXT,
-            AS: 'entityID'
-        },
         '$.objective': {
             type: SchemaFieldTypes.TEXT,
             AS: 'objective'
