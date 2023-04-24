@@ -4,10 +4,6 @@ import { SchemaFieldTypes, VectorAlgorithms } from "redis";
 
 CHIPPRAGI.registerComponent('TaskEmbedding', {
     schema:{
-      '$.entityID': {
-        type: SchemaFieldTypes.TEXT,
-        AS: 'entityID'
-      },
       '$.clean' : {
         type: SchemaFieldTypes.VECTOR,
         AS: 'clean',

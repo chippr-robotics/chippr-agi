@@ -1,6 +1,6 @@
 import { CHIPPRAGI } from "../../../index.js";
 import * as fs from 'fs';
-import { createHash } from 'node:crypto';
+
 
 CHIPPRAGI.registerSystem('GenerateTasksSystem', {
   info: {
@@ -58,26 +58,25 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //todo loop until a valid object is returned
         let success = false;
         //throw error;
-        let newTasks = await this.generate(prompt.join('\n'));
+        let newTasks = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
         //console.log(newTasks);
+        console.log(`new tasks returned: ${newTasks}`)
         while (!success){
         //5) generate event to create for each tasks 
         //console.log(success);
           try {
             JSON.parse(newTasks).forEach( async task => {
-              let taskID = this.getHashId(task.task);
+              let taskID = CHIPPRAGI.Util.getHashId(task.task);
               //create an entity
               //console.log(`making task ${task.task}`)
               CHIPPRAGI.createEntity(taskID);
               //add the description component
               CHIPPRAGI.addComponent( taskID, 'TaskDescription', {
-               entityID : taskID,
                task : task.task,
                complete : false,
               });
               //add a parent component
               CHIPPRAGI.addComponent( taskID, 'TaskParent', {
-               entityID : taskID,
                parentId : eventData.payload.entityID,
               });
               let entityData = {
@@ -93,29 +92,9 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
           // the response was not json so we need to try again console.logging for trouble shoooting
           //console.log(newTasks);
           //console.log(error);
-            newTasks = await this.generate(prompt.join('\n'));
+            newTasks = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
         }         
       }
     },
-    
-    generate: async function (_prompt) {
-        let response = await CHIPPRAGI.langModel.createCompletion({
-            model: CHIPPRAGI.langModel.MODEL_NAME,
-            prompt: _prompt,
-            temperature: 0.5,
-            max_tokens: 2000,
-        });
-        return response.data.choices[0].text;
-    },
-    
-    getHashId: function (_taskDescription){
-      //create a hash
-      let hash =  createHash('sha256');
-      hash.write(_taskDescription);
-      hash.end();
-      //use the first 10 bytes of the hash as the hashID
-      let hashID = hash.read().toString('hex').slice(0,10)
-      return hashID
-    }
-  });
+});
   
