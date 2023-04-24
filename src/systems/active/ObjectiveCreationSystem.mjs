@@ -50,16 +50,14 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(objectiveID);
     // 2) add a objectiveDescription component
-    CHIPPRAGI.addComponent( objectiveID, 'ObjectiveDescription', {
-      entityID : objectiveID,
+    let componentData = {
       objective : data.objectiveDescription,
       complete : false,
-    });
+    };
+
+    CHIPPRAGI.addComponent( objectiveID, 'ObjectiveDescription', componentData);
     //_eventType, _entityID, _componentName, _sourceSystem, data
-    CHIPPRAGI.MessageBus.systemMessage( 'newObjective', objectiveID, 'ObjectiveDescription', this.info, { 
-      objective : data.objectiveDescription,
-      complete : false
-    } );
+    CHIPPRAGI.MessageBus.systemMessage( 'newObjective', objectiveID, 'ObjectiveDescription', this.info, componentData);
   },
  
   getHashId(_objectiveDescription){
