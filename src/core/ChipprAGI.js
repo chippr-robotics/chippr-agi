@@ -102,11 +102,11 @@ export class ChipprAGI {
   }
 
   subscribe(eventType, listener){
-    this.MessageBus.subscriber.subscribe(eventType, listener);
+    this.MessageBus.subscribe(eventType, listener);
   }
 
   publish(eventType, eventData) {
-    this.MesageBus.publisher.publish(eventType, eventData);
+    this.MesageBus.publish(eventType, eventData);
   }
 }
 

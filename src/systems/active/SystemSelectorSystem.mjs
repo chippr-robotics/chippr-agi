@@ -11,9 +11,9 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
 
   init: function () {
     //should trigger only if a entity has a description
-    CHIPPRAGI.subscribe('UPDATE',update(eventData));
-    CHIPPRAGI.subscribe('REMOVE',update(eventData));
-    CHIPPRAGI.subscribe('TICK',update(eventData));
+    CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
+    CHIPPRAGI.subscribe('REMOVE', (eventData) => {this.remove(eventData)});
+    CHIPPRAGI.subscribe('TICK', (eventData) => {this.tick(eventData)});
     CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
       if (eventData.eventType === 'newEntity') {
         setTimeout(async ()=>{
