@@ -16,7 +16,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
     CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
       if (eventData[0].eventType === 'newObjective') {
-      //  console.log('generate task system found new objective');
+        //console.log(`generate task system found new objective ${JSON.stringify(eventData)}`);
         this.handleNewObjective(eventData[0]);
       }
       });
@@ -57,18 +57,19 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //4) generate tasks
         //todo loop until a valid object is returned
         let success = false;
+        let taskList = [];
         //throw error;
         let newTasks = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
         //console.log(newTasks);
-        console.log(`new tasks returned: ${newTasks}`)
+        //console.log(`new tasks returned: ${newTasks}`)
         while (!success){
         //5) generate event to create for each tasks 
         //console.log(success);
           try {
             JSON.parse(newTasks).forEach( async task => {
               let taskID = CHIPPRAGI.Util.getHashId(task.task);
+              //console.log( `in the task loop parsing task:${JSON.stringify(taskID)}`);
               //create an entity
-              //console.log(`making task ${task.task}`)
               CHIPPRAGI.createEntity(taskID);
               //add the description component
               CHIPPRAGI.addComponent( taskID, 'TaskDescription', {
@@ -80,12 +81,13 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
                parentId : eventData.payload.entityID,
               });
               let entityData = {
+                entityID : taskID,
                 task : task.task,
-                parentId : eventData.payload.entityID,
               };
               //announce the task
               //_eventType, _entityID, _componentName, _sourceSystem, _data
-              CHIPPRAGI.MessageBus.systemMessage( 'newEntity', taskID, 'TaskDescription', this.info, entityData);
+              //console.log( `sending message with taskID: ${taskID}`);
+              taskList.push(entityData);
             });
             success = true;
           } catch(error) {
@@ -93,7 +95,13 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
           //console.log(newTasks);
           //console.log(error);
             newTasks = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
-        }         
+        }
+        //console.log(`this is my current TaskList: ${JSON.stringify(taskList)}`);         
+        taskList.forEach( async t =>{
+          //console.log(JSON.stringify(t));
+          CHIPPRAGI.MessageBus.systemMessage('newEntity', t.entityID, 'TaskDescription', this.info, t.task);
+          //await CHIPPRAGI.Util.delay(5000);
+        } )
       }
     },
 });

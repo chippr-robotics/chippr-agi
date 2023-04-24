@@ -14,6 +14,8 @@ export class Utility {
     let hashID = hash.read().toString('hex').slice(0,10);
     return hashID;
   }
+  
+  async delay(ms) {new Promise(resolve => setTimeout(resolve, ms))}
 
 }
 

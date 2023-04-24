@@ -87,7 +87,7 @@ export class ChipprAGI {
         ON: 'JSON',
         PREFIX: `idx:${componentName}:`,
       });
-      //save for loacl use
+      //save for local use
       this.components[componentName] = component;
     } 
   }

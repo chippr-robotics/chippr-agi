@@ -14,14 +14,8 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
-      //console.log(eventData[0].eventType);
-      if (eventData[0].eventType === 'newEntity') {
-        //console.log('System Selector: running now!');
-        setTimeout(async ()=>{
-          this.handleSelectSystem(eventData[0])}
-          ,7000);
-        }
+    CHIPPRAGI.subscribe('SYSTEM', async (type, eventData) => {
+      if (eventData[0].eventType === 'newEntity') {await this.handleSelectSystem(eventData[0])}
         });
   },
   
@@ -30,15 +24,20 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
      },
 
   handleSelectSystem: async function (data) {
-    const systemDescriptions = [];
-
+    let systemDescriptions = [];
+    let taskDescription;
+    let entityID = data.payload.entityID;
+    let prompt = [];
+    console.log(`This is the data coming to SSS: ${JSON.stringify(data.payload.entityID)}`);
     // Iterate through all registered systems and extract the description
     for (const systemName in CHIPPRAGI.systems) {
+      if ( systemName != 'SystemSelectorSystem') {
       const system = CHIPPRAGI.systems[systemName];
-      systemDescriptions.push({
-        systemName: systemName,
-        description: system.info.description,
-      });
+        systemDescriptions.push({
+          systemName: systemName,
+          description: system.info.description,
+        });
+      }
     }
 
     
@@ -52,16 +51,20 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     //
     //3) replace varaible with context
     //console.log(`event data: ${JSON.stringify(data)}`);
-    let taskDescription;
-    if (CHIPPRAGI.getComponentData(data.entityID, 'TaskDescription') != null){
-      taskDescription = CHIPPRAGI.getComponentData(data.entityID, 'TaskDescription').task;
-    } else if (CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription') != null){
-      taskDescription = CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription').objective;
+    //console.log(`this is the entity ID :${entityID}`);
+    let taskFinder = await CHIPPRAGI.getComponentData(entityID, 'TaskDescription'); 
+    let objectiveFinder = await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription');
+    if ( taskFinder != null){
+      taskDescription = taskFinder.task;
+    } else if (objectiveFinder != null){
+      taskDescription = objectiveFinder.objective;
     };
     
+    //console.log(`sss taskDescription: ${await CHIPPRAGI.getComponentData(entityID, 'TaskDescription')}`);
+    //console.log(`sss objDescription: ${await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription')}`);
     //console.log(`SSS: objetive: ${JSON.stringify(taskDescription)}`);
     //console.log(`SSS: objetive: ${JSON.stringify(CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription'))}`);
-    let prompt = [];
+    
     JSON.parse(outbound).task_prompt.forEach( t => {
       t = t.replace('{{ taskDescription }}', taskDescription);
       t = t.replace('{{ systemDescriptions }}', JSON.stringify(systemDescriptions));
@@ -71,20 +74,20 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     //console.log(`SystemSelectorSystem : outbound prompt: ${prompt.join('\n')}`);
       
     // Send the prompt to the language model
-    const systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
+    let systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
     
     // Extract the system name from the response
-    console.log(`SystemSelectorSystem : ${JSON.stringify(systemName)}`);
+    //console.log(`SystemSelectorSystem response: ${JSON.stringify(systemName)}`);
 
     let payloadData = {
       recommendedSystem : systemName,
     };
 
     //add a system selector component
-    CHIPPRAGI.addComponent( data.entityID, 'SystemSelection', payloadData);
+    CHIPPRAGI.addComponent( entityID, 'SystemSelection', payloadData);
 
     
     //_eventType, _entityID, _componentName, _sourceSystem, _data
-    CHIPPRAGI.MessageBus.systemMessage( 'systemSelected', data.entityID, 'SystemSelection', this.info, payloadData);
+    CHIPPRAGI.MessageBus.systemMessage( 'systemSelected', entityID, 'SystemSelection', this.info, payloadData);
   }
 });

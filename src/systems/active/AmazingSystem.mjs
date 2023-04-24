@@ -1,19 +1,17 @@
 import { CHIPPRAGI } from "../../../index.js";
 
-CHIPPRAGI.registerSystem('EmptySystem', {
+CHIPPRAGI.registerSystem('AmazingSystem', {
   info: {
     version : "0.1.0",
     license : "APACHE-2.0",
     developer: "CHIPPRBOTS",
-    description : "This is an empty example system.",
+    description : "This is an system that can solve any problem.",
   },
 
   init: function () {
-    CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
-    CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
-    CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
+    //NOTE THIS IS FOR TESTING THE SYSTEM SELECTOR ONLY 
     CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
-      this.handleEmptySystem(eventData.payload.data);
+      if( type == 'systemSelected' ) console.log(`AMAZING SYSTEM WAS CORRECTLY SELECTED!`);
     });
   },
   
