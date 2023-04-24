@@ -2,29 +2,32 @@ import { CHIPPRAGI } from "../../index.js";
 
 CHIPPRAGI.registerSystem('EmptySystem', {
   info: {
-    version : "",
-    license : "",
-    developer: "",
-    description : "",
+    version : "0.1.0",
+    license : "APACHE-2.0",
+    developer: "CHIPPRBOTS",
+    description : "This is an empty example system.",
   },
 
-  init: function (_eventEmitter) {
-    _eventEmitter.on('emptySystem', (data) => {
-      this.handleEmptySystem(data);
+  init: function () {
+    CHIPPRAGI.subscribe('UPDATE',update(eventData));
+    CHIPPRAGI.subscribe('REMOVE',update(eventData));
+    CHIPPRAGI.subscribe('TICK',update(eventData));
+    CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
+      this.handleEmptySystem(eventData.payload.data);
     });
   },
   
-  update: function (entityId, componentData) {
+  update: function (eventData) {
     // Do something when the component's data is updated, if needed.
     // entityId is the ID of the entity this component is attached to.
     // componentData contains the updated data for the component.
   },
   
-  remove: function (entityID) {
+  remove: function (eventData) {
     // Do something when the component or its entity is detached, if needed.
   },
   
-  tick: function (time, timeDelta) {
+  tick: function (eventData) {
     // Do something on every scene tick or frame, if needed.
     // entityId is the ID of the entity this component is attached to.
     // time is the current time in milliseconds.

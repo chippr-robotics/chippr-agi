@@ -2,21 +2,24 @@ import { CHIPPRAGI } from "../../../index.js";
 
 CHIPPRAGI.registerSystem('TaskEmbeddingSystem', {
   info: {
-    version : "",
-    license : "",
-    developer: "",
+    version : "0.1.0",
+    license : "APACHE-2.0",
+    developer: "CHIPPRBOTS",
     description : "This system creates an embedding for a task description that can be used for next neighbor lookup",
   },
 
-  init: function (_eventEmitter) {
-        _eventEmitter.on('newEntity', (data) => {
-          console.log('TaskEmbeddingSystem: newEntity');
-          setTimeout(async () => {
-            this.handleNewEntity(data)    
+  init: function () {
+    CHIPPRAGI.subscribe('UPDATE',update(eventData));
+    CHIPPRAGI.subscribe('REMOVE',update(eventData));
+    CHIPPRAGI.subscribe('TICK',update(eventData));
+    CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
+      if (eventData.eventType == 'newEntity') {
+        setTimeout(async () => {
+            this.handleNewEntity(data.payload.data)    
           },
-          5000,
-          data)
-          });
+          5000)
+        };   
+    });
   },
 
   remove: function () {

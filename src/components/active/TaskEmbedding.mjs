@@ -28,6 +28,10 @@ CHIPPRAGI.registerComponent('TaskEmbedding', {
       }, 
     },
        
-    info:{}
-    
+    info: {
+      version : "0.1.0",
+      license : "APACHE-2.0",
+      developer: "CHIPPRBOTS",
+      description : "This component shows the embedding of a task",
+    },
   });

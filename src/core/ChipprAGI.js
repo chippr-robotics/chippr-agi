@@ -57,14 +57,9 @@ export class ChipprAGI {
     //check if we store components in the db or not
     if(this.SWARM_MODE != true){
       this.entities[entityId][componentName] = componentData;
-      this.components[componentName].init(entityId, componentData);
       return true;
     } else {
       this.vectorDb.save( `idx:${componentName}:${entityId}`, '$',  componentData);
-      this.vectorDb.get(`idx:${componentName}:${entityId}`).then((component)=>{
-        //run the local function on the component
-        this.components[componentName].init(entityId, componentData);
-      })
     }
   }
 

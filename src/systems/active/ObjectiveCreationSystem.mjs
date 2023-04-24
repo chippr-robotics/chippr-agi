@@ -4,31 +4,32 @@ import { createHash } from 'node:crypto';
 
 CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
   info: {
-    version : "",
-    license : "",
-    developer: "",
+    version : "0.1.0",
+    license : "APACHE-2.0",
+    developer: "CHIPPRBOTS",
     description : "This system listens for an event containg a new objective and creates an entity for the objective.",
   },
 
-  init: function (_eventEmitter) {
-      _eventEmitter.on('createObjective', (data) => {
-        console.log('ObjectiveCreationSystem: createObjective');
-        this.handleCreateObjective(data);
-      });
+  init: function () {
+    CHIPPRAGI.subscribe('UPDATE',update(eventData));
+    CHIPPRAGI.subscribe('REMOVE',update(eventData));
+    CHIPPRAGI.subscribe('TICK',update(eventData));
+    CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
+      if (eventData.eventType === 'createObjective') this.handleCreateObjective(eventData.payload.data);
+    });
   },
 
-  update: function (entityId, componentData) {
+  update: function (eventData) {
     // Do something when the component's data is updated, if needed.
     // entityId is the ID of the entity this component is attached to.
     // componentData contains the updated data for the component.
   },
 
-  remove: function () {
+  remove: function (eventData) {
     // Do something when the component or its entity is detached, if needed.
-    this.CHIPPRAGI.eventBus.off('createObjective', this.handleCreateObjective);
-  },
+    },
 
-  tick: function (entityId, time, timeDelta) {
+  tick: function (eventData) {
     // Do something on every scene tick or frame, if needed.
     // entityId is the ID of the entity this component is attached to.
     // time is the current time in milliseconds.
@@ -48,7 +49,17 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
       objective : data.objectiveDescription,
       complete : false,
     });
-    CHIPPRAGI.emit('newObjective', { objectiveID : objectiveID });
+
+    let newMessage = { ...CHIPPRAGI.MessageBus.MessageSchema };
+    newMessage.eventType = 'newObjective';
+    newMessage.payload.entityID = objectiveID;
+    newMessage.payload.component = 'ObjectiveDescription';
+    newMessage.payload.data = { 
+      objective : data.objectiveDescription,
+      complete : false
+    };
+    newMessage.metadata.sourceSystem = this.info;
+    CHIPPRAGI.publish('SYSTEM', [newMessage]);
   },
  
   getHashId(_objectiveDescription){

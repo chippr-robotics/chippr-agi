@@ -2,19 +2,23 @@ import { CHIPPRAGI } from "../../../index.js";
 
 CHIPPRAGI.registerSystem('TaskExecutionSystem', {
     info: {
-      version : "",
-      license : "",
-      developer: "",
+      version : "0.1.0",
+      license : "APACHE-2.0",
+      developer: "CHIPPRBOTS",
       description : "This system listens for execute task message and sends the task along with context to get longer text ",
     },
 
-    init: function (_eventEmitter) {
-      _eventEmitter.on('executeTask', (data) => {
-        this.handleExecuteTask(data);
-      });
+    init: function (eventData) {
+      CHIPPRAGI.subscribe('UPDATE',update(eventData));
+      CHIPPRAGI.subscribe('REMOVE',update(eventData));
+      CHIPPRAGI.subscribe('TICK',update(eventData));
+      CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
+          this.handleExecuteTask(eventData.payload.data)    
+        },
+        5000);
     },
   
-    remove: function (entityID) {
+    remove: function (eventData) {
       // Do something when the component or its entity is detached, if needed.
     },
     

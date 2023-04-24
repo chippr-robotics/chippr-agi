@@ -5,25 +5,27 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
   info: {
     version: "0.1.0",
     license: "Apache-2.0",
-    developer: "",
+    developer: "CHIPPRBOTS",
     description: "A system that selects the most appropriate system for a given task description.",
   },
 
-  init: function (_eventEmitter) {
+  init: function () {
     //should trigger only if a entity has a description
-    _eventEmitter.on('newEntity', (data) => {
-      console.log('SystemSelectorSystem: newEntity');
-      setTimeout(async ()=>{
-        this.handleSelectSystem(data)}
-        ,7000,
-        data);
-    });
+    CHIPPRAGI.subscribe('UPDATE',update(eventData));
+    CHIPPRAGI.subscribe('REMOVE',update(eventData));
+    CHIPPRAGI.subscribe('TICK',update(eventData));
+    CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
+      if (eventData.eventType === 'newEntity') {
+        setTimeout(async ()=>{
+          this.handleSelectSystem(eventData.payload.data)}
+          ,7000);
+        }
+        });
   },
   
   remove: function () {
     // Do something when the component or its entity is detached, if needed.
-    //this.CHIPPRAGI.eventBus.off('newEntity', this.handleSelectSystem);
-  },
+     },
 
   handleSelectSystem: async function (data) {
     const systemDescriptions = [];

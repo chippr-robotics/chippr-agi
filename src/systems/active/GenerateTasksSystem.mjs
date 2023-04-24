@@ -4,9 +4,9 @@ import { createHash } from 'node:crypto';
 
 CHIPPRAGI.registerSystem('GenerateTasksSystem', {
   info: {
-    version : "",
-    license : "",
-    developer: "",
+    version : "0.1.0",
+    license : "APACHE-2.0",
+    developer: "CHIPPRBOTS",
     description : "This system listens for new objectives and creates a list of tasks. It then creates entities for those tasks",
   },
 
@@ -15,7 +15,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     CHIPPRAGI.subscribe('REMOVE',update(eventData));
     CHIPPRAGI.subscribe('TICK',update(eventData));
     CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
-      if (eventData.eventType === 'newObjective') this.handleNewObjective(eventData.payload);
+      if (eventData.eventType === 'newObjective') this.handleNewObjective(eventData.payload.data);
     });
   },
   

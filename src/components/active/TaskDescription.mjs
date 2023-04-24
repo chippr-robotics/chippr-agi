@@ -16,8 +16,12 @@ CHIPPRAGI.registerComponent('TaskDescription', {
           type: SchemaFieldTypes.TAG,
           AS: 'complete'
       },
-    //TODO ADD SCHEMA VERSIONING     
-  },
+    },
   
-  info: {}
+    info: {
+      version : "0.1.0",
+      license : "APACHE-2.0",
+      developer: "CHIPPRBOTS",
+      description : "This component is used to display a task description",
+    },
 });
