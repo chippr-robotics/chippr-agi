@@ -2,10 +2,10 @@ import { CHIPPRAGI } from "../../../index.js";
 
 CHIPPRAGI.registerSystem('DashboardSystem', {
     info: {
-        version : "0,0,0",
-        license : "",
-        developer: "",
-        description : "this system displays a cli dashboard for system testing purposes",
+        version : "0.1.0",
+        license : "APACHE-2.0",
+        developer: "CHIPPRBOTS",
+        description : "This system displays a cli dashboard for system testing purposes",
     },
 
     init: function () {

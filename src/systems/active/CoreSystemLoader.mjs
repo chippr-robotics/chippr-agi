@@ -5,7 +5,7 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
   info: {
     version : "0.1.1",
     license : "Apache-2.0",
-    developer: "",
+    developer: "CHIPPRBOTS",
     description : "Auto load and unload systems and components!",
   },
   

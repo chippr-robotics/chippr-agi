@@ -16,7 +16,10 @@ CHIPPRAGI.registerComponent('ObjectiveDescription',{
             AS: 'complete'
         },     
     },
-
-    info:{}
-    
+    info: {
+        version : "0.1.0",
+        license : "APACHE-2.0",
+        developer: "CHIPPRBOTS",
+        description : "This component shows the objective description of an entity.",
+      },    
 });
