@@ -11,9 +11,9 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
   },
 
   init: function () {
-    CHIPPRAGI.subscribe('UPDATE',update(eventData));
-    CHIPPRAGI.subscribe('REMOVE',update(eventData));
-    CHIPPRAGI.subscribe('TICK',update(eventData));
+    CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
+    CHIPPRAGI.subscribe('REMOVE', (eventData) => {this.remove(eventData)});
+    CHIPPRAGI.subscribe('TICK', (eventData) => {this.tick(eventData)});
     CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
       if (eventData.eventType === 'newObjective') this.handleNewObjective(eventData.payload.data);
     });

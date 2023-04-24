@@ -9,9 +9,9 @@ CHIPPRAGI.registerSystem('TaskExecutionSystem', {
     },
 
     init: function (eventData) {
-      CHIPPRAGI.subscribe('UPDATE',update(eventData));
-      CHIPPRAGI.subscribe('REMOVE',update(eventData));
-      CHIPPRAGI.subscribe('TICK',update(eventData));
+      CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
+      CHIPPRAGI.subscribe('REMOVE', (eventData) => {this.remove(eventData)});
+      CHIPPRAGI.subscribe('TICK', (eventData) => {this.tick(eventData)});
       CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
           this.handleExecuteTask(eventData.payload.data)    
         },
