@@ -1,14 +1,20 @@
 //import { EventEmitter } from 'events';
-import PubSub from 'pubsub-js';
-import messageSchema from './messageSchema.json' assert { type: 'json' };
+import { createHash } from 'node:crypto';
 
-export class Util {
+export class Utility {
   constructor(chipprConfig) {
-
   }
 
-  
-  
+  getHashId( _dataToHash ){
+    //create a hash
+    let hash =  createHash('sha256');
+    hash.write(_dataToHash);
+    hash.end();
+    //use the first 10 bytes of the hash as the hashID
+    let hashID = hash.read().toString('hex').slice(0,10);
+    return hashID;
+  }
+
 }
 
 

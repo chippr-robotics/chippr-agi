@@ -71,17 +71,9 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     //console.log(`SystemSelectorSystem : outbound prompt: ${prompt.join('\n')}`);
       
     // Send the prompt to the language model
-    const response = await CHIPPRAGI.langModel.createCompletion({
-      model: CHIPPRAGI.langModel.MODEL_NAME,
-      prompt: prompt.join('\n'),
-      max_tokens: 50,
-      n: 1,
-      stop: null,
-      temperature: 0.7,
-    });
+    const systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
     
     // Extract the system name from the response
-    let systemName = response.data.choices[0].text.trim();
     console.log(`SystemSelectorSystem : ${JSON.stringify(systemName)}`);
 
     let payloadData = {

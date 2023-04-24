@@ -1,7 +1,5 @@
 import { CHIPPRAGI } from "../../../index.js";
 
-import { createHash } from 'node:crypto';
-
 CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
   info: {
     version : "0.1.0",
@@ -46,7 +44,7 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
     // 0) create a objective ID
     //console.log('createObjective triggered');
     //console.log(JSON.stringify(`ocs raw data ${JSON.stringify(data)}`));
-    let objectiveID = this.getHashId(data.objectiveDescription);
+    let objectiveID = CHIPPRAGI.Util.getHashId(data.objectiveDescription);
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(objectiveID);
     // 2) add a objectiveDescription component
@@ -58,16 +56,6 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
     CHIPPRAGI.addComponent( objectiveID, 'ObjectiveDescription', componentData);
     //_eventType, _entityID, _componentName, _sourceSystem, data
     CHIPPRAGI.MessageBus.systemMessage( 'newObjective', objectiveID, 'ObjectiveDescription', this.info, componentData);
-  },
- 
-  getHashId(_objectiveDescription){
-    //create a hash
-    let hash =  createHash('sha256');
-    hash.write(_objectiveDescription);
-    hash.end();
-    //use the first 10 bytes of the hash as the hashID
-    let hashID = hash.read().toString('hex').slice(0,10)
-    return hashID
   }
-
+ 
 });

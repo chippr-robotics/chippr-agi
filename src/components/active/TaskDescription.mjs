@@ -4,10 +4,6 @@ import { SchemaFieldTypes } from "redis";
 
 CHIPPRAGI.registerComponent('TaskDescription', {
     schema: {
-      '$.entityID': {
-          type: SchemaFieldTypes.TEXT,
-          AS: 'entityID'
-      },
       '$.task': {
           type: SchemaFieldTypes.TEXT,
           AS: 'task'
