@@ -11,11 +11,16 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
   },
 
   init: function () {
-    CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
-    CHIPPRAGI.subscribe('REMOVE', (eventData) => {this.remove(eventData)});
-    CHIPPRAGI.subscribe('TICK', (eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
-      if (eventData.eventType === 'createObjective') this.handleCreateObjective(eventData.payload.data);
+    CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
+    CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
+    CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
+    CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
+      //console.log('made it this far');
+      //console.log(JSON.stringify(eventData[0]));
+      if (eventData[0].eventType === 'createObjective') {
+        //console.log(`createObjective ${eventData}`);
+        this.handleCreateObjective(eventData[0].payload.data);
+      }
     });
   },
 
@@ -39,7 +44,8 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
   handleCreateObjective: function (data) {
     // create the task associated with the given taskId
     // 0) create a objective ID
-    //console.log('createObjective');
+    //console.log('createObjective triggered');
+    //console.log(JSON.stringify(`ocs raw data ${JSON.stringify(data)}`));
     let objectiveID = this.getHashId(data.objectiveDescription);
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(objectiveID);
@@ -59,6 +65,7 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
       complete : false
     };
     newMessage.metadata.sourceSystem = this.info;
+    //console.log(JSON.stringify(newMessage));
     CHIPPRAGI.publish('SYSTEM', [newMessage]);
   },
  

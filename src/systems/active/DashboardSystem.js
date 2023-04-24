@@ -10,8 +10,8 @@ CHIPPRAGI.registerSystem('DashboardSystem', {
 
     init: function () {
         if (CHIPPRAGI.DASHBOARD == true){
-            CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
-                this.dashboard(eventData);
+            CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
+                this.dashboard(eventData[0]);
             });
         }
     },

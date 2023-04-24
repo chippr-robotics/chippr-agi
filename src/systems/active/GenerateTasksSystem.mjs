@@ -11,12 +11,15 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
   },
 
   init: function () {
-    CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
-    CHIPPRAGI.subscribe('REMOVE', (eventData) => {this.remove(eventData)});
-    CHIPPRAGI.subscribe('TICK', (eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
-      if (eventData.eventType === 'newObjective') this.handleNewObjective(eventData.payload.data);
-    });
+    CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
+    CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
+    CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
+    CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
+      if (eventData[0].eventType === 'newObjective') {
+      //  console.log('generate task system found new objective');
+        this.handleNewObjective(eventData[0]);
+      }
+      });
   },
   
     update: function (eventData) {
@@ -42,8 +45,9 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //none needed yet for fresh tasks....
         //3) replace varaible with context
         //console.log(`event data: ${JSON.stringify(data)}`);
-        let objectiveDescription = CHIPPRAGI.getComponentData(eventData.entityID, 'ObjectiveDescription');
-        //console.log(`objetive: ${objectiveDescription}`);
+        //console.log(`outbound: ${JSON.stringify(eventData)}`);
+        let objectiveDescription = CHIPPRAGI.getComponentData(eventData.payload.entityID, 'ObjectiveDescription');
+        //console.log(`objective: ${JSON.stringify(objectiveDescription)}`);
         let prompt = [];
         JSON.parse(outbound).task_prompt.forEach( t => {
             prompt.push(t.replace('{{ objective }}', objectiveDescription.objective));
@@ -74,7 +78,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
               //add a parent component
               CHIPPRAGI.addComponent( taskID, 'TaskParent', {
                entityID : taskID,
-               parentId : data.objectiveID,
+               parentId : eventData.payload.entityID,
               });
               //announce the task
             });

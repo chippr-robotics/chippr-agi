@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "eventType": "",
   "payload": {
-    "entityId": "123",
+    "entityID": "123",
     "componentName": "",
     "data": {}
   },

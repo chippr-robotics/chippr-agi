@@ -11,13 +11,13 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
 
   init: function () {
     //should trigger only if a entity has a description
-    CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
-    CHIPPRAGI.subscribe('REMOVE', (eventData) => {this.remove(eventData)});
-    CHIPPRAGI.subscribe('TICK', (eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', (eventData) => {
+    CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
+    CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
+    CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
+    CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
       if (eventData.eventType === 'newEntity') {
         setTimeout(async ()=>{
-          this.handleSelectSystem(eventData.payload.data)}
+          this.handleSelectSystem(eventData[0].payload.data)}
           ,7000);
         }
         });
