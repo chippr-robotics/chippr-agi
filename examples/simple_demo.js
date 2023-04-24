@@ -1,4 +1,7 @@
 import { CHIPPRAGI }  from "../index.js";
+import * as dotenv from 'dotenv';
+    dotenv.config();
+
 CHIPPRAGI.subscribe('SYSTEM', (message, data) => {});//console.log(`simple demo message:${message}, data:${JSON.stringify(data[0])}`)});
 setTimeout(()=> {
     let newMessage = { ...CHIPPRAGI.MessageBus.MessageSchema };

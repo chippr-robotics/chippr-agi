@@ -1,6 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
-
 import { ChipprAGI } from './src/core/ChipprAGI.js';
 
 
