@@ -1,4 +1,4 @@
-import { CHIPPRAGI } from "../../../index.js";
+import { CHIPPRAGI } from "../../index.js";
 import * as fs from 'fs';
 
 CHIPPRAGI.registerSystem('CoreSystemLoader', {

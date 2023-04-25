@@ -1,4 +1,4 @@
-import { CHIPPRAGI } from "../../../index.js";
+import { CHIPPRAGI } from "../../index.js";
 import * as fs from 'fs';
 
 CHIPPRAGI.registerSystem('SystemSelectorSystem', {
@@ -28,7 +28,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     let taskDescription;
     let entityID = data.payload.entityID;
     let prompt = [];
-    console.log(`This is the data coming to SSS: ${JSON.stringify(data.payload.entityID)}`);
+    //console.log(`This is the data coming to SSS: ${JSON.stringify(data.payload.entityID)}`);
     // Iterate through all registered systems and extract the description
     for (const systemName in CHIPPRAGI.systems) {
       if ( systemName != 'SystemSelectorSystem') {

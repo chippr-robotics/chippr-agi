@@ -1,4 +1,4 @@
-import { CHIPPRAGI }  from "../index.js";
+import { CHIPPRAGI }  from "../src/index.js";
 import * as dotenv from 'dotenv';
     dotenv.config();
 

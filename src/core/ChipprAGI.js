@@ -6,7 +6,7 @@ import { VectorDB } from './Vector-db/vector-db.js'
 import { LanguageModel } from './LangModel/langModel.js';
 import { MessageBus } from './MessageBus/msgBus.js';
 import { Utility } from './Util/Util.js';
-import { CHIPPRAGI } from '../../index.js';
+import { CHIPPRAGI } from '../index.js';
 
 export class ChipprAGI {
   constructor(chipprConfig) {
