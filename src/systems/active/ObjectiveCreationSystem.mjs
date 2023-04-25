@@ -39,11 +39,11 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
     // timeDelta is the time in milliseconds since the last tick.
   },
   
-  handleCreateObjective: function (data) {
+  handleCreateObjective: async function (data) {
     // create the task associated with the given taskId
     // 0) create a objective ID
-    //console.log('createObjective triggered');
-    //console.log(JSON.stringify(`ocs raw data ${JSON.stringify(data)}`));
+    console.log('createObjective triggered');
+    console.log(JSON.stringify(`ocs raw data ${JSON.stringify(data)}`));
     let objectiveID = CHIPPRAGI.Util.getHashId(data.objectiveDescription);
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(objectiveID);

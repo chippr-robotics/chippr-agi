@@ -42,10 +42,13 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //3) replace varaible with context
         //console.log(`event data: ${JSON.stringify(data)}`);
         //console.log(`outbound: ${JSON.stringify(eventData)}`);
-        let objectiveDescription = CHIPPRAGI.getComponentData(eventData.payload.entityID, 'ObjectiveDescription');
-        //console.log(`objective: ${JSON.stringify(objectiveDescription)}`);
+        let objectiveDescription = await CHIPPRAGI.getComponentData(eventData.payload.entityID, 'ObjectiveDescription');
+        //console.log(`outbound: ${objectiveDescription}`);
+        
         let prompt = [];
-        JSON.parse(GenerateTasksPrompt).task_prompt.forEach( t => {
+        //console.log(`prompt: ${GenerateTasksPrompt.task_prompt}`);
+        (GenerateTasksPrompt.task_prompt).forEach( t => {
+           // console.log(objectiveDescription.objective);
             prompt.push(t.replace('{{ objective }}', objectiveDescription.objective));
           },prompt);
         //console.log(`outbound prompt: ${prompt.join('\n')}`);
