@@ -14,13 +14,12 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', async (type, eventData) => {
-      if (eventData[0].eventType === 'newEntity') {await this.handleSelectSystem(eventData[0])}
-        });
   },
   
-  remove: function () {
+
+  update: function (eventData) {
     // Do something when the component or its entity is detached, if needed.
+    if (eventData.eventType === 'addTaskDescription') { this.handleSelectSystem(eventData)}
   },
 
   handleSelectSystem: async function (data) {
@@ -39,8 +38,6 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
         });
       }
     }
-
-    
     // Prepare the prompt with the list of system descriptions
     //console.log('|----outgoing----|' );
     //2) get context

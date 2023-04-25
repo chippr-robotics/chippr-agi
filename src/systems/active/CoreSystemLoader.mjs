@@ -35,7 +35,7 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
   },
 
   handleLoadSystem : function () {
-    //console.log('CoreSystemLoader running');
+    console.log(`'CoreSystemLoader' Loading: `);
     let systems = './src/systems/active/';
     //console.log(systems);
     let components = './src/components/active/';
