@@ -47,16 +47,16 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     //console.log(`event data: ${JSON.stringify(data)}`);
     //console.log(`this is the entity ID :${entityID}`);
     let taskFinder = await CHIPPRAGI.getComponentData(entityID, 'TaskDescription'); 
-    let objectiveFinder = await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription');
-    if ( taskFinder != null){
-      taskDescription = taskFinder.task;
-    } else if (objectiveFinder != null){
-      taskDescription = objectiveFinder.objective;
-    };
+    //let objectiveFinder = await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription');
+    
+    taskDescription = taskFinder.task;
+   
     
     //console.log(`sss taskDescription: ${await CHIPPRAGI.getComponentData(entityID, 'TaskDescription')}`);
     //console.log(`sss objDescription: ${await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription')}`);
-    console.log(`SSS: objetive: ${JSON.stringify(taskDescription)}`);
+    //console.log(`SSS: taskfinder: ${JSON.stringify(taskFinder)}`);
+    //console.log(`SSS: taskDescription: ${JSON.stringify(taskDescription)}`);
+    //console.log(`SSS: entityID: ${JSON.stringify(entityID)}`);
     //console.log(`SSS: objetive: ${JSON.stringify(CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription'))}`);
     
     (SystemSelectorPrompt.task_prompt).forEach( t => {

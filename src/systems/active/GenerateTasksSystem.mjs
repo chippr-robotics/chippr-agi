@@ -11,13 +11,13 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
   },
 
   init: function () {
-    CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
+    CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
     CHIPPRAGI.subscribe('UPDATE', (message) => {this.update(message)});
   },
   
-    update: function (eventData) {
+    update: function (message) {
       // Do something when the component's data is updated, if needed.
       // entityId is the ID of the entity this component is attached to.
       // componentData contains the updated data for the component.
@@ -73,7 +73,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
             JSON.parse(newTasks).forEach( task => {
               let newTask = { ...task};
               newTask.parentID = eventData.payload.entityID;
-              CHIPPRAGI.MessageBus.updateMessage('createEntity', newTask.taskID, eventData.payload.componentName, this.info, newTask);
+              CHIPPRAGI.MessageBus.updateMessage('createEntity', newTask.taskID, 'TaskDescription', this.info, newTask);
             });
             success = true;
           } catch(error) {
