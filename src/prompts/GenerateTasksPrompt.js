@@ -16,7 +16,7 @@ export const GenerateTasksPrompt = {
    "```",
    "[",
    "  {",
-   "      \"taskid\": \"string\",",
+   "      \"taskID\": \"string\",",
    "      \"task\": \"string\",",
    "      \"done\": \"bool\",",
    "  },",

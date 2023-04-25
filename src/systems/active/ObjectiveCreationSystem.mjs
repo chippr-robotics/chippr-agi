@@ -42,8 +42,8 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
   handleCreateObjective: async function (data) {
     // create the task associated with the given taskId
     // 0) create a objective ID
-    console.log('createObjective triggered');
-    console.log(JSON.stringify(`ocs raw data ${JSON.stringify(data)}`));
+    //console.log('createObjective triggered');
+    //console.log(JSON.stringify(`ocs raw data ${JSON.stringify(data)}`));
     let objectiveID = CHIPPRAGI.Util.getHashId(data.objectiveDescription);
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(objectiveID);

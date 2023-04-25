@@ -26,6 +26,7 @@
     "openai": "^3.2.1",
     "os": "^0.1.2",
     "pubsub-js": "^1.9.4",
+    "pubsub.js": "^1.5.2",
     "redis": "^4.6.5",
     "rollup-plugin-polyfill-node": "^0.12.0",
     "url": "^0.11.0"
