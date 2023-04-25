@@ -1,6 +1,4 @@
-export default SystemSelectorPrompt = {
-
-
+export const SystemSelectorPrompt = {
   "info" : {
     "name" : "AI Agent",
     "author" : "",

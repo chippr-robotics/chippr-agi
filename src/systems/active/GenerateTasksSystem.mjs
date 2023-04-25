@@ -1,5 +1,5 @@
 import { CHIPPRAGI } from "../../index.js";
-import GenerateTasksPrompt from '../../prompts/GenerateTasksPrompt.js'
+import { GenerateTasksPrompt } from '../../prompts/GenerateTasksPrompt.js'
 
 
 CHIPPRAGI.registerSystem('GenerateTasksSystem', {

@@ -1,5 +1,5 @@
 import { CHIPPRAGI } from "../../index.js";
-import SystemSelectorPrompt from '../../prompts/SystemSelectorPrompt.js'
+import { SystemSelectorPrompt } from '../../prompts/SystemSelectorPrompt.js'
 
 CHIPPRAGI.registerSystem('SystemSelectorSystem', {
   info: {
