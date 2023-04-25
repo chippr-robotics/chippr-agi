@@ -5,8 +5,8 @@ import * as dotenv from 'dotenv';
 
 setTimeout(()=> {
     //_eventType, _entityID, _componentName, _sourceSystem, _data
-    CHIPPRAGI.MessageBus.systemMessage( 'createObjective', '0000000000', 'ObjectiveDescription', {}, { 
-        objectiveDescription : "This is a test objective"
+    CHIPPRAGI.MessageBus.updateMessage( 'createEntity', '0000000000', 'ObjectiveDescription', {}, { 
+        taskDescription : "Write the worlds greates robot detective novel",
     });  
     console.log('Creating test objective');
 },10000);
