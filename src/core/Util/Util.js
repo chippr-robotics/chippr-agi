@@ -7,7 +7,7 @@ export class Utility {
   getHashId( _dataToHash ){
     let hash = CryptoJS.SHA256('_dataToHash');
     //use the first 10 bytes of the hash as the hashID
-    let hashID = hash.toString('hex').slice(0,10);
+    let hashID = hash.toString(CryptoJS.enc.Hex).slice(0,10);
     return hashID;
   }
   
