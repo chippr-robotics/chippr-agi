@@ -14,10 +14,11 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
-      if (eventData[0].eventType === 'newObjective') {
+    CHIPPRAGI.subscribe('SYSTEM', (message) => {
+      let eventData = JSON.parse(message);
+      if (eventData.eventType === 'newObjective') {
         //console.log(`generate task system found new objective ${JSON.stringify(eventData)}`);
-        this.handleNewObjective(eventData[0]);
+        this.handleNewObjective(eventData);
       }
       });
   },

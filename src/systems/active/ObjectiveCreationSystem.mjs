@@ -12,12 +12,12 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
     CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
+    CHIPPRAGI.subscribe('SYSTEM', (message) => {
       //console.log('made it this far');
-      //console.log(JSON.stringify(eventData[0]));
-      if (eventData[0].eventType === 'createObjective') {
+      let eventData = JSON.parse(message);
+      if (eventData.eventType === 'createObjective') {
         //console.log(`createObjective ${eventData}`);
-        this.handleCreateObjective(eventData[0].payload.data);
+        this.handleCreateObjective(eventData.payload.data);
       }
     });
   },
