@@ -11,13 +11,14 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
 
   init: function () {
     //should trigger only if a entity has a description
-    CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
+    CHIPPRAGI.subscribe('UPDATE', (message) => {this.update(message)});
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
   },
   
 
-  update: function (eventData) {
+  update: function (message) {
+    let eventData = JSON.parse(message);
     // Do something when the component or its entity is detached, if needed.
     if (eventData.eventType === 'addTaskDescription') { this.handleSelectSystem(eventData)}
   },
