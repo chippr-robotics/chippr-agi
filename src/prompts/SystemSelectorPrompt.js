@@ -1,5 +1,5 @@
 export const SystemSelectorPrompt = {
-  "info" : {
+  info : {
     "name" : "AI Agent",
     "author" : "",
     "version" : "1.0.0",
@@ -7,7 +7,7 @@ export const SystemSelectorPrompt = {
     "website" : ""
   },
   
-  "task_prompt" : [ 
+  task_prompt : [ 
     "Given the task description \" {{ taskDescription }} \",", 
     "Which of the following systems would be the best to handle it:",
     "{{ systemDescriptions }}",

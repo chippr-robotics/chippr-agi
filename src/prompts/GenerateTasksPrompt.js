@@ -1,5 +1,5 @@
 export const GenerateTasksPrompt = {
-  "info" : {
+  info : {
     "name" : "AI Agent",
     "author" : "",
     "version" : "1.0.0",
@@ -7,7 +7,7 @@ export const GenerateTasksPrompt = {
     "website" : ""
   },
 
-  "task_prompt" : [ 
+  task_prompt : [ 
     "You are an AI agent that creates lists of tasks to complete objectives.",
     "Your objective is {{ objective }}.", 
     "Return a list of tasks with an estimated reward value based on how important the task is to the objective.", 

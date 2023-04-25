@@ -21,7 +21,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
   
   remove: function () {
     // Do something when the component or its entity is detached, if needed.
-     },
+  },
 
   handleSelectSystem: async function (data) {
     let systemDescriptions = [];
@@ -61,7 +61,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     //console.log(`SSS: objetive: ${JSON.stringify(taskDescription)}`);
     //console.log(`SSS: objetive: ${JSON.stringify(CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription'))}`);
     
-    JSON.parse(SystemSelectorPrompt).task_prompt.forEach( t => {
+    (SystemSelectorPrompt.task_prompt).forEach( t => {
       t = t.replace('{{ taskDescription }}', taskDescription);
       t = t.replace('{{ systemDescriptions }}', JSON.stringify(systemDescriptions));
       prompt.push(t);
