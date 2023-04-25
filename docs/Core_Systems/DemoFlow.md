@@ -7,10 +7,10 @@ graph TD
     B -- entity --> D(System Selection System)
     B -- parent --> E(TaskParentSystem)
     D -- systemselected --> C
-    D -- systemselected --> F
-    D -- systemselected --> G
-    D -- systemselected --> H
-    D -- systemselected --> I
+    D -- systemselected --> F(task Redefiner)
+    D -- systemselected --> G(image creator)
+    D -- systemselected --> H(internet Search)
+    D -- systemselected --> I(...)
     F -- taskCompleted --> J(The Judge)
     G -- taskCompleted --> J
     H -- taskCompleted --> J
