@@ -1,4 +1,4 @@
-import { ChipprAGI } from './src/core/ChipprAGI.js';
+import { ChipprAGI } from './core/ChipprAGI.js';
 
 
 export const CHIPPRAGI = new ChipprAGI({
