@@ -1,4 +1,4 @@
-{
+export const messageSchema  = {
   "version": "1.0.0",
   "eventType": "",
   "payload": {

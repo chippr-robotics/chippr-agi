@@ -1,4 +1,4 @@
-{
+export default GenerateTasksPrompt ={
   "info" : {
     "name" : "AI Agent",
     "author" : "",

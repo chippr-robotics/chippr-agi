@@ -1,6 +1,6 @@
 //import { EventEmitter } from 'events';
 import PubSub from 'pubsub-js';
-import messageSchema from './messageSchema.json';
+import { messageSchema } from './messageSchema.js';
 
 export class MessageBus {
   constructor(chipprConfig) {

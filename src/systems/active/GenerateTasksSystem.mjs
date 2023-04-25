@@ -1,5 +1,5 @@
 import { CHIPPRAGI } from "../../index.js";
-import * as fs from 'fs';
+import GenerateTasksPrompt from '../../prompts/GenerateTasksPrompt.js'
 
 
 CHIPPRAGI.registerSystem('GenerateTasksSystem', {
@@ -37,10 +37,6 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //1) get prompt for generate task
         //console.log('creating tasks');
         //console.log(fs.readdirSync('./src/prompts'));
-        let outbound = fs.readFileSync('./src/prompts/GenerateTasksPrompt.json','utf-8', (error, data) => {
-          if (error) throw error;
-          return data;
-        }); 
         //2) get context
         //none needed yet for fresh tasks....
         //3) replace varaible with context
@@ -49,7 +45,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         let objectiveDescription = CHIPPRAGI.getComponentData(eventData.payload.entityID, 'ObjectiveDescription');
         //console.log(`objective: ${JSON.stringify(objectiveDescription)}`);
         let prompt = [];
-        JSON.parse(outbound).task_prompt.forEach( t => {
+        JSON.parse(GenerateTasksPrompt).task_prompt.forEach( t => {
             prompt.push(t.replace('{{ objective }}', objectiveDescription.objective));
           },prompt);
         //console.log(`outbound prompt: ${prompt.join('\n')}`);
