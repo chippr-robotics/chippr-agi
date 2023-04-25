@@ -1,4 +1,4 @@
-export default GenerateTasksPrompt ={
+export const GenerateTasksPrompt = {
   "info" : {
     "name" : "AI Agent",
     "author" : "",

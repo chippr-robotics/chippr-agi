@@ -31,7 +31,6 @@ export class ChipprAGI {
       //this.eventEmitter.init();
     };
     //load the core systems
-    console.log('|-- Welcome to Chippr AGI! --|');
     //console.log('Loading core systems');
     await import ('../systems/active/CoreSystemLoader.mjs');
     this.systems['CoreSystemLoader'].init();//import ('../systems/active/.mjs');
