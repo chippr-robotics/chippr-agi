@@ -1,17 +1,13 @@
-//import { EventEmitter } from 'events';
-import { createHash } from 'node:crypto';
+import CryptoJS from 'crypto-js';
 
 export class Utility {
   constructor(chipprConfig) {
   }
 
   getHashId( _dataToHash ){
-    //create a hash
-    let hash =  createHash('sha256');
-    hash.write(_dataToHash);
-    hash.end();
+    let hash = CryptoJS.SHA256('_dataToHash');
     //use the first 10 bytes of the hash as the hashID
-    let hashID = hash.read().toString('hex').slice(0,10);
+    let hashID = hash.toString('hex').slice(0,10);
     return hashID;
   }
   
