@@ -58,7 +58,7 @@ export class MessageBus {
   }
 
   updateMessage( _eventType, _entityID, _componentName, _sourceSystem, _data ) {
-    console.log(`type: ${_eventType} entityID: ${_entityID} componentName: ${_componentName}, data: ${_data}`);
+    //console.log(`type: ${_eventType} entityID: ${_entityID} componentName: ${_componentName}, data: ${_data}`);
     let newMessage = { ...this.MessageSchema };
     newMessage.eventType = _eventType;
     newMessage.payload.entityID = _entityID;
@@ -67,7 +67,7 @@ export class MessageBus {
     //metadata management
     newMessage.metadata.timestamp = Math.floor(Date.now());
     newMessage.metadata.sourceSystem = _sourceSystem; 
-    console.log(`Sending update message ${newMessage}`);
+    //console.log(`Sending update message ${newMessage}`);
     this.publish('UPDATE', JSON.stringify(newMessage));
   }
   pubOnce (callback, dependencies) {

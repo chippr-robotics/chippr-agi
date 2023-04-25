@@ -70,7 +70,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
               let newTask = { ...task};
               //console.log(`raw task: ${JSON.stringify(newTask)}`);
               newTask.taskID = CHIPPRAGI.Util.getHashId(task.task);
-              console.log(`updated task: ${JSON.stringify(newTask)}`);              
+              //console.log(`updated task: ${JSON.stringify(newTask)}`);              
               //console.log( `in the task loop parsing task:${JSON.stringify(taskID)}`);
               //create an entity
               CHIPPRAGI.createEntity(newTask.taskID);
