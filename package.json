@@ -18,28 +18,17 @@
   "author": "Cody Burns",
   "license": "Apache-2.0",
   "dependencies": {
-    "@rollup/plugin-node-resolve": "^15.0.2",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
-    "fs": "^0.0.1-security",
     "natural": "^6.2.0",
     "openai": "^3.2.1",
     "os": "^0.1.2",
     "pubsub-js": "^1.9.4",
-    "pubsub.js": "^1.5.2",
     "redis": "^4.6.5",
-    "rollup-plugin-polyfill-node": "^0.12.0",
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
-    "@babel/preset-env": "^7.21.4",
-    "@rollup/plugin-json": "^6.0.0",
     "chai": "^4.3.7",
-    "mocha": "^10.2.0",
-    "rollup": "^2.79.1",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "mocha": "^10.2.0"
   }
 }
