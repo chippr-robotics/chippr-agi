@@ -20,7 +20,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
   update: function (message) {
     let eventData = JSON.parse(message);
     // Do something when the component or its entity is detached, if needed.
-    if (eventData.eventType === 'addTaskDescription') { this.handleSelectSystem(eventData)}
+    if (eventData.eventType === 'addSystemSelection') { this.handleSelectSystem(eventData)}
   },
 
   handleSelectSystem: async function (data) {
@@ -56,7 +56,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     
     //console.log(`sss taskDescription: ${await CHIPPRAGI.getComponentData(entityID, 'TaskDescription')}`);
     //console.log(`sss objDescription: ${await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription')}`);
-    //console.log(`SSS: objetive: ${JSON.stringify(taskDescription)}`);
+    console.log(`SSS: objetive: ${JSON.stringify(taskDescription)}`);
     //console.log(`SSS: objetive: ${JSON.stringify(CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription'))}`);
     
     (SystemSelectorPrompt.task_prompt).forEach( t => {

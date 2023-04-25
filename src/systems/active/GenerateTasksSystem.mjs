@@ -14,19 +14,23 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {this.update(eventData)});
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', (message) => {
-      let eventData = JSON.parse(message);
-      if (eventData.eventType === 'newObjective') {
-        //console.log(`generate task system found new objective ${JSON.stringify(eventData)}`);
-        this.handleNewObjective(eventData);
-      }
-      });
+    CHIPPRAGI.subscribe('UPDATE', (message) => {this.update(message)});
   },
   
     update: function (eventData) {
       // Do something when the component's data is updated, if needed.
       // entityId is the ID of the entity this component is attached to.
       // componentData contains the updated data for the component.
+      let eventData = JSON.parse(message);
+      switch(eventData.eventType){
+        case  'generateTasks' : 
+          this.handleNewObjective(eventData);
+        break;
+        case  'systemSelected' : 
+          this.handleNewObjective(eventData);
+        break;
+        default:
+      }
     },
   
     remove: function (eventData) {
@@ -43,14 +47,14 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
         //3) replace varaible with context
         //console.log(`event data: ${JSON.stringify(data)}`);
         //console.log(`outbound: ${JSON.stringify(eventData)}`);
-        let objectiveDescription = await CHIPPRAGI.getComponentData(eventData.payload.entityID, 'ObjectiveDescription');
+        let entityDescription = await CHIPPRAGI.getComponentData(eventData.payload.entityID, eventData.payload.componentName);
         //console.log(`outbound: ${objectiveDescription}`);
         
         let prompt = [];
         //console.log(`prompt: ${GenerateTasksPrompt.task_prompt}`);
         (GenerateTasksPrompt.task_prompt).forEach( t => {
            // console.log(objectiveDescription.objective);
-            prompt.push(t.replace('{{ objective }}', objectiveDescription.objective));
+            prompt.push(t.replace('{{ objective }}', entityDescription.objective || entityDescription.task));
           },prompt);
         //console.log(`outbound prompt: ${prompt.join('\n')}`);
         
@@ -68,27 +72,8 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
           try {
             JSON.parse(newTasks).forEach( task => {
               let newTask = { ...task};
-              //console.log(`raw task: ${JSON.stringify(newTask)}`);
-              newTask.taskID = CHIPPRAGI.Util.getHashId(task.task);
-              //console.log(`updated task: ${JSON.stringify(newTask)}`);              
-              //console.log( `in the task loop parsing task:${JSON.stringify(taskID)}`);
-              //create an entity
-              CHIPPRAGI.createEntity(newTask.taskID);
-              CHIPPRAGI.MessageBus.systemMessage('newEntity', newTask.taskID, null, this.info, newTask.task);
-              //add the description component
-              CHIPPRAGI.addComponent( newTask.taskID, 'TaskDescription', {
-               task : newTask.task,
-               complete : false,
-              });
-              CHIPPRAGI.MessageBus.updateMessage('addTaskDescription', newTask.taskID, 'TaskDescription', this.info, newTask.task);
-              //add a parent component
-              CHIPPRAGI.addComponent( newTask.taskID, 'TaskParent', {
-               parentId : eventData.payload.entityID,
-              });
-              CHIPPRAGI.MessageBus.updateMessage('addTaskParent', newTask.taskID, 'TaskParent', this.info, newTask.task);
-              //announce the task
-              //_eventType, _entityID, _componentName, _sourceSystem, _data
-              //console.log( `sending message with taskID: ${taskID}`);
+              newTask.parentID = eventData.payload.entityID;
+              CHIPPRAGI.MessageBus.updateMessage('createEntity', newTask.taskID, eventData.payload.componentName, this.info, newTask);
             });
             success = true;
           } catch(error) {
