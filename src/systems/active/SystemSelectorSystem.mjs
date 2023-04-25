@@ -1,5 +1,5 @@
 import { CHIPPRAGI } from "../../index.js";
-import * as fs from 'fs';
+import SystemSelectorPrompt from '../../prompts/SystemSelectorPrompt.js'
 
 CHIPPRAGI.registerSystem('SystemSelectorSystem', {
   info: {
@@ -43,10 +43,6 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     
     // Prepare the prompt with the list of system descriptions
     //console.log('|----outgoing----|' );
-    let outbound = fs.readFileSync('./src/prompts/SystemSelectorPrompt.json','utf-8', (error, data) => {
-      if (error) throw error;
-      return data;
-    }); 
     //2) get context
     //
     //3) replace varaible with context
@@ -65,7 +61,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     //console.log(`SSS: objetive: ${JSON.stringify(taskDescription)}`);
     //console.log(`SSS: objetive: ${JSON.stringify(CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription'))}`);
     
-    JSON.parse(outbound).task_prompt.forEach( t => {
+    JSON.parse(SystemSelectorPrompt).task_prompt.forEach( t => {
       t = t.replace('{{ taskDescription }}', taskDescription);
       t = t.replace('{{ systemDescriptions }}', JSON.stringify(systemDescriptions));
       prompt.push(t);

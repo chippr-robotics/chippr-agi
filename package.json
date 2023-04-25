@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "TESTING=true mocha test/**/*.test.js",
+    "demo": "node examples/simple_demo.js",
     "build": "rollup -c"
   },
   "type": "module",

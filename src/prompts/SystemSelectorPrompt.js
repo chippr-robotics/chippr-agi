@@ -1,4 +1,6 @@
-{
+export default SystemSelectorPrompt = {
+
+
   "info" : {
     "name" : "AI Agent",
     "author" : "",
