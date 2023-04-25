@@ -1,7 +1,6 @@
-import { isNull } from "url/util.js";
 import { CHIPPRAGI } from "../../index.js";
 
-CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
+CHIPPRAGI.registerSystem('TaskParentSystem', {
   info: {
     version : "0.1.0",
     license : "APACHE-2.0",
@@ -16,7 +15,7 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
     CHIPPRAGI.subscribe('SYSTEM', (message) => {});
   },
 
-  update: function (eventData) {
+  update: function (message) {
     // Do something when the component's data is updated, if needed.
     // entityId is the ID of the entity this component is attached to.
     // componentData contains the updated data for the component.
@@ -41,10 +40,10 @@ CHIPPRAGI.registerSystem('ObjectiveCreationSystem', {
   
   handleCreateEntity: async function (data) {
         let parentData = {
-            parentId : eventData.payload.data.parentID
+            parentId : data.payload.data.parentID
         };
-        CHIPPRAGI.addComponent( eventData.payload.entityID, 'TaskParent', parentData );
-        CHIPPRAGI.MessageBus.updateMessage( 'addedParent', eventData.payload.entityID, 'TaskParent', this.info, parentData);
+        CHIPPRAGI.addComponent( data.payload.entityID, 'TaskParent', parentData );
+        CHIPPRAGI.MessageBus.updateMessage( 'addedParent', data.payload.entityID, 'TaskParent', this.info, parentData);
         
         
     
