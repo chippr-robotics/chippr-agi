@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "TESTING=true mocha test/**/*.test.js",
-    "demo": "node examples/simple_demo.js",
-    "build": "rollup -c"
+    "demo": "node examples/simple_demo.js"
   },
   "type": "module",
   "keywords": [
