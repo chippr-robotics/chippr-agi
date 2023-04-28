@@ -32,7 +32,7 @@ export class VectorDB {
     } else {
     //create a new index if none exists
       try {
-        //console.log('creating index');
+        //console.log(this.client);
         await this.client.ft.create(index, schema, options);  
       //console.log(createIndex);
       } catch (error) {
