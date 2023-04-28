@@ -51,8 +51,8 @@ export class ChipprAGI {
     }
   }
 
-  async getAllEntities(componentName){
-    return await this.vectorDb.query(`idx:${componentName}:*`);
+  async getAllEntities(){
+    return await this.vectorDb.query(`idx:entities:*`);
   }
 
   addComponent(entityId, componentName, componentData) {

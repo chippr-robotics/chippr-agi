@@ -40,10 +40,16 @@ CHIPPRAGI.registerSystem("WebsocketServerSystem", {
     switch(parsedMessage.type){
     case "getAllEntities":
       let allEntities = await CHIPPRAGI.getAllEntities('TaskParent');
-      console.log(allEntities);
-      socket.send(JSON.stringify({ type: "allEntities", data: allEntities }));
-      console.log(allEntities);
+      let cleanEntities = [];
+      allEntities.forEach( element => {
+        cleanEntities.push(element.split('idx:entities:')[1]);
+      })
+      socket.send(JSON.stringify({ type: "allEntities", data: cleanEntities }));
     break;
+    case "getDetail":
+      let detail = await CHIPPRAGI.getComponentData( parsedMessage.entityID, parsedMessage.componentName);
+      socket.send(JSON.stringify({ type: "entityDetail", data : detail}));
+      break;
     case "createObjective":
       CHIPPRAGI.MessageBus.updateMessage( 'createEntity', '0000000000', 'ObjectiveDescription', {}, { 
         task : parsedMessage.data,
