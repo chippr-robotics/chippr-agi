@@ -6,7 +6,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     version: "0.1.0",
     license: "Apache-2.0",
     developer: "CHIPPRBOTS",
-    type: "system",
+    type: "core",
     description: "A system that selects the most appropriate system for a given task description.",
   },
 
