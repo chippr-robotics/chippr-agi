@@ -42,9 +42,9 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
 
     //3) replace varaible with context
     let taskFinder = await CHIPPRAGI.getComponentData(entityID, 'TaskDescription'); 
-    //let objectiveFinder = await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription');
+    if (taskFinder == null) { taskFinder = await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription') }; 
     
-    taskDescription = taskFinder.task;
+    taskDescription = taskFinder.task || taskFinder.objective;
   
     (SystemSelectorPrompt.task_prompt).forEach( t => {
       t = t.replace('{{ taskDescription }}', taskDescription);
@@ -65,6 +65,6 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
 
     
     //_eventType, _entityID, _componentName, _sourceSystem, _data
-    CHIPPRAGI.MessageBus.systemMessage( 'systemSelected', entityID, 'SystemSelection', this.info, payloadData);
+    CHIPPRAGI.MessageBus.updateMessage( 'systemSelected', entityID, 'SystemSelection', this.info, payloadData);
   }
 });

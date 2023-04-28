@@ -24,9 +24,6 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
       // componentData contains the updated data for the component.
       let eventData = JSON.parse(message);
       switch(eventData.eventType){
-        case  'generateTasks' : 
-          this.handleNewObjective(eventData);
-        break;
         case  'systemSelected' : 
           this.handleNewObjective(eventData);
         break;

@@ -13,10 +13,7 @@ CHIPPRAGI.registerSystem('EntityCreationSystem', {
     CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', (message) => {
-      //CHIPPRAGI.Logger.debug({system: 'EntityCreationSystem', log:'made it this far'});
-
-    });
+    CHIPPRAGI.subscribe('SYSTEM', (message) => {});
   },
 
   update: function (message) {
@@ -49,28 +46,27 @@ CHIPPRAGI.registerSystem('EntityCreationSystem', {
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(entityID);
     // 2) add a objectiveDescription component
+    let entityData;
     switch (event.payload.componentName){ 
       case 'ObjectiveDescription' :
-        let objectiveData = {
+        entityData = {
           objective : data.task,
           complete : false,
         };
-        CHIPPRAGI.addComponent( entityID, 'ObjectiveDescription', objectiveData);    
-        CHIPPRAGI.MessageBus.updateMessage( 'generateTasks', entityID, 'ObjectiveDescription', this.info, objectiveData);
+        CHIPPRAGI.addComponent( entityID, 'ObjectiveDescription', entityData);    
       break;
       case 'TaskDescription' :
-        let taskData = {
+        entityData = {
           task : data.task,
           complete : false,
         };
         CHIPPRAGI.MessageBus.updateMessage('addTaskParent', entityID, 'TaskParent', this.info, {
           parentID : data.parentID
         });
-        CHIPPRAGI.addComponent( entityID, 'TaskDescription', taskData);    
-        CHIPPRAGI.MessageBus.updateMessage( 'addSystemSelection', entityID, 'TaskDescription', this.info, taskData);
+        CHIPPRAGI.addComponent( entityID, 'TaskDescription', entityData);    
       break;
     }
-    
+    CHIPPRAGI.MessageBus.updateMessage( 'addSystemSelection', entityID, 'TaskDescription', this.info, entityData);
     
     
     //_eventType, _entityID, _componentName, _sourceSystem, data

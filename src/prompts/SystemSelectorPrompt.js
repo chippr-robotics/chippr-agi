@@ -12,6 +12,20 @@ export const SystemSelectorPrompt = {
     "Which of the following systems would be the best to handle it:",
     "{{ systemDescriptions }}",
     "",
-    "The best system for this task is: " 
+    "Return a properly formated JSON list of objects having the following format:",
+   "```",
+   "[",
+   "  {",
+   "      \"recommendedSystem\": \"string\",",
+   "      \"justification\": \"string\",",
+   "  },",
+   "  ...",
+   "]",
+   "```",
+   "where:",
+   "'recommendedSystem' is the name of the system selected",
+   "'justification' is why the system is the best fit",
+   "",
+   " Response:"
   ]
 }
