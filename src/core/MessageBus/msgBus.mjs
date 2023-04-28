@@ -3,7 +3,6 @@ import PubSub from 'pubsub-js';
 import { messageSchema } from './messageSchema.js';
 import * as redis from 'redis';
 
-
 export class MessageBus {
   constructor(chipprConfig) {
     //decide if needed
@@ -22,16 +21,7 @@ export class MessageBus {
         this.publisher = this.PubSub;
         this.subscriber = this.PubSub;
       } 
-    if(chipprConfig.MESSAGE_BUS.MESSAGE_BUS_WATCH == true ) {
-      this.watcher = (m) => { 
-        console.log(`*Watcher* New Message: ${m}`);
-        //this.sanity.push(m);
-        //console.log(JSON.stringify(this.sanity));
-      }; 
-      this.subscriber.subscribe('SYSTEM',this.watcher); 
-      this.subscriber.subscribe('UPDATE',this.watcher);
-      
-      };
+
     //more buses to come after mvp...
   }
 

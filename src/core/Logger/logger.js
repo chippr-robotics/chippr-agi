@@ -1,27 +1,22 @@
 import * as winston from 'winston';
-import path from 'path';
 
-export class Logger {
-    constructor(chipprConfig) {
-      this.logger =  this.createLogger(chipprConfig);
-    }
-    createLogger(config) {
+export function Logger(chipprConfig){
         let consoleLogger;
         let debugLogger;
         //log to console if enabled
-        if(config.LOGS.LOG_CONSOLE) {
+        if(chipprConfig.LOGS.LOG_CONSOLE) {
             consoleLogger = new (winston.transports.Console)({
-                level: config.LOGS.LOG_LEVEL
+                level: chipprConfig.LOGS.LOG_LEVEL
             });
         }; 
-        if(config.LOGS.DEBUG) {
+        if(chipprConfig.LOGS.DEBUG) {
             debugLogger = new (winston.transports.File)({
                 name: 'debug-logs',
                 filename: '../logs/debug.log',
                 level: 'debug'
             });
         }; 
-        winston.createLogger({
+        return winston.createLogger({
             format: winston.format.json(),
             transports: [
                 consoleLogger,
@@ -38,5 +33,4 @@ export class Logger {
                 }),
             ]
         });
-    }
-}        
+    }       

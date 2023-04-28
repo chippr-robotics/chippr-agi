@@ -16,16 +16,17 @@ export class ChipprAGI {
   constructor(chipprConfig) {
     this.SWARM_MODE = chipprConfig.CORE.SWARM_MODE;
     this.DASHBOARD = chipprConfig.CORE.DASHBOARD;
-    this.WATCH = chipprConfig.CORE.WATCH;
     this.TESTING = chipprConfig.TESTING;
     this.LangModel = new LanguageModel(chipprConfig);
     this.Logger = new Logger(chipprConfig);
     this.MessageBus = new MessageBus(chipprConfig);
     this.Util = new Utility(chipprConfig);
     this.vectorDb = new VectorDB(chipprConfig); // Initialize vector database
+    //local cache
     this.entities = {};
     this.components = {};
     this.systems ={};
+    if(chipprConfig.MESSAGE_BUS.MESSAGE_BUS_WATCH == true) this.Util.watcher(this.MessageBus, this.Logger, chipprConfig); 
     this.init();
   }
 
@@ -36,14 +37,14 @@ export class ChipprAGI {
       //this.eventEmitter.init();
     };
     //load the core systems
-    //console.log('Loading core systems');
+    this.Logger.info('ChipprAgi: Loading core systems');
     await import ('../systems/active/CoreSystemLoader.mjs');
     this.systems['CoreSystemLoader'].init();//import ('../systems/active/.mjs');
   }
   async createEntity(_entityID) {
-    //console.log('creating entity');
+    this.Logger.debug( 'creating entity');
     if(this.SWARM_MODE != true){
-      //console.log('creating entity');
+      this.Logger.debug('creating entity in swarm mode');
       this.entities[_entityID] = {};
     } else {
       await this.vectorDb.save( `idx:entities:${_entityID}`, '$',  {});
@@ -73,16 +74,16 @@ export class ChipprAGI {
         return this.vectorDb.get(`idx:${componentName}:${entityId}`);
       }  
     } catch (error) {
-     console.log(`CHIPPRAGI : getcomponentdata error: ${error}`);
+      this.Logger.log('error',`CHIPPRAGI : getcomponentdata error: ${error}`);
      return null; 
     }
   }
 
   async registerComponent(componentName, component) {
-    //console.log(`swarmmode:${this.SWARM_MODE}`);
-    //console.log(componentName);
+    this.Logger.debug(`swarmmode:${this.SWARM_MODE}`);
+    this.Logger.debug( componentName);
     if(this.SWARM_MODE != true){
-      //console.log('swarm is not on');
+      this.Logger.debug('swarm is not really on');
       this.components[componentName] = component;
       return true;
     } else {
