@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   chippr-agi:
-    image: testing1
+    image: chipprbots/chippr-agi:latest
     deploy:
       replicas: 1
     depends_on:
