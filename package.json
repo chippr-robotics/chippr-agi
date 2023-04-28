@@ -3,6 +3,7 @@
   "version": "1.1.50",
   "description": "Happy helpful autoGPT ",
   "main": "index.js",
+  "private": false,
   "scripts": {
     "git" : "git checkout main && git pull",
     "start": "node src/index.js",
