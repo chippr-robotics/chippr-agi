@@ -4,12 +4,12 @@ export function Logger(chipprConfig){
         let consoleLogger;
         let debugLogger;
         //log to console if enabled
-        if(chipprConfig.LOGS.LOG_CONSOLE) {
+        if(chipprConfig.LOGS.LOG_CONSOLE == true) {
             consoleLogger = new (winston.transports.Console)({
                 level: chipprConfig.LOGS.LOG_LEVEL
             });
         }; 
-        if(chipprConfig.LOGS.DEBUG) {
+        if(chipprConfig.LOGS.DEBUG == true) {
             debugLogger = new (winston.transports.File)({
                 name: 'debug-logs',
                 filename: '../logs/debug.log',

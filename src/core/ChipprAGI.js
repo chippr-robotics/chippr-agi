@@ -4,7 +4,7 @@ dotenv.config();
 import  'fs';
 
 //add the core systems
-import { CHIPPRAGI } from '../index.js';
+//import { CHIPPRAGI } from '../index.js';
 import { LanguageModel } from './LangModel/langModel.js';
 import { Logger } from './Logger/logger.js';
 import { MessageBus } from './MessageBus/msgBus.mjs';
@@ -37,7 +37,7 @@ export class ChipprAGI {
       //this.eventEmitter.init();
     };
     //load the core systems
-    this.Logger.info('ChipprAgi: Loading core systems');
+    this.Logger.debug({ system : 'ChipprAGI', log : 'Loading core systems'});
     await import ('../systems/active/CoreSystemLoader.mjs');
     this.systems['CoreSystemLoader'].init();//import ('../systems/active/.mjs');
   }
