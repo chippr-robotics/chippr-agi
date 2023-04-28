@@ -40,6 +40,4 @@ const version = await getPackageVersion();
 
 displayBootScreen(version, config);
     
-
-
 export const CHIPPRAGI = new ChipprAGI(config);

@@ -39,36 +39,24 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     },
     
     handleNewObjective : async function (eventData) {
-        //1) get prompt for generate task
-        //console.log('creating tasks');
-        //console.log(fs.readdirSync('./src/prompts'));
-        //2) get context
-        //none needed yet for fresh tasks....
         //3) replace varaible with context
-        //console.log(`event data: ${JSON.stringify(data)}`);
-        //console.log(`outbound: ${JSON.stringify(eventData)}`);
         let entityDescription = await CHIPPRAGI.getComponentData(eventData.payload.entityID, eventData.payload.componentName);
-        //console.log(`outbound: ${objectiveDescription}`);
         
         let prompt = [];
-        //console.log(`prompt: ${GenerateTasksPrompt.task_prompt}`);
         (GenerateTasksPrompt.task_prompt).forEach( t => {
            // console.log(objectiveDescription.objective);
             prompt.push(t.replace('{{ objective }}', entityDescription.objective || entityDescription.task));
           },prompt);
-        //console.log(`outbound prompt: ${prompt.join('\n')}`);
         
         //4) generate tasks
         //todo loop until a valid object is returned
         let success = false;
         //throw error;
         let newTasks = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
-        //console.log(newTasks);
-        //console.log(`new tasks returned: ${newTasks}`)
-     
+        
         while (!success){
         //5) generate event to create for each tasks 
-        //console.log(success);
+        
           try {
             JSON.parse(newTasks).forEach( task => {
               let newTask = { ...task};
@@ -78,8 +66,6 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
             success = true;
           } catch(error) {
           // the response was not json so we need to try again console.logging for trouble shoooting
-          //console.log(newTasks);
-          //console.log(error);
             newTasks = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
         }
           //

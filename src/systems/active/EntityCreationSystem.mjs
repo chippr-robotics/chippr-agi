@@ -13,7 +13,7 @@ CHIPPRAGI.registerSystem('EntityCreationSystem', {
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
     CHIPPRAGI.subscribe('SYSTEM', (message) => {
-      //console.log('made it this far');
+      //CHIPPRAGI.Logger.debug({system: 'EntityCreationSystem', log:'made it this far'});
 
     });
   },
@@ -24,7 +24,7 @@ CHIPPRAGI.registerSystem('EntityCreationSystem', {
     // componentData contains the updated data for the component.
     let eventData = JSON.parse(message);
     if (eventData.eventType === 'createEntity') {
-      //console.log(`createObjective ${eventData}`);
+      //CHIPPRAGI.Logger.debug({system: 'EntityCreationSystem', log:`createObjective ${eventData}`});
       this.handleCreateEntity(eventData);
     }
   },
@@ -43,7 +43,7 @@ CHIPPRAGI.registerSystem('EntityCreationSystem', {
   handleCreateEntity: async function (event) {
     // create the task associated with the given taskId
     let data = event.payload.data;
-    //console.log('createObjective triggered');
+    //CHIPPRAGI.Logger.debug({system: 'EntityCreationSystem', log:'createObjective triggered'});
     let entityID = CHIPPRAGI.Util.getHashId(data.task);
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(entityID);

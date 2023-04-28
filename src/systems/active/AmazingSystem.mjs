@@ -11,7 +11,7 @@ CHIPPRAGI.registerSystem('AmazingSystem', {
   init: function () {
     //NOTE THIS IS FOR TESTING THE SYSTEM SELECTOR ONLY 
     CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
-      if( type == 'systemSelected' ) console.log(`AMAZING SYSTEM WAS CORRECTLY SELECTED!`);
+      //if( type == 'systemSelected' ) //CHIPPRAGI.Logger.debug({log:`AMAZING SYSTEM WAS CORRECTLY SELECTED!`, system: 'amazingSystem'});
     });
   },
   

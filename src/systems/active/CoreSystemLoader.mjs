@@ -35,9 +35,8 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
   },
 
   handleLoadSystem : function () {
-    console.log(`'CoreSystemLoader' Loading: `);
+    CHIPPRAGI.Logger.info({system: 'CoreSystemLoader', log:`Systems Loading:`});
     let systems = './src/systems/active/';
-    //console.log(systems);
     let components = './src/components/active/';
     setInterval(() => {
       const systemFiles = fs.readdirSync(systems);
@@ -47,9 +46,8 @@ CHIPPRAGI.registerSystem('CoreSystemLoader', {
       systemFiles.forEach(file => {  
         if(CHIPPRAGI.systems[file.split(".")[0]] == undefined) {
           import ('./' + file);  
-          //console.log(`./${file}`);
           setTimeout(() => {
-            console.log(`${file}`);
+            CHIPPRAGI.Logger.info({system: 'CoreSystemLoader', log:`Loading: ${file}`});
             CHIPPRAGI.systems[file.split(".")[0]].init();
           }, 3000, file);
         }

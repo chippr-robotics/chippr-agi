@@ -9,19 +9,15 @@ CHIPPRAGI.registerSystem('DashboardSystem', {
     },
 
     init: function () {
-        //console.log(`Dashboard test ${CHIPPRAGI.DASHBOARD == true}`);
+        CHIPPRAGI.Logger.info({system: 'DashBoardSystem', log:`Dashboard test ${CHIPPRAGI.DASHBOARD }`});
         if (CHIPPRAGI.DASHBOARD == true){
-            console.log('Dashboard loading');
-            CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
-                this.dashboard(eventData[0]);
-            });
+            console.clear;
+            this.dashboard();
         }
     },
   
-    dashboard: function (eventData){
+    dashboard: function (){
       //display a basic dash board
-        let events = [];
-        (eventData) => {events.push(JSON.stringify(data))};
         setInterval(() => {
             console.clear();
             console.log('|--- stats --|');
@@ -29,10 +25,6 @@ CHIPPRAGI.registerSystem('DashboardSystem', {
             console.log(`Components: ${JSON.stringify(CHIPPRAGI.components)}`);   
             console.log(`Systems: ${JSON.stringify(CHIPPRAGI.systems)}`); 
             console.log(`core loader: ${JSON.stringify(CHIPPRAGI.systems['CoreSystemLoader'])}`)
-            console.log(`events: `);
-            events.forEach( async msg => {
-                console.log(msg);
-            }); 
         }, 1000);
     },
 });

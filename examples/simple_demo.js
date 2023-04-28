@@ -8,5 +8,5 @@ setTimeout(()=> {
     CHIPPRAGI.MessageBus.updateMessage( 'createEntity', '0000000000', 'ObjectiveDescription', {}, { 
         task : "Write the worlds greates robot detective novel",
     });  
-    CHIPPRAGI.Logger.info({ SimpleDemo : "Creating test objective"});
+    CHIPPRAGI.Logger.info({ log : "Creating test objective", system: "Simple-Demo"});
 },10000);

@@ -6,13 +6,14 @@ export function Logger(chipprConfig){
         let transports = [];
         let dir = '../logs/';
         //log to console if enabled
-        if(chipprConfig.LOGS.LOG_CONSOLE = true) {
+        if(chipprConfig.LOGS.LOG_CONSOLE == true) {
             consoleLogger = new (winston.transports.Console)({
                 level: 'info'
             });
             transports.push(consoleLogger);
         }; 
-        if(chipprConfig.LOGS.DEBUG = true) {
+        
+        if(chipprConfig.LOGS.DEBUG == true) {
             debugLogger = new (winston.transports.File)({
                 name: 'debug-logs',
                 filename: dir + 'debug.log',

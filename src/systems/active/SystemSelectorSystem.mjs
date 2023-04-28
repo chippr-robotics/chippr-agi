@@ -28,7 +28,6 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     let taskDescription;
     let entityID = data.payload.entityID;
     let prompt = [];
-    //console.log(`This is the data coming to SSS: ${JSON.stringify(data.payload.entityID)}`);
     // Iterate through all registered systems and extract the description
     for (const systemName in CHIPPRAGI.systems) {
       if ( systemName != 'SystemSelectorSystem') {
@@ -39,39 +38,22 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
         });
       }
     }
-    // Prepare the prompt with the list of system descriptions
-    //console.log('|----outgoing----|' );
-    //2) get context
-    //
+
     //3) replace varaible with context
-    //console.log(`event data: ${JSON.stringify(data)}`);
-    //console.log(`this is the entity ID :${entityID}`);
     let taskFinder = await CHIPPRAGI.getComponentData(entityID, 'TaskDescription'); 
     //let objectiveFinder = await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription');
     
     taskDescription = taskFinder.task;
-   
-    
-    //console.log(`sss taskDescription: ${await CHIPPRAGI.getComponentData(entityID, 'TaskDescription')}`);
-    //console.log(`sss objDescription: ${await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription')}`);
-    //console.log(`SSS: taskfinder: ${JSON.stringify(taskFinder)}`);
-    //console.log(`SSS: taskDescription: ${JSON.stringify(taskDescription)}`);
-    //console.log(`SSS: entityID: ${JSON.stringify(entityID)}`);
-    //console.log(`SSS: objetive: ${JSON.stringify(CHIPPRAGI.getComponentData(data.entityID, 'ObjectiveDescription'))}`);
-    
+  
     (SystemSelectorPrompt.task_prompt).forEach( t => {
       t = t.replace('{{ taskDescription }}', taskDescription);
       t = t.replace('{{ systemDescriptions }}', JSON.stringify(systemDescriptions));
       prompt.push(t);
       },prompt);
-
-    //console.log(`SystemSelectorSystem : outbound prompt: ${prompt.join('\n')}`);
-      
     // Send the prompt to the language model
     let systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
     
     // Extract the system name from the response
-    //console.log(`SystemSelectorSystem response: ${JSON.stringify(systemName)}`);
 
     let payloadData = {
       recommendedSystem : systemName,

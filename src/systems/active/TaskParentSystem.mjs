@@ -19,10 +19,8 @@ CHIPPRAGI.registerSystem('TaskParentSystem', {
     // Do something when the component's data is updated, if needed.
     // entityId is the ID of the entity this component is attached to.
     // componentData contains the updated data for the component.
-      //console.log('made it this far');
       let eventData = JSON.parse(message);
       if (eventData.eventType === 'addTaskParent') {
-        //console.log(`createObjective ${eventData}`);
         this.handleCreateEntity(eventData);
       }
   },
