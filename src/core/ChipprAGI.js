@@ -2,11 +2,15 @@ import * as dotenv from 'dotenv';
 dotenv.config();
  
 import  'fs';
-import { VectorDB } from './Vector-db/vector-db.js'
+
+//add the core systems
+import { CHIPPRAGI } from '../index.js';
 import { LanguageModel } from './LangModel/langModel.js';
+import { Logger } from './Logger/logger.js';
 import { MessageBus } from './MessageBus/msgBus.mjs';
 import { Utility } from './Util/Util.js';
-import { CHIPPRAGI } from '../index.js';
+import { VectorDB } from './Vector-db/vector-db.js'
+
 
 export class ChipprAGI {
   constructor(chipprConfig) {
@@ -14,9 +18,10 @@ export class ChipprAGI {
     this.DASHBOARD = chipprConfig.CORE.DASHBOARD;
     this.WATCH = chipprConfig.CORE.WATCH;
     this.TESTING = chipprConfig.TESTING;
-    this.Util = new Utility(chipprConfig);
-    this.MessageBus = new MessageBus(chipprConfig);
     this.LangModel = new LanguageModel(chipprConfig);
+    this.Logger = new Logger(chipprConfig);
+    this.MessageBus = new MessageBus(chipprConfig);
+    this.Util = new Utility(chipprConfig);
     this.vectorDb = new VectorDB(chipprConfig); // Initialize vector database
     this.entities = {};
     this.components = {};
