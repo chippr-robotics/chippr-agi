@@ -5,6 +5,7 @@ CHIPPRAGI.registerSystem('EntityCreationSystem', {
     version : "0.1.0",
     license : "APACHE-2.0",
     developer: "CHIPPRBOTS",
+    type: 'core',
     description : "This system listens a new objective from a user creates an entityID for the objective.",
   },
 
@@ -12,10 +13,7 @@ CHIPPRAGI.registerSystem('EntityCreationSystem', {
     CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
     CHIPPRAGI.subscribe('REMOVE', (type, eventData) => {this.remove(eventData)});
     CHIPPRAGI.subscribe('TICK', (type, eventData) => {this.tick(eventData)});
-    CHIPPRAGI.subscribe('SYSTEM', (message) => {
-      //console.log('made it this far');
-
-    });
+    CHIPPRAGI.subscribe('SYSTEM', (message) => {});
   },
 
   update: function (message) {
@@ -24,7 +22,7 @@ CHIPPRAGI.registerSystem('EntityCreationSystem', {
     // componentData contains the updated data for the component.
     let eventData = JSON.parse(message);
     if (eventData.eventType === 'createEntity') {
-      //console.log(`createObjective ${eventData}`);
+      //CHIPPRAGI.Logger.debug({system: 'EntityCreationSystem', log:`createObjective ${eventData}`});
       this.handleCreateEntity(eventData);
     }
   },
@@ -43,33 +41,32 @@ CHIPPRAGI.registerSystem('EntityCreationSystem', {
   handleCreateEntity: async function (event) {
     // create the task associated with the given taskId
     let data = event.payload.data;
-    //console.log('createObjective triggered');
+    //CHIPPRAGI.Logger.debug({system: 'EntityCreationSystem', log:'createObjective triggered'});
     let entityID = CHIPPRAGI.Util.getHashId(data.task);
     // 1) store the task in the AGI Entity list
     CHIPPRAGI.createEntity(entityID);
     // 2) add a objectiveDescription component
+    let entityData;
     switch (event.payload.componentName){ 
       case 'ObjectiveDescription' :
-        let objectiveData = {
+        entityData = {
           objective : data.task,
           complete : false,
         };
-        CHIPPRAGI.addComponent( entityID, 'ObjectiveDescription', objectiveData);    
-        CHIPPRAGI.MessageBus.updateMessage( 'generateTasks', entityID, 'ObjectiveDescription', this.info, objectiveData);
+        CHIPPRAGI.addComponent( entityID, 'ObjectiveDescription', entityData);    
       break;
       case 'TaskDescription' :
-        let taskData = {
+        entityData = {
           task : data.task,
           complete : false,
         };
         CHIPPRAGI.MessageBus.updateMessage('addTaskParent', entityID, 'TaskParent', this.info, {
           parentID : data.parentID
         });
-        CHIPPRAGI.addComponent( entityID, 'TaskDescription', taskData);    
-        CHIPPRAGI.MessageBus.updateMessage( 'addSystemSelection', entityID, 'TaskDescription', this.info, taskData);
+        CHIPPRAGI.addComponent( entityID, 'TaskDescription', entityData);    
       break;
     }
-    
+    CHIPPRAGI.MessageBus.updateMessage( 'addSystemSelection', entityID, 'TaskDescription', this.info, entityData);
     
     
     //_eventType, _entityID, _componentName, _sourceSystem, data

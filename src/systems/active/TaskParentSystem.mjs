@@ -5,6 +5,7 @@ CHIPPRAGI.registerSystem('TaskParentSystem', {
     version : "0.1.0",
     license : "APACHE-2.0",
     developer: "CHIPPRBOTS",
+    type: "core",
     description : "This system listens a new objective from a user creates an entityID for the objective.",
   },
 
@@ -19,10 +20,8 @@ CHIPPRAGI.registerSystem('TaskParentSystem', {
     // Do something when the component's data is updated, if needed.
     // entityId is the ID of the entity this component is attached to.
     // componentData contains the updated data for the component.
-      //console.log('made it this far');
       let eventData = JSON.parse(message);
       if (eventData.eventType === 'addTaskParent') {
-        //console.log(`createObjective ${eventData}`);
         this.handleCreateEntity(eventData);
       }
   },

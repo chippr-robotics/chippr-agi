@@ -15,6 +15,17 @@ export class Utility {
   
   async delay(ms) {new Promise(resolve => setTimeout(resolve, ms))}
   
+  
+  watcher (msgBus, logger){
+      //cant be configured until after init
+      let watch = (m) => { 
+        logger.info( {log: JSON.parse(m), system: 'WatcherService' });
+      }; 
+      msgBus.subscriber.subscribe('SYSTEM', watch); 
+      msgBus.subscriber.subscribe('UPDATE', watch);
+      msgBus.subscriber.subscribe('REMOVE', watch);
+    };
+    
   useEffect (callback, dependencies) {
     // Calling it first time since there are no dependency
     if (dependencies === undefined) {

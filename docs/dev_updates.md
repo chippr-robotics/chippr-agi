@@ -17,3 +17,8 @@ add quick start to readme
 - [x] Jenkins pipelines 
 - [x] Distrubuted message bus system 
 - [ ] Better Documentation *I am working on updating documentation friday and saturday.
+
+4/28
+- working logging system
+- working docker image
+- working docker-compose

@@ -12,10 +12,9 @@ const config = {
         DASHBOARD : process.env.CHIPPRAGI_DASHBOARD || true,
         QUIET_BOOT : process.env.CHIPPAGI_CORE_QUIET_BOOT || false,
     },
-    VECTORDB:{  
-        VECTORDB_TYPE: process.env.CHIPPRAGI_VECTORDB_TYPE || 'redis',
-        VECTORDB_HOST: process.env.CHIPPRAGI_VECTORDB_HOST || 'localhost',
-        VECTORDB_PORT: process.env.CHIPPRAGI_VECTORDB_PORT || '6379',    
+    LOGS:{
+        LOG_CONSOLE: process.env.CHIPPRAGI_LOG_CONSOLE || true,
+        DEBUG: process.env.CHIPPRAGI_LOG_DEBUG || false,
     },
     LANGUAGE_MODEL:{
         LANGUAGE_MODEL_API_KEY: process.env.CHIPPRAGI_LANGUAGE_MODEL_API_KEY || null,
@@ -30,12 +29,15 @@ const config = {
         MESSAGE_BUS_TYPE: process.env.CHIPPRAGI_MESSAGE_BUS_TYPE || 'local',
         MESSAGE_BUS_WATCH : process.env.CHIPPRAGI_MESSAGE_BUS_WATCH || true,
     },
+    VECTORDB:{  
+        VECTORDB_TYPE: process.env.CHIPPRAGI_VECTORDB_TYPE || 'redis',
+        VECTORDB_HOST: process.env.CHIPPRAGI_VECTORDB_HOST || 'localhost',
+        VECTORDB_PORT: process.env.CHIPPRAGI_VECTORDB_PORT || '6379',    
+    },
 };
 
 const version = await getPackageVersion();
 
 displayBootScreen(version, config);
     
-
-
 export const CHIPPRAGI = new ChipprAGI(config);
