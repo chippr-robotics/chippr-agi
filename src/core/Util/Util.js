@@ -19,7 +19,7 @@ export class Utility {
   watcher (msgBus, logger){
       //cant be configured until after init
       let watch = (m) => { 
-        logger.info(`*WatcherService* : ${m}`);
+        logger.info( {log: JSON.parse(m), system: 'WatcherService' });
       }; 
       msgBus.subscriber.subscribe('SYSTEM', watch); 
       msgBus.subscriber.subscribe('UPDATE', watch);
