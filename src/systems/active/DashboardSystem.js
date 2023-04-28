@@ -5,6 +5,7 @@ CHIPPRAGI.registerSystem('DashboardSystem', {
         version : "0.1.0",
         license : "APACHE-2.0",
         developer: "CHIPPRBOTS",
+        type: 'core',
         description : "This system displays a cli dashboard for system testing purposes",
     },
 

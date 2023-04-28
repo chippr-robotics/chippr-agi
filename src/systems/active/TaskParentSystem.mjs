@@ -5,6 +5,7 @@ CHIPPRAGI.registerSystem('TaskParentSystem', {
     version : "0.1.0",
     license : "APACHE-2.0",
     developer: "CHIPPRBOTS",
+    type: "core",
     description : "This system listens a new objective from a user creates an entityID for the objective.",
   },
 

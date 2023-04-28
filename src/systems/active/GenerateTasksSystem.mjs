@@ -7,6 +7,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
     version : "0.1.0",
     license : "APACHE-2.0",
     developer: "CHIPPRBOTS",
+    type: 'system',
     description : "This system listens for new objectives and creates a list of tasks. It then creates entities for those tasks",
   },
 

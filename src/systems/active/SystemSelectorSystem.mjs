@@ -6,6 +6,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     version: "0.1.0",
     license: "Apache-2.0",
     developer: "CHIPPRBOTS",
+    type: "system",
     description: "A system that selects the most appropriate system for a given task description.",
   },
 
@@ -30,8 +31,8 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     let prompt = [];
     // Iterate through all registered systems and extract the description
     for (const systemName in CHIPPRAGI.systems) {
-      if ( systemName != 'SystemSelectorSystem') {
-      const system = CHIPPRAGI.systems[systemName];
+      if ( CHIPPRAGI.systems[systemName].info.type != 'core') {
+        const system = CHIPPRAGI.systems[systemName];
         systemDescriptions.push({
           systemName: systemName,
           description: system.info.description,
