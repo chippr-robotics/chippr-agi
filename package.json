@@ -1,9 +1,10 @@
 {
   "name": "chippr-agi",
-  "version": "1.1.1",
+  "version": "1.1.50",
   "description": "Happy helpful autoGPT ",
   "main": "index.js",
   "scripts": {
+    "git" : "git checkout main && git pull",
     "start": "node src/index.js",
     "test": "TESTING=true mocha test/**/*.test.js",
     "demo": "node examples/simple_demo.js"
