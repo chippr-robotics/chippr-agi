@@ -3,28 +3,24 @@ import path from 'path';
 
 export class Logger {
     constructor(chipprConfig) {
-      this.logger =  this.createLogger(chipprConfig.LOG.LOG_LEVEL);
+      this.logger =  this.createLogger(chipprConfig);
     }
     createLogger(config) {
         let consoleLogger;
         let debugLogger;
         //log to console if enabled
-        if(config.LOG.LOG_CONSOLE) {
+        if(config.LOGS.LOG_CONSOLE) {
             consoleLogger = new (winston.transports.Console)({
-                level: config.LOG.LOG_LEVEL
+                level: config.LOGS.LOG_LEVEL
             });
-        } else {
-            consoleLogger = null;
-        }
-        if(config.LOG.DEBUG) {
+        }; 
+        if(config.LOGS.DEBUG) {
             debugLogger = new (winston.transports.File)({
                 name: 'debug-logs',
-                filename: path.resolve(__dirname, '../logs/debug.log'),
+                filename: '../logs/debug.log',
                 level: 'debug'
             });
-        } else {
-            debugLogger = null;
-        }
+        }; 
         winston.createLogger({
             format: winston.format.json(),
             transports: [
@@ -32,12 +28,12 @@ export class Logger {
                 debugLogger,
                 new (winston.transports.File)({
                     name: 'info-logs',
-                    filename: path.resolve(__dirname, '../logs/info.log'),
+                    filename: '../logs/info.log',
                     level: 'info'
                 }),
                 new (winston.transports.File)({
                     name: 'error-logs',
-                    filename: path.resolve(__dirname, '../logs/errors.log'),
+                    filename: '../logs/errors.log',
                     level: 'error'
                 }),
             ]

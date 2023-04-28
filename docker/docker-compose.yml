@@ -11,9 +11,11 @@ services:
       - TESTING=false
       # CORE
       - CHIPPRAGI_SWARM_MODE=1
-      - CHIPPRAGI_WATCH=1
       - CHIPPRAGI_DASHBOARD=1
       - CHIPPAGI_CORE_QUIET_BOOT=0
+      # LOGS
+      - CHIPPRAGI_LOG_CONSOLE=1
+      - CHIPPRAGI_LOG_DEBUG=0
       # VECTORDB  
       - CHIPPRAGI_VECTORDB_TYPE=redis
       - CHIPPRAGI_VECTORDB_HOST=vector-db
@@ -23,6 +25,7 @@ services:
       #- CHIPPRAGI_LANGUAGE_MODEL_API_KEY=null
       # MESSAGE_BUS:
       - CHIPPRAGI_MESSAGE_BUS_TYPE=redis
+      - CHIPPRAGI_MESSAGE_BUS_WATCH=1
 
   vector-db:
     image: redis/redis-stack
