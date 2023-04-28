@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "git" : "git checkout main && git pull",
-    "start": "node index.js",
+    "start": "node src/index.js",
     "test": "TESTING=true mocha test/**/*.test.js",
     "demo": "node examples/simple_demo.js"
   },
