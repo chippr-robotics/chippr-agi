@@ -1,4 +1,4 @@
-import { WebSocket } from "ws";
+import WebSocket, { WebSocketServer } from 'ws';
 import { CHIPPRAGI } from "../../index.js";
 
 CHIPPRAGI.registerSystem("WebsocketServerSystem", {
@@ -11,12 +11,13 @@ CHIPPRAGI.registerSystem("WebsocketServerSystem", {
   },
 
   init: function () {
-    this.webSocketServer = new WebSocket.Server({ port: 8082 });
+    this.webSocketServer = new WebSocketServer({ port: 8082 });
 
     this.webSocketServer.on("connection", (socket) => {
       CHIPPRAGI.Logger.info( { system : "WebSocketSystem", log : " WS Client connected"});
       socket.on("message", (message) => {
         //console.log(`Received message: ${message}`);
+        CHIPPRAGI.Logger.info( { system : "WebSocketSystem", log : `newMessage: ${message}`});
         this.handleClientMessage(message, socket);
       });
 
@@ -27,17 +28,34 @@ CHIPPRAGI.registerSystem("WebsocketServerSystem", {
 
     // Subscribe to a specific event from other systems
     CHIPPRAGI.subscribe("UPDATE", (data) => {
-      this.handleSystemMessage(data);
+      this.handleUpdateMessage(data);
     });
   },
 
-  handleClientMessage: function (message, socket) {
+  handleClientMessage: async function (message, socket) {
     // Handle the incoming message from the browser
     // You can use pubsub-js to communicate the message to other systems if needed
-    CHIPPRAGI.publish("UPDATE", message);
+    const parsedMessage = JSON.parse(message);
+
+    switch(parsedMessage.type){
+    case "getAllEntities":
+      let allEntities = await CHIPPRAGI.getAllEntities('TaskParent');
+      console.log(allEntities);
+      socket.send(JSON.stringify({ type: "allEntities", data: allEntities }));
+      console.log(allEntities);
+    break;
+    case "createObjective":
+      CHIPPRAGI.MessageBus.updateMessage( 'createEntity', '0000000000', 'ObjectiveDescription', {}, { 
+        task : parsedMessage.data,
+    });  
+    break;
+    default:
+      //dump on the message bus
+      CHIPPRAGI.MessageBus.publish('UPDATE', message);
+    }
   },
 
-  handleSystemMessage: function (data) {
+  handleUpdateMessage: function (data) {
     // Handle the message received from other systems via pubsub-js
     // If needed, you can send the message to the connected client(s)
     this.webSocketServer.clients.forEach((client) => {
