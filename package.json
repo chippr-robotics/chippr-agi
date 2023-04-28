@@ -9,7 +9,7 @@
     "start": "node src/index.js",
     "test": "TESTING=true mocha test/**/*.test.js",
     "demo": "node examples/simple_demo.js",
-    "build": "docker build -t chipprbots/chippr-agi:latest ."
+    "build": "docker build -t chippr-agi:latest ."
   },
   "type": "module",
   "keywords": [
