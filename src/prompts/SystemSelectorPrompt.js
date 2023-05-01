@@ -12,7 +12,7 @@ export const SystemSelectorPrompt = {
     "Which of the following systems would be the best to handle it:",
     "{{ systemDescriptions }}",
     "",
-    "Return a properly formated JSON list of objects having the following format:",
+    "Return a properly formated JSON object having the following format:",
    "```",
    "[",
    "  {",
