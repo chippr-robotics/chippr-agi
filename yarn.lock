@@ -615,9 +615,9 @@ nanoid@3.3.3:
   integrity sha512-p1sjXuopFs0xg+fPASzQ28agW1oHD7xDsd9Xkf3T15H3c/cifrFHVwrh74PdoklAPi+i7MdRsE47vm2r6JoB+w==
 
 natural@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/natural/-/natural-6.2.0.tgz#74a45c66336e5c35057aba0fafb0f5351c81a201"
-  integrity sha512-/+ceiLjldGcMgCtryGJV6jS2IslPeLE+bwjXry9jOFNl586J1rV5egDa4X8nnPCZmzCeXrE4uHajpkuB/ILH2Q==
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/natural/-/natural-6.3.0.tgz#bab5dd5803969d36bd27ecb395e8b544bc05ca27"
+  integrity sha512-+Gt08Vj2I3h6c4MnZzFPuz+/y1yfNhY8nvhQm69KsQMsYnURd+eRY7cKYXGzT7NMQSN3j/CxluCCXwHpg3gtPw==
   dependencies:
     afinn-165 "^1.0.2"
     afinn-165-financialmarketnews "^3.0.0"
