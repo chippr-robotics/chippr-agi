@@ -65,6 +65,8 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
 
     
     //_eventType, _entityID, _componentName, _sourceSystem, _data
-    CHIPPRAGI.MessageBus.updateMessage( 'systemSelected', entityID, 'SystemSelection', this.info, payloadData);
-  }
+    JSON.parse(payloadData.recommendedSystem).forEach(system => {
+      CHIPPRAGI.MessageBus.updateMessage( 'systemSelected', entityID, 'SystemSelection', this.info, system.recommendedSystem);
+    });
+  }  
 });
