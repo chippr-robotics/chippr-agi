@@ -1,5 +1,5 @@
+import { rateLimitsConfig } from "./ratelimits.js";
 import { Configuration, OpenAIApi } from "openai";
-import { rateLimitsConfig } from "./ratelimits";
 
 export class LanguageModel {
   constructor(chipprConfig) {
@@ -7,7 +7,7 @@ export class LanguageModel {
     this.DEFAULT_TEMP = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_TEMP;
     this.DEFAULT_MAX_TOKENS = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_MAX_TOKENS;
     this.DEFAULT_MATCH_LENGTH = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_MATCH_LENGTH;
-    this.rateLimit = rateLimitsConfig.rateLimitType;
+    this.rateLimit = rateLimitsConfig[chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_RATE_LIMIT_TYPE];
     this.requestQueue = {
         embeddings: [],
         completion : [],
@@ -57,19 +57,19 @@ export class LanguageModel {
   }
 
   init() {
-    startRateLimitedInterval('embeddings', this.rateLimit.embeddings);
-    startRateLimitedInterval('completion',  this.rateLimit.completion);
-    startRateLimitedInterval('chat', this.rateLimit.chat);
-    startRateLimitedInterval('codex', this.rateLimit.codex);
-    startRateLimitedInterval('edit', this.rateLimit.edit);
-    startRateLimitedInterval('image', this.rateLimit.image);
-    startRateLimitedInterval('audio', this.rateLimit.audio);
+    this.startRateLimitedInterval('embeddings', this.rateLimit.embeddings);
+    this.startRateLimitedInterval('completion',  this.rateLimit.completion);
+    this.startRateLimitedInterval('chat', this.rateLimit.chat);
+    this.startRateLimitedInterval('codex', this.rateLimit.codex);
+    this.startRateLimitedInterval('edit', this.rateLimit.edit);
+    this.startRateLimitedInterval('image', this.rateLimit.image);
+    this.startRateLimitedInterval('audio', this.rateLimit.audio);
   }
     
-  async processQueue(callType) {
-    if (requestQueue[callType].length > 0) {
+  async processRequestQueue(callType) {
+    if (this.requestQueue[callType].length > 0) {
       let response;
-      const request = requestQueue[callType].shift();
+      const request = this.requestQueue[callType].shift();
       // Execute the request
       switch (callType) {
         //send to model these are separated incase anything special needs to happen before sending
@@ -102,18 +102,23 @@ export class LanguageModel {
     const intervalTime = Math.floor(60000 / rateLimitPerMinute);
 
       setInterval(() => {
-          processRequestQueue(type);
+          this.processRequestQueue(type);
      }, intervalTime);
   }
 
+  addRequest(callType, data) {
+    return new Promise((resolve) => {
+      this.requestQueue[callType].push({ data, resolve });
+    });
+  }
   async generate(_prompt) {
-    let response = await this.requestQueue.completion.push({
+    let response = await this.addRequest( 'completion',{
         model: this.MODEL_NAME,
         prompt: _prompt,
         temperature: parseInt(this.DEFAULT_TEMP, 10),
         max_tokens: parseInt(this.DEFAULT_MAX_TOKENS, 10),
     });
-    //console.log(`Lang Model: ${response}`);
+    console.log(this.requestQueue);
     //console.log(`Lang Model: ${response}`);
     return response.data.choices[0].text;
     }
