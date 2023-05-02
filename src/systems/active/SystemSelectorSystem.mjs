@@ -65,7 +65,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
       try {
         //_eventType, _entityID, _componentName, _sourceSystem, _data
         JSON.parse(systemName).forEach(system => {
-          console.log(system)
+          //console.log(system)
           CHIPPRAGI.MessageBus.updateMessage( 'systemSelected', entityID, 'SystemSelection', this.info, system.recommendedSystem);
         })
         //add a system selector component

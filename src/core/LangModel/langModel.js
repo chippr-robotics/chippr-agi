@@ -8,15 +8,7 @@ export class LanguageModel {
     this.DEFAULT_MAX_TOKENS = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_MAX_TOKENS;
     this.DEFAULT_MATCH_LENGTH = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_MATCH_LENGTH;
     this.rateLimit = rateLimitsConfig[chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_RATE_LIMIT_TYPE];
-    this.requestQueue = {
-        embeddings: [],
-        completion : [],
-        chat: [],
-        codex: [],
-        edit: [],
-        image: [],
-        audio: [],
-    };
+    this.requestQueue = {};
     this.init();
 
     if (chipprConfig.TESTING != true) {
@@ -57,13 +49,12 @@ export class LanguageModel {
   }
 
   init() {
-    this.startRateLimitedInterval('embeddings', this.rateLimit.embeddings);
-    this.startRateLimitedInterval('completion',  this.rateLimit.completion);
-    this.startRateLimitedInterval('chat', this.rateLimit.chat);
-    this.startRateLimitedInterval('codex', this.rateLimit.codex);
-    this.startRateLimitedInterval('edit', this.rateLimit.edit);
-    this.startRateLimitedInterval('image', this.rateLimit.image);
-    this.startRateLimitedInterval('audio', this.rateLimit.audio);
+    for (const type in this.rateLimit) {
+      // Initialize an empty array for each request type
+      this.requestQueue[type] = [];
+      //console.log(type);
+      this.startRateLimitedInterval(type, this.rateLimit[type]);
+    }
   }
     
   async processRequestQueue(callType) {
@@ -74,6 +65,7 @@ export class LanguageModel {
       switch (callType) {
         //send to model these are separated incase anything special needs to happen before sending
         case 'completion':
+          
           response = await this.model.createCompletion(request.data);
             break;
         case 'chat':
@@ -100,7 +92,6 @@ export class LanguageModel {
 
   startRateLimitedInterval(type, rateLimitPerMinute) {
     const intervalTime = Math.floor(60000 / rateLimitPerMinute);
-
       setInterval(() => {
           this.processRequestQueue(type);
      }, intervalTime);

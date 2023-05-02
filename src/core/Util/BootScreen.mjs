@@ -32,6 +32,7 @@ export function displayBootScreen(version, config) {
     console.log(`Selected Systems:`);
     console.log(`  VectorDB: ${config.VECTORDB.VECTORDB_TYPE}`);
     console.log(`  LanguageModel: ${config.LANGUAGE_MODEL.LANGUAGE_MODEL_ID}`)
+    console.log(`  LanguageModel Rate: ${config.LANGUAGE_MODEL.LANGUAGE_MODEL_RATE_LIMIT_TYPE}`);
     console.log(`  Message Bus: ${config.MESSAGE_BUS.MESSAGE_BUS_TYPE}`);
     console.log(`  Console Logs: ${config.LOGS.LOG_CONSOLE == true}`);
     console.log(`  Debug mode: ${config.LOGS.DEBUG == true}`);
