@@ -52,19 +52,32 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
       prompt.push(t);
       },prompt);
     // Send the prompt to the language model
-    let systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
     
-    // Extract the system name from the response
-
+    let success = false;
+    //throw error;
+    let systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
     let payloadData = {
       recommendedSystem : systemName,
     };
-
-    //add a system selector component
-    CHIPPRAGI.addComponent( entityID, 'SystemSelection', payloadData);
-
     
-    //_eventType, _entityID, _componentName, _sourceSystem, _data
-    CHIPPRAGI.MessageBus.updateMessage( 'systemSelected', entityID, 'SystemSelection', this.info, payloadData);
-  }
+
+    while (!success){        
+      try {
+        //_eventType, _entityID, _componentName, _sourceSystem, _data
+        JSON.parse(systemName).forEach(system => {
+          //console.log(system)
+          CHIPPRAGI.MessageBus.updateMessage( 'systemSelected', entityID, 'SystemSelection', this.info, system.recommendedSystem);
+        })
+        //add a system selector component
+        CHIPPRAGI.addComponent( entityID, 'SystemSelection', payloadData);      
+        success = true;
+      } catch(error) {
+        //console.log(error);
+        CHIPPRAGI.Logger.error({system: 'SystemSelectorSystem', log : systemName, error: JSON.stringify(error)});
+          // the response was not json so we need to try again console.logging for trouble shoooting
+        systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
+      };
+        
+    }
+  }  
 });

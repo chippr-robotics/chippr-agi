@@ -4,7 +4,7 @@ export function Logger(chipprConfig){
         let consoleLogger;
         let debugLogger;
         let transports = [];
-        let dir = '../logs/';
+        let dir = './logs/';
         //log to console if enabled
         if(chipprConfig.LOGS.LOG_CONSOLE == true) {
             consoleLogger = new (winston.transports.Console)({

@@ -1,23 +1,27 @@
 ![You are a designer tasked with creating a simple, line art mascot for the Chippr-AGI open-source framework. The mascot should be a small robotic chipmunk with a single round eye. The chipmunk should have a rectangular body with rounded edges, and its limbs should be thin, straight lines. The tail should be a thin curved line, and the whole design should be in a single color of your choice. The mascot should convey the intelligence and efficiency of the software, while still being approachable and friendly. Once you have created the mascot, submit it as a PNG file with a transparent background.
-](src/core/lib/chipprAGI.png )
+](src/core/lib/splashLogo.png )
 
 # Chippr-AGI
 
 Chippr-AGI is an open-source event-driven ECS framework that uses AI models to automate task creation and prioritization. This system is designed to run solo or as a swarm of containers. It combines the power of GPT-4 with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.  
 
-## This repo is under active development, clone often or use the docker image
-
+##### _This repo is under active development, clone often or use the latest docker image_
+ 
 ## Getting Started
-### Github
+
+### Simple Demo
 - Clone the repository:` git clone https://github.com/chippr-robotics/chippr-agi.git`
 - Install the dependencies: `yarn`
-- Create a `.env` file with your OpenAI API key and Redis credentials.
-- Update the OBJECTIVE in `./examples/simple_demo.js`
-- start redis (you can use docker-compose for this)
-- Start the application: `yarn run demo` or `yarn run start`
+- Update your API keys docker-compose configuration located in `./docker/docker-compose.yml`
+- Update the OBJECTIVE in `./examples/simple_demo.js` 
+- Start redis (you can use docker-compose for this)
+- Start the application: `yarn demo` 
+- Monitor the vector DB at `http://localhost:8001`
 
+#### Customize
+Add systems and components to meet your needs then `yarn start`
 
-### Docker( Easier )
+### Docker( Easy )
 #### Pull the Image
 
 First, pull the Chippr-AGI Docker image from Docker Hub:

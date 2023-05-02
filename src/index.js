@@ -9,7 +9,7 @@ const config = {
     TESTING : process.env.CHIPPRAGI_TESTING || false,
     CORE:{
         SWARM_MODE: process.env.CHIPPRAGI_SWARM_MODE || true,
-        DASHBOARD : process.env.CHIPPRAGI_DASHBOARD || true,
+        DASHBOARD : process.env.CHIPPRAGI_DASHBOARD || false,
         QUIET_BOOT : process.env.CHIPPAGI_CORE_QUIET_BOOT || false,
     },
     LOGS:{
@@ -24,9 +24,10 @@ const config = {
         LANGUAGE_MODEL_DEFAULT_TEMP: process.env.CHIPPRAGI_LANGUAGE_MODEL_DEFAULT_TEMP || 0.5,
         LANGUAGE_MODEL_DEFAULT_MAX_TOKENS: process.env.CHIPPRAGI_LANGUAGE_MODEL_DEFAULT_MAX || 500,
         LANGUAGE_MODEL_DEFAULT_MATCH_LENGTH: process.env.CHIPPRAGI_LANGUAGE_MODEL_DEFAULT_MATCH_LENGTH || 5,
+        LANGUAGE_MODEL_RATE_LIMIT_TYPE: process.env.CHIPPRAGI_LANGUAGE_MODEL_RATE_LIMIT_TYPE || 'openAI_Free',
     },
     MESSAGE_BUS:{
-        MESSAGE_BUS_TYPE: process.env.CHIPPRAGI_MESSAGE_BUS_TYPE || 'local',
+        MESSAGE_BUS_TYPE: process.env.CHIPPRAGI_MESSAGE_BUS_TYPE || 'redis',
         MESSAGE_BUS_WATCH : process.env.CHIPPRAGI_MESSAGE_BUS_WATCH || true,
     },
     VECTORDB:{  

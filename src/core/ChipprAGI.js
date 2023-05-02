@@ -79,6 +79,21 @@ export class ChipprAGI {
     }
   }
 
+  setComponentData(entityId, componentName, componentData) {
+    try {
+      if(this.SWARM_MODE != true){
+        this.entities[entityId][componentName] = componentData;
+        return true;
+      } else {
+        this.vectorDb.save( `idx:${componentName}:${entityId}`, '$',  componentData);
+        return true;
+      }  
+    } catch (error) {
+      this.Logger.log('error',`CHIPPRAGI : setcomponentdata error: ${error}`);
+     return false; 
+    }
+  } 
+
   async registerComponent(componentName, component) {
     this.Logger.debug(`swarmmode:${this.SWARM_MODE}`);
     this.Logger.debug( componentName);

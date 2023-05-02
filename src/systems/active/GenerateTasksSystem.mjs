@@ -64,6 +64,7 @@ CHIPPRAGI.registerSystem('GenerateTasksSystem', {
             success = true;
           } catch(error) {
           // the response was not json so we need to try again console.logging for trouble shoooting
+            CHIPPRAGI.Logger.error({system: 'GenerateTasksSystem', log: newTasks, error: JSON.stringify(error)});
             newTasks = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
         }
           //
