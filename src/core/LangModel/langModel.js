@@ -118,7 +118,7 @@ export class LanguageModel {
         temperature: parseInt(this.DEFAULT_TEMP, 10),
         max_tokens: parseInt(this.DEFAULT_MAX_TOKENS, 10),
     });
-    console.log(this.requestQueue);
+    //console.log(response.data);
     //console.log(`Lang Model: ${response}`);
     return response.data.choices[0].text;
     }
