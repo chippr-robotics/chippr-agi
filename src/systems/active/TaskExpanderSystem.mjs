@@ -67,7 +67,8 @@ CHIPPRAGI.registerSystem('TaskExpanderSystem', {
             success = true;
           } catch(error) {
           // the response was not json so we need to try again console.logging for trouble shoooting
-            expandedTask = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
+          CHIPPRAGI.Logger.error({system: 'SystemSelectorSystem', error: error});
+          expandedTask = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
         }
       }
     },

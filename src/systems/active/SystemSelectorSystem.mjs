@@ -73,7 +73,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
         success = true;
       } catch(error) {
         //console.log(error);
-        //console.log(JSON.parse(systemName));
+        CHIPPRAGI.Logger.error({system: 'SystemSelectorSystem', error: error});
           // the response was not json so we need to try again console.logging for trouble shoooting
         systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
       };

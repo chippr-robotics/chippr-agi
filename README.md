@@ -8,6 +8,7 @@ Chippr-AGI is an open-source event-driven ECS framework that uses AI models to a
 ## This repo is under active development, clone often or use the docker image
 
 ## Getting Started
+
 ### Github
 - Clone the repository:` git clone https://github.com/chippr-robotics/chippr-agi.git`
 - Install the dependencies: `yarn`
