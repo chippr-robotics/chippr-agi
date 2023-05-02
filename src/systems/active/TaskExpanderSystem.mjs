@@ -23,9 +23,14 @@ CHIPPRAGI.registerSystem('TaskExpanderSystem', {
       // entityId is the ID of the entity this component is attached to.
       // componentData contains the updated data for the component.
       let eventData = JSON.parse(message);
+      CHIPPRAGI.Logger.debug({system: 'TaskExpanderSystem.update', log: eventData.data});
       switch(eventData.eventType){
         case  'systemSelected' : 
-          this.handleExpandTask(eventData);
+          //make sure the system is selected
+          if(eventData.data == "TaskExpanderSystem") {
+            CHIPPRAGI.Logger.debug('TaskExpanderSystem.update', `expandersystem selected`);
+            this.handleExpandTask(eventData);
+          }
         break;
         default:
       }
@@ -67,7 +72,7 @@ CHIPPRAGI.registerSystem('TaskExpanderSystem', {
             success = true;
           } catch(error) {
           // the response was not json so we need to try again console.logging for trouble shoooting
-          CHIPPRAGI.Logger.error({system: 'SystemSelectorSystem', error: error});
+          CHIPPRAGI.Logger.error({system: 'TaskEnpanderSystem', log: expandedTask, error: JSON.stringify(error)});
           expandedTask = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
         }
       }
