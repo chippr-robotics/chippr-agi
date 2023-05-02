@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
+import { rateLimitsConfig } from "./ratelimits";
 
 export class LanguageModel {
   constructor(chipprConfig) {
@@ -6,6 +7,18 @@ export class LanguageModel {
     this.DEFAULT_TEMP = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_TEMP;
     this.DEFAULT_MAX_TOKENS = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_MAX_TOKENS;
     this.DEFAULT_MATCH_LENGTH = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_MATCH_LENGTH;
+    this.rateLimit = rateLimitsConfig.rateLimitType;
+    this.requestQueue = {
+        embeddings: [],
+        completion : [],
+        chat: [],
+        codex: [],
+        edit: [],
+        image: [],
+        audio: [],
+    };
+    this.init();
+
     if (chipprConfig.TESTING != true) {
       if (chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_ID === 'openai') {
         const configuration = new Configuration({
@@ -21,6 +34,7 @@ export class LanguageModel {
       //USE THE NOOP MODEL if testing is enabled
       this.model = this.createNoOpClient();
     }
+
   }
 
   createNoOpClient() {
@@ -42,18 +56,58 @@ export class LanguageModel {
     };
   }
 
-  // Proxy methods to the underlying model
-  createCompletion(params) {
-    return this.model.createCompletion(params);
+  init() {
+    startRateLimitedInterval('embeddings', this.rateLimit.embeddings);
+    startRateLimitedInterval('completion',  this.rateLimit.completion);
+    startRateLimitedInterval('chat', this.rateLimit.chat);
+    startRateLimitedInterval('codex', this.rateLimit.codex);
+    startRateLimitedInterval('edit', this.rateLimit.edit);
+    startRateLimitedInterval('image', this.rateLimit.image);
+    startRateLimitedInterval('audio', this.rateLimit.audio);
   }
-  
-  createEmbedding(params){
-    return this.model.createEmbedding(params);
+    
+  async processQueue(callType) {
+    if (requestQueue[callType].length > 0) {
+      let response;
+      const request = requestQueue[callType].shift();
+      // Execute the request
+      switch (callType) {
+        //send to model these are separated incase anything special needs to happen before sending
+        case 'completion':
+          response = await this.model.createCompletion(request.data);
+            break;
+        case 'chat':
+            response = await this.model.createChat(request.data);
+            break;      
+        case 'codex':
+          response = await this.model.createCodex(request.data);
+            break;
+        case 'edit':
+            response = await this.model.createEdit(request.data);
+         break;
+        case 'image':
+            response = await this.model.createImage(request.data);
+            break;
+        case 'audio':
+            response = await this.model.createEmbedding(request.data);
+           break;
+        default:
+          console.error(`Invalid request type: ${request.callType}`);
+      };
+      request.resolve(response);
+    }
+  };
+
+  startRateLimitedInterval(type, rateLimitPerMinute) {
+    const intervalTime = Math.floor(60000 / rateLimitPerMinute);
+
+      setInterval(() => {
+          processRequestQueue(type);
+     }, intervalTime);
   }
-  // Add other methods as needed
 
   async generate(_prompt) {
-    let response = await this.createCompletion({
+    let response = await this.requestQueue.completion.push({
         model: this.MODEL_NAME,
         prompt: _prompt,
         temperature: parseInt(this.DEFAULT_TEMP, 10),
@@ -62,6 +116,6 @@ export class LanguageModel {
     //console.log(`Lang Model: ${response}`);
     //console.log(`Lang Model: ${response}`);
     return response.data.choices[0].text;
-  }
+    }
 }
 
