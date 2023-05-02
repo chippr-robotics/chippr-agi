@@ -63,6 +63,7 @@ CHIPPRAGI.registerSystem('TaskExpanderSystem', {
             //console.error(expandedTask)
             //CHIPPRAGI.Logger.error({system: 'TaskExpanderSystem.newTask', log: null, task: expandedTask.join('\n')} );
             expandedTask.forEach( async task => {
+              console.log(task);
               let newTask = { ...task};
               newTask.expandedTask = expandedTask.taskDetails;
               newTask.justification = expandedTask.justification;
