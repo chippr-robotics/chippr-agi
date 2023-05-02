@@ -23,12 +23,11 @@ CHIPPRAGI.registerSystem('TaskExpanderSystem', {
       // entityId is the ID of the entity this component is attached to.
       // componentData contains the updated data for the component.
       let eventData = JSON.parse(message);
-      CHIPPRAGI.Logger.debug({system: 'TaskExpanderSystem.update', log: eventData.data});
       switch(eventData.eventType){
         case  'systemSelected' : 
+           //CHIPPRAGI.Logger.error({system: 'TaskExpanderSystem.update', log: eventData});
           //make sure the system is selected
-          if(eventData.data == "TaskExpanderSystem") {
-            CHIPPRAGI.Logger.debug('TaskExpanderSystem.update', `expandersystem selected`);
+          if(eventData.payload.data == "TaskExpanderSystem") {
             this.handleExpandTask(eventData);
           }
         break;
@@ -43,37 +42,40 @@ CHIPPRAGI.registerSystem('TaskExpanderSystem', {
     
     handleExpandTask : async function (eventData) {
         //3) replace varaible with context
-        let entityDescription = await CHIPPRAGI.getComponentData(eventData.payload.entityID, eventData.payload.componentName);
-        
+        let entityDescription = await CHIPPRAGI.getComponentData(eventData.payload.entityID, 'TaskDescription');
+        //CHIPPRAGI.Logger.error({system: 'TaskExpanderSystem.entityDescription', log: null , task: entityDescription} );
         let prompt = [];
         (TaskExpanderPrompt.task_prompt).forEach( t => {
            // console.log(objectiveDescription.objective);
             prompt.push(t.replace('{{ taskDescription }}', entityDescription.objective || entityDescription.task));
           },prompt);
-        
+          //CHIPPRAGI.Logger.error({system: 'TaskExpanderSystem.prompt', log: null , task: prompt} );
         //4) generate tasks
         //todo loop until a valid object is returned
         let success = false;
         //throw error;
-        let expandedTask = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
-        
+        let expandedTask;
+        //CHIPPRAGI.Logger.error({system: 'TaskExpanderSystem.expandedTask', log: null , task: expandedTask} );
         while (!success){
         //5) generate event to create for each tasks 
-        
           try {
-            JSON.parse(expandedTask).forEach( task => {
+            expandedTask = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
+            //console.error(expandedTask)
+            //CHIPPRAGI.Logger.error({system: 'TaskExpanderSystem.newTask', log: null, task: expandedTask.join('\n')} );
+            expandedTask.forEach( async task => {
               let newTask = { ...task};
-              newTask.taskDescription = expandedTask.taskDescription;
+              newTask.expandedTask = expandedTask.taskDetails;
               newTask.justification = expandedTask.justification;
-              CHIPPRAGI.addComponent( data.payload.entityID, 'TaskExpanded', newTask ); 
+              //CHIPPRAGI.Logger.error({system: 'TaskExpanderSystem.newTask', log: null, task: newTask} );
+              await CHIPPRAGI.addComponent( data.payload.entityID, 'TaskExpanded', newTask ); 
               //send it to the judge
-              CHIPPRAGI.MessageBus.updateMessage('taskCompleted', data.payload.entityID, 'TaskExpanded', this.info, newTask);
+              //CHIPPRAGI.MessageBus.updateMessage('taskCompleted', data.payload.entityID, 'TaskExpanded', this.info, newTask);
             });
             success = true;
           } catch(error) {
           // the response was not json so we need to try again console.logging for trouble shoooting
-          CHIPPRAGI.Logger.error({system: 'TaskEnpanderSystem', log: expandedTask, error: JSON.stringify(error)});
-          expandedTask = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
+          CHIPPRAGI.Logger.error({system: 'TaskExpanderSystem.error', log: JSON.stringify(expandedTask), error: error});
+          
         }
       }
     },
