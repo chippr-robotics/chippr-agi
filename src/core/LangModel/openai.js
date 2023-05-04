@@ -12,7 +12,10 @@ export class OpenAIApi {
         const response = await fetch(
             `https://api.openai.com/v1/completions`,
             {
-                headers: { Authorization: `Bearer ${this.API_TOKEN}` },
+                headers: { 
+                    Authorization: `Bearer ${this.API_TOKEN}` ,
+                    'Content-Type': "application/json",
+                },
                 method: "POST",
                 body: JSON.stringify(data),
             }
@@ -27,8 +30,9 @@ export class OpenAIApi {
             temperature : prompt.temp || this.DEFAULT_TEMP,
             max_tokens : prompt.max_tokens || this.DEFAULT_MAX_TOKENS, 
         };
-            
+        console.log(`this is the data ${JSON.stringify(data)}`);
         let results = await this.query( data );
+        console.log("this is the results", results);
         //should return a string
         return results.generated_text;  
     };
