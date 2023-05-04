@@ -23,6 +23,7 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "natural": "^6.2.0",
+    "node-fetch": "^3.3.1",
     "openai": "^3.2.1",
     "os": "^0.1.2",
     "pubsub-js": "^1.9.4",

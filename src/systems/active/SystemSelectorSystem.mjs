@@ -45,24 +45,25 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
     if (taskFinder == null) { taskFinder = await CHIPPRAGI.getComponentData(entityID, 'ObjectiveDescription') }; 
     
     taskDescription = taskFinder.task || taskFinder.objective;
-  
+    
     (SystemSelectorPrompt.task_prompt).forEach( t => {
       t = t.replace('{{ taskDescription }}', taskDescription);
       t = t.replace('{{ systemDescriptions }}', JSON.stringify(systemDescriptions));
       prompt.push(t);
       },prompt);
     // Send the prompt to the language model
+    //CHIPPRAGI.Logger.error({system: 'SystemSelector.prompt', error: prompt});
     
     let success = false;
     //throw error;
-    let systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
-    let payloadData = {
-      recommendedSystem : systemName,
-    };
     
-
     while (!success){        
       try {
+        let systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
+        CHIPPRAGI.Logger.error({system: 'SystemSelector.sysName', error: systemName});
+        let payloadData = {
+          recommendedSystem : systemName,
+        };
         //_eventType, _entityID, _componentName, _sourceSystem, _data
         JSON.parse(systemName).forEach(system => {
           //console.log(system)
@@ -73,9 +74,7 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
         success = true;
       } catch(error) {
         //console.log(error);
-        CHIPPRAGI.Logger.error({system: 'SystemSelectorSystem', log : systemName, error: JSON.stringify(error)});
-          // the response was not json so we need to try again console.logging for trouble shoooting
-        systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
+        CHIPPRAGI.Logger.error({system: 'SystemSelectorSystem', error: JSON.stringify(error)});
       };
         
     }
