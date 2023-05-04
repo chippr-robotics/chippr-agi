@@ -5,12 +5,10 @@ import { NoOpClient } from "./no-op-client.js";
 
 export class LanguageModel {
   constructor(chipprConfig) {
-    this.rateLimit = rateLimitsConfig[chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_RATE_LIMIT_TYPE];
+    this.rateLimit = rateLimitsConfig[chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_RATE_LIMIT_TYPE] || rateLimitsConfig['default'];
     this.requestQueue = {};
     this.init();
-
-    if (chipprConfig.TESTING != true) {
-      switch(chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_ID){
+    switch(chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_ID){
       case 'openai':
         this.model = new OpenAIApi(chipprConfig);
       break;
@@ -18,16 +16,8 @@ export class LanguageModel {
         this.model = new HuggingFaceApi(chipprConfig);
       break;
       default:
+        this.model = new NoOpClient(chipprConfig);
     }
-      // Add other language models here, e.g., 'gptx':
-      // else if (chipprConfig === 'gptx') {
-      //   // Initialize GPT-X model
-      // }
-    } else {
-      //USE THE NOOP MODEL if testing is enabled
-      this.model = this.createNoOpClient();
-    }
-
   }
 
   init() {

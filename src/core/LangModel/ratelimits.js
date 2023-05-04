@@ -25,5 +25,14 @@ export const rateLimitsConfig = {
         edit: 20,
         image: 50,
         audio: 50,
+    },
+    default: {
+        embeddings: 3,
+        completion: 3,
+        chat: 3,
+        codex: 3,
+        edit: 3,
+        image: 5,
+        audio: 3, 
     },   
 }
