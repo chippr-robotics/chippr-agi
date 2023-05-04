@@ -10,6 +10,7 @@ import { Logger } from './Logger/logger.js';
 import { MessageBus } from './MessageBus/msgBus.mjs';
 import { Utility } from './Util/Util.js';
 import { VectorDB } from './Vector-db/vector-db.js'
+import { get } from 'http';
 
 
 export class ChipprAGI {
