@@ -10,7 +10,6 @@ import { Logger } from './Logger/logger.js';
 import { MessageBus } from './MessageBus/msgBus.mjs';
 import { Utility } from './Util/Util.js';
 import { VectorDB } from './Vector-db/vector-db.js'
-import { get } from 'http';
 
 
 export class ChipprAGI {
@@ -55,6 +54,12 @@ export class ChipprAGI {
   async getAllEntities(){
     return await this.vectorDb.query(`idx:entities:*`);
   }
+
+  async getEntitiesByComponent(componentName){
+    return await this.vectorDb.query(`idx:${componentName}:*`);
+  }
+
+  addComponent
 
   addComponent(entityId, componentName, componentData) {
     //check if we store components in the db or not
