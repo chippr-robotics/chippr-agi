@@ -1,4 +1,4 @@
-export default class noOpClient {
+export class NoOpClient {
        constructor(chipprConfig){
               this.tests =
               {
@@ -9,7 +9,6 @@ export default class noOpClient {
                             data: [{
                                    embedding: 'TESTING',
                             }],
-                            ""
                      },
               };
        }
