@@ -10,7 +10,7 @@ CHIPPRAGI.registerSystem('AmazingSystem', {
 
   init: function () {
     //NOTE THIS IS FOR TESTING THE SYSTEM SELECTOR ONLY 
-    CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
+    CHIPPRAGI.subscribe('UPDATE', (type, eventData) => {
       //if( type == 'systemSelected' ) //CHIPPRAGI.Logger.debug({log:`AMAZING SYSTEM WAS CORRECTLY SELECTED!`, system: 'amazingSystem'});
     });
   },
