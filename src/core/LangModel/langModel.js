@@ -1,5 +1,5 @@
 import { rateLimitsConfig } from "./ratelimits.js";
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAIApi }from "./openai.js";
 import { HuggingFaceApi } from "./huggingface.js";
 import { NoOpClient } from "./no-op-client.js";
 
@@ -19,12 +19,6 @@ export class LanguageModel {
       break;
       default:
     }
-      if (chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_ID === 'openai') {
-        const configuration = new Configuration({
-          apiKey: chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_API_KEY,
-        });
-        
-      }
       // Add other language models here, e.g., 'gptx':
       // else if (chipprConfig === 'gptx') {
       //   // Initialize GPT-X model

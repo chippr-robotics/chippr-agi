@@ -36,7 +36,7 @@ export class HuggingFaceApi {
             }
         };
             
-        let results = await this.query( { data }, this.GENERATE_NAME );
+        let results = await this.query( data , this.GENERATE_NAME );
         //should return a string
         return results.generated_text;
         
