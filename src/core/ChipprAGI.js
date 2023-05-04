@@ -51,9 +51,15 @@ export class ChipprAGI {
     }
   }
 
-  async getAllEntities(componentName){
+  async getAllEntities(){
+    return await this.vectorDb.query(`idx:entities:*`);
+  }
+
+  async getEntitiesByComponent(componentName){
     return await this.vectorDb.query(`idx:${componentName}:*`);
   }
+
+  addComponent
 
   addComponent(entityId, componentName, componentData) {
     //check if we store components in the db or not

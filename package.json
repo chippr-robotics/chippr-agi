@@ -29,7 +29,8 @@
     "pubsub-js": "^1.9.4",
     "redis": "^4.6.5",
     "url": "^0.11.0",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "chai": "^4.3.7",
