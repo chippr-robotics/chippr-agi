@@ -29,25 +29,6 @@ export class LanguageModel {
 
   }
 
-  createNoOpClient() {
-    let tests = {
-      data:{
-        choices: [{
-          text: 'TESTING',
-        }],
-        data: [{
-          embedding: 'TESTING',
-        }]
-      },
-    }
-    return {
-
-      createCompletion: () => Promise.resolve(tests),
-      createEmbedding: () => Promise.resolve(tests),
-      // Add any other methods that you need to mock during testing
-    };
-  }
-
   init() {
     for (const type in this.rateLimit) {
       // Initialize an empty array for each request type

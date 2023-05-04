@@ -52,14 +52,14 @@ CHIPPRAGI.registerSystem('SystemSelectorSystem', {
       prompt.push(t);
       },prompt);
     // Send the prompt to the language model
-    
+    CHIPPRAGI.Logger.error({system: 'SystemSelector', log: prompt});
+
     let success = false;
     //throw error;
     let systemName = await CHIPPRAGI.LangModel.generate(prompt.join('\n'));
     let payloadData = {
       recommendedSystem : systemName,
     };
-    
 
     while (!success){        
       try {
