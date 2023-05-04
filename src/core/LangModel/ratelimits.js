@@ -1,5 +1,5 @@
 export const rateLimitsConfig = {
-    huggingface_Free: {
+    huggingface_free: {
         embeddings: 3000,
         completion: 3000,
         chat: 3000,
@@ -8,7 +8,7 @@ export const rateLimitsConfig = {
         image: 3000,
         audio: 3000, 
     },
-    openAI_Free: {
+    openai_free: {
         embeddings: 3,
         completion: 3,
         chat: 3,
@@ -17,7 +17,7 @@ export const rateLimitsConfig = {
         image: 5,
         audio: 3, 
     },
-    openAI_Pay: {
+    openai_pay: {
         embeddings: 3500,
         completion: 3500,
         chat: 3500,
