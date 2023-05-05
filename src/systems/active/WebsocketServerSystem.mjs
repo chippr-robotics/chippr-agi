@@ -65,7 +65,11 @@ CHIPPRAGI.registerSystem("WebsocketServerSystem", {
     break;
     default:
       //dump on the message bus
-      CHIPPRAGI.MessageBus.publish('UPDATE', message);
+      let entityID = parsedMessage.entityID || null;
+      let componentName = parsedMessage.componentName || 'websocket';
+      let sourceSystem = parsedMessage.sourceSystem || 'WebsocketServerSystem';
+      let data = parsedMessage.data || {};
+      CHIPPRAGI.MessageBus.updateMessage( parsedMessage.type, entityID, componentName, sourceSystem, data );
     }
   },
 

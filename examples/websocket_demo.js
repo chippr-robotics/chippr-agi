@@ -36,6 +36,10 @@ setInterval(()=> {
   socket.send(JSON.stringify({ type: "getAllComponents" }));
 }, 5000);
 
+
+setInterval(()=> {
+  socket.send(JSON.stringify({ type: "saveData" , componentName: 'IPFScid', data: "this is a test!" }));
+}, 5000);
 /*
 setTimeout(()=> {
   socket.send(JSON.stringify({ type: "createObjective", data: "Write the worlds greatest robot detective novel!"  }));
