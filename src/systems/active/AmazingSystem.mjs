@@ -5,20 +5,26 @@ CHIPPRAGI.registerSystem('AmazingSystem', {
     version : "0.1.0",
     license : "APACHE-2.0",
     developer: "CHIPPRBOTS",
+    type: "core",
     description : "This is an system that can solve any problem.",
   },
 
   init: function () {
-    //NOTE THIS IS FOR TESTING THE SYSTEM SELECTOR ONLY 
-    CHIPPRAGI.subscribe('SYSTEM', (type, eventData) => {
-      //if( type == 'systemSelected' ) //CHIPPRAGI.Logger.debug({log:`AMAZING SYSTEM WAS CORRECTLY SELECTED!`, system: 'amazingSystem'});
-    });
+    //NOTE THIS IS FOR TESTING THE SYSTEM ONLY 
+    CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
   },
   
-  update: function (eventData) {
+  update: async function (message) {
     // Do something when the component's data is updated, if needed.
     // entityId is the ID of the entity this component is attached to.
     // componentData contains the updated data for the component.
+    let eventData = JSON.parse(message);
+    if (eventData.eventType === 'saveData') {
+      let cid = await CHIPPRAGI.Util.storeData(eventData.payload.data);
+      CHIPPRAGI.Logger.error({ systemName: 'awesome system', log: cid});
+      let file = await CHIPPRAGI.Util.readData(cid.path);
+      CHIPPRAGI.Logger.error({ systemName: 'awesome system', log: file.toString('utf8')});
+    }
   },
   
   remove: function (eventData) {

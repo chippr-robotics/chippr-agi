@@ -1,7 +1,15 @@
 import CryptoJS from 'crypto-js';
+import * as ipfs from 'ipfs';
 
 export class Utility {
   constructor(chipprConfig) {
+    this.node;  
+    this.init();
+  }
+
+  async init() {
+    this.node = await ipfs.create();
+    //console.log(this.node)
   }
 
   getHashId( _dataToHash ){
@@ -40,6 +48,25 @@ export class Utility {
       },
     });
   };
+
+  async storeData( data ){
+    // takes a data object in and returns a cid string
+    const results = await this.node.add(data)
+    //do something with results maybe
+    return results;
+  }
+
+  async getData( cid ){
+    for await (const buf of this.node.get(cid)) {
+      return buf;
+    }
+  }
+
+  async readData( cid ){
+    for await (const ary of this.node.cat(cid)) {
+      return ary;
+    }
+  }
 }
 
 
