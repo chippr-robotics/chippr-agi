@@ -44,10 +44,10 @@ setInterval(()=> {
 
 //lazy reload of websocket if I crash the server
 setInterval(()=> {
-  console.log(socket);
+  //console.log(socket.State);
   try {
     //if (socket.State == WebSocketState.Close) {socket = new WebSocket("ws://localhost:8082")}  
-    console.log(socket);
+    //console.log(socket.State);
   } catch (error) {
     console.log(error)
   }  

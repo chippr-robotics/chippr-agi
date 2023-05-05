@@ -23,7 +23,7 @@ CHIPPRAGI.registerSystem('AmazingSystem', {
       let cid = await CHIPPRAGI.Util.storeData(eventData.payload.data);
       CHIPPRAGI.Logger.error({ systemName: 'awesome system', log: cid});
       let file = await CHIPPRAGI.Util.readData(cid.path);
-      CHIPPRAGI.Logger.error({ systemName: 'awesome system', log: file});
+      CHIPPRAGI.Logger.error({ systemName: 'awesome system', log: file.toString('utf8')});
     }
   },
   
