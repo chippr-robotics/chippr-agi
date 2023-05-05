@@ -1,8 +1,9 @@
 import { WebSocket } from "ws";
 
-const socket = new WebSocket("ws://localhost:8082");
+var socket = new WebSocket("ws://localhost:8082");
 const entities = [];
 const components = [];
+
 
 socket.onmessage = (event) => {
   const message = JSON.parse(event.data);
@@ -39,7 +40,18 @@ setInterval(()=> {
 
 setInterval(()=> {
   socket.send(JSON.stringify({ type: "saveData" , componentName: 'IPFScid', data: "this is a test!" }));
-}, 5000);
+}, 3000);
+
+//lazy reload of websocket if I crash the server
+setInterval(()=> {
+  console.log(socket);
+  try {
+    //if (socket.State == WebSocketState.Close) {socket = new WebSocket("ws://localhost:8082")}  
+    console.log(socket);
+  } catch (error) {
+    console.log(error)
+  }  
+}, 5000)
 /*
 setTimeout(()=> {
   socket.send(JSON.stringify({ type: "createObjective", data: "Write the worlds greatest robot detective novel!"  }));

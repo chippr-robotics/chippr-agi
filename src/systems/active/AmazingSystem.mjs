@@ -14,15 +14,15 @@ CHIPPRAGI.registerSystem('AmazingSystem', {
     CHIPPRAGI.subscribe('UPDATE', (eventData) => {this.update(eventData)});
   },
   
-  update: async function (eventData) {
+  update: async function (message) {
     // Do something when the component's data is updated, if needed.
     // entityId is the ID of the entity this component is attached to.
     // componentData contains the updated data for the component.
     let eventData = JSON.parse(message);
     if (eventData.eventType === 'saveData') {
-      let cid = await CHIPPRAGI.Util.storeData("this is a test");
+      let cid = await CHIPPRAGI.Util.storeData(eventData.payload.data);
       CHIPPRAGI.Logger.error({ systemName: 'awesome system', log: cid});
-      let file = await CHIPPRAGI.Util.getData(cid);
+      let file = await CHIPPRAGI.Util.readData(cid.path);
       CHIPPRAGI.Logger.error({ systemName: 'awesome system', log: file});
     }
   },
