@@ -41,9 +41,28 @@ export class HuggingFaceApi {
         return results.generated_text;
         
     };
-    /*
-    createEmbedding() { return  Promise.resolve(this.tests)};
-    createChat(){return  Promise.resolve(this.tests)};
+    
+    //async createEmbedding( prompt ) { return  Promise.resolve(this.tests)};
+    createChat( data ){
+        let data ={
+            inputs :{ 
+                text = prompt.prompt,
+                generated_responses = prompt.responses || null,//an array
+                past_user_inputs = prompt.past_prompts || null,//an array
+            },
+            parameters : {
+                temperature : prompt.temp || this.DEFAULT_TEMP,
+                max_new_tokens : prompt.max_tokens || this.DEFAULT_MAX_TOKENS, 
+            },
+            options : {
+                use_cache : false,
+                wait_for_model : true,
+            }
+        };
+        let results = await this.query( data , this.GENERATE_NAME );
+        //should return a string
+        return results.generated_text;
+    };
     createCodex(){return  Promise.resolve(this.tests)};
     createEdit(){return  Promise.resolve(this.tests)};
     createImage(){return  Promise.resolve(this.tests)};
