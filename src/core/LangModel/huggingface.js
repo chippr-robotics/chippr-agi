@@ -43,10 +43,21 @@ export class HuggingFaceApi {
     };
     
     //async createEmbedding( prompt ) { return  Promise.resolve(this.tests)};
+    
     createChat( data ){
-        let data ={
+     /* needs an object {
+            prompt : string latest prompt
+            convo : {
+                system :[] the context of the conversation
+                user : [],
+                assistant : [] list of generated responses   
+            }
+        } 
+        */
+     
+        let data = {
             inputs :{ 
-                text = prompt.prompt,
+                text : prompt.prompt,
                 generated_responses = prompt.responses || null,//an array
                 past_user_inputs = prompt.past_prompts || null,//an array
             },
