@@ -6,7 +6,7 @@
 Chippr-AGI is an open-source event-driven ECS framework that uses AI models to automate task creation and prioritization. This system is designed to run solo or as a swarm of containers. It combines the power of LLM with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.  
 
 
- 5/4 - Added huggingface api support. use with caution for now. 
+ 5/9 - https://docs.chipprbots.com/ is live, needs work 
 
 ##### _This repo is under active development, clone often or use the latest docker image_
  
