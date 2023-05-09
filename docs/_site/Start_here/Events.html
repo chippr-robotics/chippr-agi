@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Event-Driven Architecture in Chippr-AGI | Chippr-AGI Documents</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Event-Driven Architecture in Chippr-AGI">
+<meta property="og:locale" content="en">
+<meta name="description" content="Event-driven architecture is a design pattern that promotes loose coupling and effective communication between different parts of an application. In Chippr-AGI, this architecture is used to manage interactions between systems and components while maintaining a modular and scalable structure.">
+<meta property="og:description" content="Event-driven architecture is a design pattern that promotes loose coupling and effective communication between different parts of an application. In Chippr-AGI, this architecture is used to manage interactions between systems and components while maintaining a modular and scalable structure.">
+<link rel="canonical" href="http://localhost:4000/Start_here/Events">
+<meta property="og:url" content="http://localhost:4000/Start_here/Events">
+<meta property="og:site_name" content="Chippr-AGI Documents">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Event-Driven Architecture in Chippr-AGI">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Event-driven architecture is a design pattern that promotes loose coupling and effective communication between different parts of an application. In Chippr-AGI, this architecture is used to manage interactions between systems and components while maintaining a modular and scalable structure.","headline":"Event-Driven Architecture in Chippr-AGI","url":"http://localhost:4000/Start_here/Events"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" as="style" type="text/css" crossorigin>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#157878">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="stylesheet" href="/assets/css/style.css?v=55907d7f8d6513e2946fd86de9fa7652c005e9a1">
+    </head>
+    <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    
+    <header class="page-header" role="banner">
+    <h1 class="project-name">Event-Driven Architecture in Chippr-AGI</h1>
+    <h2 class="project-tagline">Event-driven architecture is a design pattern that promotes loose coupling and effective communication between different parts of an application. In Chippr-AGI, this architecture is used to manage interactions between systems and components while maintaining a modular and scalable structure.</h2>
+    
+        <a href="https://github.com/chippr-robotics/chippr-agi" class="btn">View on GitHub</a>
+    
+     
+    <div class="wrapper">
+        <nav class="site-nav">
+            <a href="#" class="menu-icon">
+                <svg viewbox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+                </svg>
+            </a>
+            <div class="trigger">
+                
+                    
+                
+                    
+                        <a class="page-link" href="/Start_here/">What is ECS</a>
+                    
+                
+                    
+                
+                    
+                        <a class="page-link" href="/">CHIPPR-AGI</a>
+                    
+                
+                    
+                        <a class="page-link" href="/walkthrough.html">Walkthrough</a>
+                    
+                
+                    
+                
+                    
+                
+            </div>
+        </nav>
+    </div>
+  </header>
+    
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="the-basics-of-event-driven-architecture">The Basics of Event-Driven Architecture</h2>
+
+<p>In an event-driven architecture, events are the primary mechanism for communication between different parts of the application. An event is a message that represents something that has happened, such as a change in state or the completion of a task. Events are produced by one part of the application and consumed by another, often without any direct knowledge of each other’s existence.</p>
+
+<p>Here are the key aspects of event-driven architecture:</p>
+
+<ol>
+  <li>
+<strong>Event Producers:</strong> Components or systems that create and emit events when a specific action occurs or a state change happens.</li>
+  <li>
+<strong>Event Consumers:</strong> Components or systems that listen for and react to events, usually by performing a specific action or updating their internal state.</li>
+  <li>
+<strong>Event Bus:</strong> A central communication channel that allows events to be passed between producers and consumers without them needing to be directly connected.</li>
+</ol>
+
+<h2 id="life-cycle-of-an-event">Life Cycle of an Event</h2>
+
+<p>The life cycle of an event in Chippr-AGI consists of the following stages:</p>
+
+<ol>
+  <li>
+<strong>Event Creation:</strong> An event is created by an event producer when a specific action occurs or a state change happens. The event contains relevant information about what has occurred, such as the entity ID or any additional data needed for processing.</li>
+</ol>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggTFJcbkEoRXZlbnQgQ3JlYXRpb24pIC0tPiBCKEV2ZW50IEVtaXNzaW9uKSIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19"></p>
+
+<ol>
+  <li>
+<strong>Event Emission:</strong> The event producer emits the event, sending it to the event bus.</li>
+</ol>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggTFJcbkIoRXZlbnQgRW1pc3Npb24pIC0tPiBDKEV2ZW50IERpc3RyaWJ1dGlvbikiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ"></p>
+
+<ol>
+  <li>
+<strong>Event Distribution:</strong> The event bus distributes the event to all registered event consumers that have expressed interest in the specific event type. This allows multiple systems to react to the same event independently.</li>
+</ol>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggTFJcbkMoRXZlbnQgRGlzdHJpYnV0aW9uKSAtLT4gRDEoRXZlbnQgUHJvY2Vzc2luZyBTeXN0ZW0gQSlcbkMgLS0-IEQyKEV2ZW50IFByb2Nlc3NpbmcgU3lzdGVtIEIpXG5DIC0tPiBEMyhFdmVudCBQcm9jZXNzaW5nIFN5c3RlbSBDKSIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19"></p>
+
+<ol>
+  <li>
+<strong>Event Processing:</strong> Event consumers process the event, performing actions or updating their internal state as needed. The event processing stage is usually asynchronous and can happen in parallel across multiple systems.</li>
+</ol>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggTFJcbkQxKEV2ZW50IFByb2Nlc3NpbmcgU3lzdGVtIEEpIC0tPiBFMShVcGRhdGUgU3RhdGUvU3lzdGVtIEEpXG5EMihFdmVudCBQcm9jZXNzaW5nIFN5c3RlbSBCKSAtLT4gRTIoVXBkYXRlIFN0YXRlL1N5c3RlbSBCKVxuRDMoRXZlbnQgUHJvY2Vzc2luZyBTeXN0ZW0gQykgLS0-IEUzKFVwZGF0ZSBTdGF0ZS9TeXN0ZW0gQykiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ"></p>
+
+<ol>
+  <li>
+<strong>Update State/System:</strong> Once the event has been processed, the event consumer updates its internal state or performs other actions as necessary, completing the life cycle of the event.</li>
+</ol>
+
+<p>By understanding the life cycle of events in Chippr-AGI, you can effectively manage communication between systems and components, ensuring that your application remains modular, scalable, and easy to maintain.</p>
+
+      <table class="doctable">
+    <thread>
+        <tr>
+<th class="back">⏪ Back </th>
+<th class="next">Next ⏩</th>
+</tr>
+    </thread>
+    <tr>
+        <td class="link"><a href=""></a></td>
+        <td class="link"><a href="/walkthrough/setup"></a></td>
+    </tr>
+</table>
+    <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/chippr-robotics/chippr-agi">chippr-agi</a> is maintained by <a href="https://github.com/chippr-robotics">chippr-robotics</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

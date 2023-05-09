@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Creating the Components | Chippr-AGI Documents</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Creating the Components">
+<meta property="og:locale" content="en">
+<meta name="description" content="In this section, we will create two components for our entity. Let’s assume we are creating an entity that represents a simple task with a title and a status.">
+<meta property="og:description" content="In this section, we will create two components for our entity. Let’s assume we are creating an entity that represents a simple task with a title and a status.">
+<link rel="canonical" href="http://localhost:4000/walkthrough/create_components">
+<meta property="og:url" content="http://localhost:4000/walkthrough/create_components">
+<meta property="og:site_name" content="Chippr-AGI Documents">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Creating the Components">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"In this section, we will create two components for our entity. Let’s assume we are creating an entity that represents a simple task with a title and a status.","headline":"Creating the Components","url":"http://localhost:4000/walkthrough/create_components"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" as="style" type="text/css" crossorigin>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#157878">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="stylesheet" href="/assets/css/style.css?v=55907d7f8d6513e2946fd86de9fa7652c005e9a1">
+    </head>
+    <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    
+    <header class="page-header" role="banner">
+    <h1 class="project-name">3. Creating the Components</h1>
+    <h2 class="project-tagline">In this section, we will create two components for our entity. Let's assume we are creating an entity that represents a simple task with a title and a status.</h2>
+    
+        <a href="https://github.com/chippr-robotics/chippr-agi" class="btn">View on GitHub</a>
+    
+     
+    <div class="wrapper">
+        <nav class="site-nav">
+            <a href="#" class="menu-icon">
+                <svg viewbox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+                </svg>
+            </a>
+            <div class="trigger">
+                
+                    
+                
+                    
+                        <a class="page-link" href="/Start_here/">What is ECS</a>
+                    
+                
+                    
+                
+                    
+                        <a class="page-link" href="/">CHIPPR-AGI</a>
+                    
+                
+                    
+                        <a class="page-link" href="/walkthrough.html">Walkthrough</a>
+                    
+                
+                    
+                
+                    
+                
+            </div>
+        </nav>
+    </div>
+  </header>
+    
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="31-tasktitle-component">3.1. TaskTitle Component</h2>
+
+<p>Create a new file called <code class="language-plaintext highlighter-rouge">TaskTitle.js</code> inside the <code class="language-plaintext highlighter-rouge">src/components/</code> directory and add the following code:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">CHIPPRAGI</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">chippr-agi</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">CHIPPRAGI</span><span class="p">.</span><span class="nx">registerComponent</span><span class="p">(</span><span class="dl">'</span><span class="s1">TaskTitle</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">schema</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">title</span><span class="p">:</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">,</span> <span class="na">default</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Untitled Task</span><span class="dl">'</span> <span class="p">},</span>
+  <span class="p">},</span>
+
+  <span class="na">init</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Do something when the component is first attached</span>
+  <span class="p">},</span>
+
+  <span class="na">update</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Do something when the component's data is updated</span>
+  <span class="p">},</span>
+
+  <span class="na">remove</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Do something when the component or its entity is detached</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>This component has a single property called <code class="language-plaintext highlighter-rouge">title</code> of type <code class="language-plaintext highlighter-rouge">string</code> with a default value of ‘Untitled Task’.</p>
+
+<h2 id="32-taskstatus-component">3.2. TaskStatus Component</h2>
+
+<p>Create a new file called <code class="language-plaintext highlighter-rouge">TaskStatus.js</code> inside the <code class="language-plaintext highlighter-rouge">src/components/</code> directory and add the following code:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">CHIPPRAGI</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">chippr-agi</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">CHIPPRAGI</span><span class="p">.</span><span class="nx">registerComponent</span><span class="p">(</span><span class="dl">'</span><span class="s1">TaskStatus</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">schema</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">status</span><span class="p">:</span> <span class="p">{</span> <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">,</span> <span class="na">default</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Incomplete</span><span class="dl">'</span> <span class="p">},</span>
+  <span class="p">},</span>
+
+  <span class="na">init</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Do something when the component is first attached</span>
+  <span class="p">},</span>
+
+  <span class="na">update</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Do something when the component's data is updated</span>
+  <span class="p">},</span>
+
+  <span class="na">remove</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Do something when the component or its entity is detached</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>This component has a single property called <code class="language-plaintext highlighter-rouge">status</code> of type <code class="language-plaintext highlighter-rouge">string</code> with a default value of ‘Incomplete’.</p>
+
+<p>With both components created, we can now proceed to create an entity that uses these components.
+```</p>
+
+      <table class="doctable">
+    <thread>
+        <tr>
+<th class="back">⏪ Back </th>
+<th class="next">Next ⏩</th>
+</tr>
+    </thread>
+    <tr>
+        <td class="link"><a href=""></a></td>
+        <td class="link"><a href="/Start_here/Systems"></a></td>
+    </tr>
+</table>
+    <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/chippr-robotics/chippr-agi">chippr-agi</a> is maintained by <a href="https://github.com/chippr-robotics">chippr-robotics</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

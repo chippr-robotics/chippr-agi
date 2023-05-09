@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Setting up the Project | Chippr-AGI Documents</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Setting up the Project">
+<meta property="og:locale" content="en">
+<meta name="description" content="Before we start creating our entity and its components, let’s set up the project by following the steps below.">
+<meta property="og:description" content="Before we start creating our entity and its components, let’s set up the project by following the steps below.">
+<link rel="canonical" href="http://localhost:4000/walkthrough/setup">
+<meta property="og:url" content="http://localhost:4000/walkthrough/setup">
+<meta property="og:site_name" content="Chippr-AGI Documents">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Setting up the Project">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Before we start creating our entity and its components, let’s set up the project by following the steps below.","headline":"Setting up the Project","url":"http://localhost:4000/walkthrough/setup"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" as="style" type="text/css" crossorigin>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#157878">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="stylesheet" href="/assets/css/style.css?v=55907d7f8d6513e2946fd86de9fa7652c005e9a1">
+    </head>
+    <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    
+    <header class="page-header" role="banner">
+    <h1 class="project-name">2. Setting up the Project</h1>
+    <h2 class="project-tagline">Before we start creating our entity and its components, let's set up the project by following the steps below.</h2>
+    
+        <a href="https://github.com/chippr-robotics/chippr-agi" class="btn">View on GitHub</a>
+    
+     
+    <div class="wrapper">
+        <nav class="site-nav">
+            <a href="#" class="menu-icon">
+                <svg viewbox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+                </svg>
+            </a>
+            <div class="trigger">
+                
+                    
+                
+                    
+                        <a class="page-link" href="/Start_here/">What is ECS</a>
+                    
+                
+                    
+                
+                    
+                        <a class="page-link" href="/">CHIPPR-AGI</a>
+                    
+                
+                    
+                        <a class="page-link" href="/walkthrough.html">Walkthrough</a>
+                    
+                
+                    
+                
+                    
+                
+            </div>
+        </nav>
+    </div>
+  </header>
+    
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="21-prerequisites">2.1. Prerequisites</h2>
+
+<p>Ensure you have the following installed on your machine:</p>
+
+<ul>
+  <li>Node.js (v14 or higher)</li>
+  <li>npm (v6 or higher)</li>
+  <li>A code editor (e.g., Visual Studio Code)</li>
+</ul>
+
+<h2 id="22-create-a-new-project">2.2. Create a New Project</h2>
+
+<ol>
+  <li>
+    <p>Open your terminal and navigate to the directory where you want to create the project.</p>
+  </li>
+  <li>
+    <p>Run the following command to create a new directory called <code class="language-plaintext highlighter-rouge">chippr-agi-tutorial</code> and navigate to it:</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>mkdir chippr-agi-tutorial &amp;&amp; cd chippr-agi-tutorial
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Initialize the project by running the following command:</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>npm init -y
+</code></pre></div>    </div>
+
+    <p>This will create a <code class="language-plaintext highlighter-rouge">package.json</code> file in the project directory with default values.</p>
+  </li>
+</ol>
+
+<h2 id="23-install-dependencies">2.3. Install Dependencies</h2>
+
+<p>We need to install ChipprAGI as a dependency for our project. Run the following command in your terminal:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install chippr-agi
+</code></pre></div></div>
+
+<h2 id="24-create-project-structure">2.4. Create Project Structure</h2>
+
+<p>Create the following directory structure for the project:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chippr-agi-tutorial/
+│
+├── src/
+│   ├── components/
+│   ├── entities/
+│   └── systems/
+│
+├── package.json
+└── .gitignore
+</code></pre></div></div>
+
+<p>You can create these directories and files manually or use the terminal:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir src &amp;&amp; mkdir src/components src/entities src/systems
+touch .gitignore
+</code></pre></div></div>
+
+<p>Add the following to your <code class="language-plaintext highlighter-rouge">.gitignore</code> file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node_modules/
+</code></pre></div></div>
+
+<h2 id="25-chippragi-configuration">2.5. ChipprAGI Configuration</h2>
+
+<p>In your <code class="language-plaintext highlighter-rouge">src</code> directory, create a new file called <code class="language-plaintext highlighter-rouge">main.js</code>. This file will serve as the entry point for our project and will configure ChipprAGI.</p>
+
+<p>Paste the following code into <code class="language-plaintext highlighter-rouge">main.js</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">ChipprAGI</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">chippr-agi</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// Initialize ChipprAGI</span>
+<span class="kd">const</span> <span class="nx">chipprAGI</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ChipprAGI</span><span class="p">();</span>
+
+<span class="c1">// Load systems and components</span>
+<span class="nx">chipprAGI</span><span class="p">.</span><span class="nx">loadSystems</span><span class="p">(</span><span class="dl">'</span><span class="s1">./systems/</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">chipprAGI</span><span class="p">.</span><span class="nx">loadComponents</span><span class="p">(</span><span class="dl">'</span><span class="s1">./components/</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Start ChipprAGI</span>
+<span class="nx">chipprAGI</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Now that our project is set up, we can proceed to create our entity, components, and systems.
+```</p>
+
+      <table class="doctable">
+    <thread>
+        <tr>
+<th class="back">⏪ Back </th>
+<th class="next">Next ⏩</th>
+</tr>
+    </thread>
+    <tr>
+        <td class="link"><a href=""></a></td>
+        <td class="link"><a href="/walkthrough/create_components"></a></td>
+    </tr>
+</table>
+    <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/chippr-robotics/chippr-agi">chippr-agi</a> is maintained by <a href="https://github.com/chippr-robotics">chippr-robotics</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

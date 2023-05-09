@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Systems in Chippr-AGI | Chippr-AGI Documents</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Systems in Chippr-AGI">
+<meta property="og:locale" content="en">
+<meta name="description" content="Systems in Chippr-AGI are the primary building blocks responsible for handling the logic and processing related to specific tasks or functionalities. They work in tandem with components to define the behavior of the application, forming a crucial part of the Entity-Component-System (ECS) architecture.">
+<meta property="og:description" content="Systems in Chippr-AGI are the primary building blocks responsible for handling the logic and processing related to specific tasks or functionalities. They work in tandem with components to define the behavior of the application, forming a crucial part of the Entity-Component-System (ECS) architecture.">
+<link rel="canonical" href="http://localhost:4000/Start_here/Systems">
+<meta property="og:url" content="http://localhost:4000/Start_here/Systems">
+<meta property="og:site_name" content="Chippr-AGI Documents">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Systems in Chippr-AGI">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Systems in Chippr-AGI are the primary building blocks responsible for handling the logic and processing related to specific tasks or functionalities. They work in tandem with components to define the behavior of the application, forming a crucial part of the Entity-Component-System (ECS) architecture.","headline":"Systems in Chippr-AGI","url":"http://localhost:4000/Start_here/Systems"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" as="style" type="text/css" crossorigin>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#157878">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="stylesheet" href="/assets/css/style.css?v=55907d7f8d6513e2946fd86de9fa7652c005e9a1">
+    </head>
+    <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    
+    <header class="page-header" role="banner">
+    <h1 class="project-name">Systems in Chippr-AGI</h1>
+    <h2 class="project-tagline">Systems in Chippr-AGI are the primary building blocks responsible for handling the logic and processing related to specific tasks or functionalities. They work in tandem with components to define the behavior of the application, forming a crucial part of the Entity-Component-System (ECS) architecture.</h2>
+    
+        <a href="https://github.com/chippr-robotics/chippr-agi" class="btn">View on GitHub</a>
+    
+     
+    <div class="wrapper">
+        <nav class="site-nav">
+            <a href="#" class="menu-icon">
+                <svg viewbox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+                </svg>
+            </a>
+            <div class="trigger">
+                
+                    
+                
+                    
+                        <a class="page-link" href="/Start_here/">What is ECS</a>
+                    
+                
+                    
+                
+                    
+                        <a class="page-link" href="/">CHIPPR-AGI</a>
+                    
+                
+                    
+                        <a class="page-link" href="/walkthrough.html">Walkthrough</a>
+                    
+                
+                    
+                
+                    
+                
+            </div>
+        </nav>
+    </div>
+  </header>
+    
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="life-cycle-of-a-system">Life Cycle of a System</h2>
+
+<p>The life cycle of a system in Chippr-AGI consists of several stages:</p>
+
+<ol>
+  <li>
+<strong>Initialization:</strong> The system is registered with the Chippr-AGI core using <code class="language-plaintext highlighter-rouge">CHIPPRAGI.registerSystem()</code>. The <code class="language-plaintext highlighter-rouge">init</code> function is called, allowing the system to set up event listeners or perform any necessary setup.</li>
+</ol>
+
+<pre><code class="language-mermaid">graph TB
+  A(Initialization) --&gt; B(Update)
+</code></pre>
+
+<ol>
+  <li>
+<strong>Update:</strong> As the application runs, the system listens for and processes events. When an event is received, the system’s <code class="language-plaintext highlighter-rouge">update</code> function is called, allowing it to handle changes in component data or perform any required actions.</li>
+</ol>
+
+<pre><code class="language-mermaid">graph TB
+  B(Update) --&gt; C(updateEventHandler) --&gt; D(components Updated) --&gt; B
+</code></pre>
+
+<ol>
+  <li>
+    <p><strong>Remove:</strong> When a component or its associated entity is removed, the system’s <code class="language-plaintext highlighter-rouge">remove</code> function is called, allowing it to clean up any resources or perform necessary actions.</p>
+  </li>
+  <li>
+    <p><strong>Tick:</strong> The system’s <code class="language-plaintext highlighter-rouge">tick</code> function is called on every scene tick or frame, providing an opportunity to perform any continuous or time-dependent actions.</p>
+  </li>
+</ol>
+
+<h2 id="purpose-of-systems">Purpose of Systems</h2>
+
+<p>Systems in Chippr-AGI serve the following purposes:</p>
+
+<ol>
+  <li>
+    <p><strong>Handle Events:</strong> Systems listen for and process events related to their specific functionality, such as updating component data, performing calculations, or managing interactions between components.</p>
+  </li>
+  <li>
+    <p><strong>Encapsulate Logic:</strong> Systems contain the logic required to perform tasks or manage specific parts of the application, keeping the code modular and easier to maintain.</p>
+  </li>
+  <li>
+    <p><strong>Interact with Components:</strong> Systems work with components to define the behavior of entities, providing a dynamic and flexible way to manage application state.</p>
+  </li>
+</ol>
+
+<h2 id="differences-between-systems-and-components">Differences Between Systems and Components</h2>
+
+<p>Systems and components are both essential parts of the ECS architecture, but they serve distinct roles:</p>
+
+<ol>
+  <li>
+    <p><strong>Systems</strong> are responsible for processing logic, handling events, and managing interactions between components. They define the behavior and functionality of the application.</p>
+  </li>
+  <li>
+    <p><strong>Components</strong> are data containers that store information about entities, such as properties or attributes. They do not contain any logic and are used to describe the state of an entity.</p>
+  </li>
+</ol>
+
+<p>In Chippr-AGI, systems and components work together to create a modular and scalable application structure, allowing you to build complex applications with ease.</p>
+
+      <table class="doctable">
+    <thread>
+        <tr>
+<th class="back">⏪ Back </th>
+<th class="next">Next ⏩</th>
+</tr>
+    </thread>
+    <tr>
+        <td class="link"><a href=""></a></td>
+        <td class="link"><a href="/Start_here/Components"></a></td>
+    </tr>
+</table>
+    <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/chippr-robotics/chippr-agi">chippr-agi</a> is maintained by <a href="https://github.com/chippr-robotics">chippr-robotics</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

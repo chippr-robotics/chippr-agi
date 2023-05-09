@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>CHIPPR-AGI | Chippr-AGI Documents</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="CHIPPR-AGI">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Chippr-AGI is an open-source event-driven ECS framework that uses AI models to automate task creation and prioritization. This system is designed to run solo or as a swarm of containers. It combines the power of LLM with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.">
+<meta property="og:description" content="Chippr-AGI is an open-source event-driven ECS framework that uses AI models to automate task creation and prioritization. This system is designed to run solo or as a swarm of containers. It combines the power of LLM with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.">
+<link rel="canonical" href="http://localhost:4000/">
+<meta property="og:url" content="http://localhost:4000/">
+<meta property="og:site_name" content="Chippr-AGI Documents">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="CHIPPR-AGI">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"Chippr-AGI is an open-source event-driven ECS framework that uses AI models to automate task creation and prioritization. This system is designed to run solo or as a swarm of containers. It combines the power of LLM with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.","headline":"CHIPPR-AGI","name":"Chippr-AGI Documents","url":"http://localhost:4000/"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" as="style" type="text/css" crossorigin>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#157878">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="stylesheet" href="/assets/css/style.css?v=55907d7f8d6513e2946fd86de9fa7652c005e9a1">
+    </head>
+    <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    
+    <header class="page-header" role="banner">
+    <h1 class="project-name">CHIPPR-AGI</h1>
+    <h2 class="project-tagline">Chippr-AGI is an open-source event-driven ECS framework that uses  AI models to automate task creation and prioritization. This system  is designed to run solo or as a swarm of containers. It combines  the power of LLM with actor-critic reinforcement learning to  optimize the order and allocation of tasks for a given objective.  </h2>
+    
+        <a href="https://github.com/chippr-robotics/chippr-agi" class="btn">View on GitHub</a>
+    
+     
+    <div class="wrapper">
+        <nav class="site-nav">
+            <a href="#" class="menu-icon">
+                <svg viewbox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+                </svg>
+            </a>
+            <div class="trigger">
+                
+                    
+                
+                    
+                        <a class="page-link" href="/Start_here/">What is ECS</a>
+                    
+                
+                    
+                
+                    
+                        <a class="page-link" href="/">CHIPPR-AGI</a>
+                    
+                
+                    
+                        <a class="page-link" href="/walkthrough.html">Walkthrough</a>
+                    
+                
+                    
+                
+                    
+                
+            </div>
+        </nav>
+    </div>
+  </header>
+    
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="basic-flow">Basic Flow</h2>
+<p>Chippr-AGI uses a combination of LLMs for generating task descriptions and actor-critic reinforcement learning to prioritize the tasks based on their estimated rewards. The framework is built using Node.js and Redis to store embeddings for quick query and update.</p>
+
+<p>Tasks are generated based on the current context and objective, which are passed into a customizable prompt template. The prompts are stored in a JSON file and can be easily edited to fit specific needs. Once a task is generated, its dependencies are added to the task list and prioritized based on their estimated reward.</p>
+
+<p>After a task is completed, the system checks if any new tasks need to be generated based on the success of the previous task. The process is repeated until all tasks are completed and the objective is achieved.</p>
+
+<h2 id="system-flow">System Flow</h2>
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggVERcbkEoVXNlcikgLS0gb2JqZWN0aXZlIC0tPiBCKEVudGl0eUNyZWF0aW9uU3lzdGVtKVxuQyAtLSB0YXNrcywgcGFyZW50IC0tPiBCXG5CIC0tIHBhcmVudCAtLT4gQyhUYXNrUGFyZW50U3lzdGVtKVxuQiAtLSBlbnRpdHkgLS0-IEQoU3lzdGVtIFNlbGVjdGlvbiBTeXN0ZW0pXG5EIC0tIHN5c3RlbXNlbGVjdGVkIC0tPiBGKHRhc2sgY3JlYXRvcilcbkQgLS0gc3lzdGVtc2VsZWN0ZWQgLS0-IEcoaW1hZ2UgY3JlYXRvcilcbkQgLS0gc3lzdGVtc2VsZWN0ZWQgLS0-IEgoaW50ZXJuZXQgU2VhcmNoKVxuRCAtLSBzeXN0ZW1zZWxlY3RlZCAtLT4gSSh0YXNrIGV4cGFuZGVyKVxuRiAtLSB0YXNrcyAtLT4gQlxuRyAtLSB0YXNrQ29tcGxldGVkIC0tPiBKKFRoZSBKdWRnZSlcbkggLS0gdGFza0NvbXBsZXRlZCAtLT4gSlxuSSAtLSB0YXNrQ29tcGxldGVkIC0tPiBKXG5KIC0tPiBLW3Rhc2sgY29tcGxldGVkXVxuSyAtLSB5ZXMgLS0-IEwoVGFza0NvbXBsZXRpb25TeXN0ZW1fVEJEKVxuSyAtLSBubyAtLT4gRCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19">
+In this flowchart:</p>
+
+<p>1) The objective is provided to the system by a user (see examples/simple-demo)
+2) Tasks are stored as entities with associated components.
+3) An event is emitted to addSystemSelection to the task, which is handled by the System Selection system.
+4) We add a component to each entity mapping it to its parent objective
+5) An event is emitted to addSystemSelected the task, which is handled by the system selection system.
+6) The system selection system evaulates which loaded systems can best complete the task
+7) An event is emitted identifying which system will process the task
+8) The task is executed based on the relevant components.
+9) The result of the task is stored, and the task is marked as done.
+10) The system checks if the objective is complete.
+11) If the objective is not complete, an event is emitted to generate new tasks, which is handled by the Task Generation system.</p>
+
+<h2 id="ecs-events">ECS events</h2>
+<p>The ChipprAGI class emits an event using the EventEmitter.
+The EventEmitter distributes the event to all registered systems.
+Each system handles the event if it’s relevant to that system.
+The system performs its specific action based on the event and updates the relevant components.
+This diagram shows a high-level overview of how events are propagated through the ChipprAGI system and how systems handle and react to events.</p>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggVERcbkEoQ2hpcHByQUdJKSAtLT58RW1pdCBldmVudHwgQihFdmVudEVtaXR0ZXIpXG5CIC0tPnxEaXN0cmlidXRlIGV2ZW50fCBDKFN5c3RlbSAxKVxuQiAtLT58RGlzdHJpYnV0ZSBldmVudHwgRChTeXN0ZW0gMilcbkIgLS0-fERpc3RyaWJ1dGUgZXZlbnR8IEUoU3lzdGVtIE4pXG5DIC0tPnxIYW5kbGUgZXZlbnR8IEYoUGVyZm9ybSBTeXN0ZW0gMSBzcGVjaWZpYyBhY3Rpb24pXG5EIC0tPnxIYW5kbGUgZXZlbnR8IEcoUGVyZm9ybSBTeXN0ZW0gMiBzcGVjaWZpYyBhY3Rpb24pXG5FIC0tPnxIYW5kbGUgZXZlbnR8IEgoUGVyZm9ybSBTeXN0ZW0gTiBzcGVjaWZpYyBhY3Rpb24pXG5GIC0tPiBJKFVwZGF0ZSByZWxldmFudCBjb21wb25lbnRzKVxuRyAtLT4gSihVcGRhdGUgcmVsZXZhbnQgY29tcG9uZW50cylcbkggLS0-IEsoVXBkYXRlIHJlbGV2YW50IGNvbXBvbmVudHMpXG4lJS0iLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ"></p>
+
+<h2 id="contributing">Contributing</h2>
+<p>We welcome contributions from the community. If you’d like to contribute to Chippr-AGI, please fork the repository and submit a pull request. We recommend discussing your ideas with the community in the issues section before starting any major work.</p>
+
+<h2 id="license">License</h2>
+<p>This project is licensed under the APACHE-2.0 License. See the LICENSE file for more details.</p>
+
+      <table class="doctable">
+    <thread>
+        <tr>
+<th class="back">⏪ Back </th>
+<th class="next">Next ⏩</th>
+</tr>
+    </thread>
+    <tr>
+        <td class="link"><a href=""></a></td>
+        <td class="link"><a href=""></a></td>
+    </tr>
+</table>
+    <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/chippr-robotics/chippr-agi">chippr-agi</a> is maintained by <a href="https://github.com/chippr-robotics">chippr-robotics</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

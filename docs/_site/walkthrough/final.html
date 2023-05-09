@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Final Steps and Testing | Chippr-AGI Documents</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Final Steps and Testing">
+<meta property="og:locale" content="en">
+<meta name="description" content="After creating the components, entity, and system, we can now test our basic example to ensure everything works as expected.">
+<meta property="og:description" content="After creating the components, entity, and system, we can now test our basic example to ensure everything works as expected.">
+<link rel="canonical" href="http://localhost:4000/walkthrough/final">
+<meta property="og:url" content="http://localhost:4000/walkthrough/final">
+<meta property="og:site_name" content="Chippr-AGI Documents">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Final Steps and Testing">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"After creating the components, entity, and system, we can now test our basic example to ensure everything works as expected.","headline":"Final Steps and Testing","url":"http://localhost:4000/walkthrough/final"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" as="style" type="text/css" crossorigin>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#157878">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="stylesheet" href="/assets/css/style.css?v=55907d7f8d6513e2946fd86de9fa7652c005e9a1">
+    </head>
+    <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    
+    <header class="page-header" role="banner">
+    <h1 class="project-name">5. Final Steps and Testing</h1>
+    <h2 class="project-tagline">After creating the components, entity, and system, we can now test our basic example to ensure everything works as expected.</h2>
+    
+        <a href="https://github.com/chippr-robotics/chippr-agi" class="btn">View on GitHub</a>
+    
+     
+    <div class="wrapper">
+        <nav class="site-nav">
+            <a href="#" class="menu-icon">
+                <svg viewbox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+                </svg>
+            </a>
+            <div class="trigger">
+                
+                    
+                
+                    
+                        <a class="page-link" href="/Start_here/">What is ECS</a>
+                    
+                
+                    
+                
+                    
+                        <a class="page-link" href="/">CHIPPR-AGI</a>
+                    
+                
+                    
+                        <a class="page-link" href="/walkthrough.html">Walkthrough</a>
+                    
+                
+                    
+                
+                    
+                
+            </div>
+        </nav>
+    </div>
+  </header>
+    
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="51-using-the-createtaskentity-function">5.1. Using the createTaskEntity Function</h2>
+
+<p>In your <code class="language-plaintext highlighter-rouge">src/index.js</code> file, import the <code class="language-plaintext highlighter-rouge">createTaskEntity</code> function and create a new task entity with a title and status:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">createTaskEntity</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./createTaskEntity</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">taskEntity</span> <span class="o">=</span> <span class="nx">createTaskEntity</span><span class="p">(</span><span class="dl">'</span><span class="s1">My First Task</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">In Progress</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Created task entity: </span><span class="p">${</span><span class="nx">taskEntity</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="52-running-the-project">5.2. Running the Project</h2>
+
+<p>In your terminal, navigate to your project folder and run the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm start
+</code></pre></div></div>
+
+<p>This command will start your project, and you should see output similar to the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Created task entity: 1
+</code></pre></div></div>
+
+<p>This confirms that your project is set up correctly, and you have successfully created an entity with the <code class="language-plaintext highlighter-rouge">TaskTitle</code> and <code class="language-plaintext highlighter-rouge">TaskStatus</code> components.</p>
+
+<h2 id="53-expanding-the-example">5.3. Expanding the Example</h2>
+
+<p>Now that you have a basic understanding of how to create entities, components, and systems in Chippr-AGI, you can expand this example to include more functionality, such as:</p>
+
+<ul>
+  <li>Adding more components or systems to manage different aspects of the tasks.</li>
+  <li>Implementing events to handle task-related actions, such as updating the status or deleting tasks.</li>
+  <li>Integrating the example with a storage system, such as a database, to persist task information.</li>
+</ul>
+
+<p>The possibilities are endless, and the flexible nature of the ECS architecture allows you to easily expand your project as needed.
+```</p>
+
+<p>With this walk-through, users will be able to understand the basics of Chippr-AGI, create simple components, entities, and systems, and start exploring the full potential of the ECS architecture.</p>
+
+      <table class="doctable">
+    <thread>
+        <tr>
+<th class="back">⏪ Back </th>
+<th class="next">Next ⏩</th>
+</tr>
+    </thread>
+    <tr>
+        <td class="link"><a href=""></a></td>
+        <td class="link"><a href="/Start_here/Prompts"></a></td>
+    </tr>
+</table>
+    <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/chippr-robotics/chippr-agi">chippr-agi</a> is maintained by <a href="https://github.com/chippr-robotics">chippr-robotics</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

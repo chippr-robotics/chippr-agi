@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Chippr-AGI Entity Lifecycle | Chippr-AGI Documents</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Chippr-AGI Entity Lifecycle">
+<meta property="og:locale" content="en">
+<meta name="description" content="The lifecycle of an entity in Chippr-AGI consists of several stages, including creation, component addition and removal, updating, and deletion. This document will guide you through each stage, describing the processes involved and the interactions between entities, components, and systems in the Chippr-AGI architecture.">
+<meta property="og:description" content="The lifecycle of an entity in Chippr-AGI consists of several stages, including creation, component addition and removal, updating, and deletion. This document will guide you through each stage, describing the processes involved and the interactions between entities, components, and systems in the Chippr-AGI architecture.">
+<link rel="canonical" href="http://localhost:4000/Start_here/Entities">
+<meta property="og:url" content="http://localhost:4000/Start_here/Entities">
+<meta property="og:site_name" content="Chippr-AGI Documents">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Chippr-AGI Entity Lifecycle">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"The lifecycle of an entity in Chippr-AGI consists of several stages, including creation, component addition and removal, updating, and deletion. This document will guide you through each stage, describing the processes involved and the interactions between entities, components, and systems in the Chippr-AGI architecture.","headline":"Chippr-AGI Entity Lifecycle","url":"http://localhost:4000/Start_here/Entities"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" as="style" type="text/css" crossorigin>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#157878">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="stylesheet" href="/assets/css/style.css?v=55907d7f8d6513e2946fd86de9fa7652c005e9a1">
+    </head>
+    <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    
+    <header class="page-header" role="banner">
+    <h1 class="project-name">Chippr-AGI Entity Lifecycle</h1>
+    <h2 class="project-tagline">The lifecycle of an entity in Chippr-AGI consists of several stages, including creation, component addition and removal, updating, and deletion. This document will guide you through each stage, describing the processes involved and the interactions between entities, components, and systems in the Chippr-AGI architecture.</h2>
+    
+        <a href="https://github.com/chippr-robotics/chippr-agi" class="btn">View on GitHub</a>
+    
+     
+    <div class="wrapper">
+        <nav class="site-nav">
+            <a href="#" class="menu-icon">
+                <svg viewbox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+                </svg>
+            </a>
+            <div class="trigger">
+                
+                    
+                
+                    
+                        <a class="page-link" href="/Start_here/">What is ECS</a>
+                    
+                
+                    
+                
+                    
+                        <a class="page-link" href="/">CHIPPR-AGI</a>
+                    
+                
+                    
+                        <a class="page-link" href="/walkthrough.html">Walkthrough</a>
+                    
+                
+                    
+                
+                    
+                
+            </div>
+        </nav>
+    </div>
+  </header>
+    
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="1-entity-creation">1. Entity Creation</h2>
+
+<p>Entities are created as lightweight, unique identifiers representing individual objects in the Chippr-AGI system. An entity can <em>be</em> anything(a task, an objective, a thought) since everything is an entity; an entities <em>components</em> define what it is. To create a new entity, follow these steps:</p>
+
+<ol>
+  <li>Instantiate a new entity by assigning a unique identifier (e.g., UUID) using the <code class="language-plaintext highlighter-rouge">ChipprAGI.createEntity()</code> method.</li>
+  <li>Add the necessary components to define the entity’s properties and behaviors (see Component Addition below).</li>
+</ol>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">entityId</span> <span class="o">=</span> <span class="nx">ChipprAGI</span><span class="p">.</span><span class="nx">createEntity</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h2 id="2-component-addition">2. Component Addition</h2>
+
+<p>Components store the properties and state of an entity. To add a component to an entity, use the <code class="language-plaintext highlighter-rouge">ChipprAGI.addComponent(entityId, componentName, componentData)</code> method, passing the entity ID, the name of the component, and an object containing the component’s data.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">ChipprAGI</span><span class="p">.</span><span class="nx">addComponent</span><span class="p">(</span><span class="nx">entityId</span><span class="p">,</span> <span class="dl">'</span><span class="s1">TaskDescription</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">task</span><span class="p">:</span> <span class="dl">'</span><span class="s1">some task description</span><span class="dl">'</span><span class="p">,</span> <span class="na">reward</span><span class="p">:</span> <span class="mi">5</span> <span class="p">});</span>
+</code></pre></div></div>
+
+<p>When a component is added to an entity, the following actions occur:</p>
+
+<ol>
+  <li>The component data is attached to the entity.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">init()</code> method of the component (if defined) is called, allowing for component-specific initialization.</li>
+  <li>An event is emitted to notify relevant systems of the component addition (e.g., <code class="language-plaintext highlighter-rouge">componentAdded:TaskDescription</code>).</li>
+</ol>
+
+<p>Systems that have registered event listeners for the specific component addition event can react accordingly, updating their internal state or processing the entity as needed.</p>
+
+<h2 id="3-updating-entities">3. Updating Entities</h2>
+
+<p>Entities are updated by <em>systems</em> that process and modify their <em>components</em>. Each <em>system</em> operates on a set of <em>entities</em> with <em>specific component requirements</em>. To update entities, follow these steps:</p>
+
+<ol>
+  <li>Register systems to the main Chippr-AGI class using the <code class="language-plaintext highlighter-rouge">ChipprAGI.registerSystem(systemName, systemDefinition)</code> method.</li>
+  <li>Implement the <code class="language-plaintext highlighter-rouge">update()</code> method in each system, processing entities with the required components.</li>
+</ol>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">ChipprAGI</span><span class="p">.</span><span class="nx">registerSystem</span><span class="p">(</span><span class="dl">'</span><span class="s1">TaskExecutionSystem</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">update</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Process entities with the required components</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Systems are executed in the order they are registered, ensuring that dependencies between systems are properly managed.</p>
+
+<h2 id="4-component-removal">4. Component Removal</h2>
+
+<p>Components can be removed from entities using the <code class="language-plaintext highlighter-rouge">ChipprAGI.removeComponent(entityId, componentName)</code> method, passing the entity ID and the name of the component to remove.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">ChipprAGI</span><span class="p">.</span><span class="nx">removeComponent</span><span class="p">(</span><span class="nx">entityId</span><span class="p">,</span> <span class="dl">'</span><span class="s1">TaskDescription</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>When a component is removed from an entity, the following actions occur:</p>
+
+<ol>
+  <li>The <code class="language-plaintext highlighter-rouge">remove()</code> method of the component (if defined) is called, allowing for component-specific cleanup.</li>
+  <li>The component data is detached from the entity.</li>
+  <li>An event is emitted to notify relevant systems of the component removal (e.g., <code class="language-plaintext highlighter-rouge">componentRemoved:TaskDescription</code>).</li>
+</ol>
+
+<p>Systems that have registered event listeners for the specific component removal event can react accordingly, updating their internal state or ceasing to process the entity as needed.</p>
+
+<h2 id="5-entity-deletion">5. Entity Deletion</h2>
+
+<p>Entities can be deleted using the <code class="language-plaintext highlighter-rouge">ChipprAGI.deleteEntity(entityId)</code> method, passing the entity ID to delete.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">ChipprAGI</span><span class="p">.</span><span class="nx">deleteEntity</span><span class="p">(</span><span class="nx">entityId</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>When an entity is deleted, the following actions occur:</p>
+
+<ol>
+  <li>All components are removed from the entity (see Component Removal above).</li>
+  <li>The entity is removed from the Chippr-AGI system.</li>
+  <li>An event is emitted to3. An event is emitted to notify relevant systems of the entity deletion (e.g., <code class="language-plaintext highlighter-rouge">entityDeleted</code>).</li>
+</ol>
+
+<p>Systems that have registered event listeners for the specific entity deletion event can react accordingly, updating their internal state or ceasing to process the entity as needed.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>In Chippr-AGI, entities have a clear lifecycle that involves creation, component addition and removal, updating, and deletion. By understanding and following these stages, you can effectively manage the interactions between entities, components, and systems within the Chippr-AGI architecture.</p>
+
+<p>Remember to always update entities through their components and leverage the event-driven nature of the system to ensure that relevant systems are aware of changes in entities and components. This approach will help maintain a flexible and modular architecture, allowing for easy addition and removal of components and systems as needed.</p>
+
+      <table class="doctable">
+    <thread>
+        <tr>
+<th class="back">⏪ Back </th>
+<th class="next">Next ⏩</th>
+</tr>
+    </thread>
+    <tr>
+        <td class="link"><a href=""></a></td>
+        <td class="link"><a href="/walkthrough/intro"></a></td>
+    </tr>
+</table>
+    <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/chippr-robotics/chippr-agi">chippr-agi</a> is maintained by <a href="https://github.com/chippr-robotics">chippr-robotics</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

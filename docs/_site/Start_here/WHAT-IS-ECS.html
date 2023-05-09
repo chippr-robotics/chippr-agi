@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Entity Component System (ECS) 101 | Chippr-AGI Documents</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Entity Component System (ECS) 101">
+<meta property="og:locale" content="en">
+<meta name="description" content="Entity Component System (ECS) is an architectural pattern widely used in game development and other software systems that require managing a large number of objects with varying properties and behaviors. It promotes flexibility, modularity, and separation of concerns by organizing code into three main categories: Entities, Components, and Systems.">
+<meta property="og:description" content="Entity Component System (ECS) is an architectural pattern widely used in game development and other software systems that require managing a large number of objects with varying properties and behaviors. It promotes flexibility, modularity, and separation of concerns by organizing code into three main categories: Entities, Components, and Systems.">
+<link rel="canonical" href="http://localhost:4000/Start_here/WHAT-IS-ECS">
+<meta property="og:url" content="http://localhost:4000/Start_here/WHAT-IS-ECS">
+<meta property="og:site_name" content="Chippr-AGI Documents">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Entity Component System (ECS) 101">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Entity Component System (ECS) is an architectural pattern widely used in game development and other software systems that require managing a large number of objects with varying properties and behaviors. It promotes flexibility, modularity, and separation of concerns by organizing code into three main categories: Entities, Components, and Systems.","headline":"Entity Component System (ECS) 101","url":"http://localhost:4000/Start_here/WHAT-IS-ECS"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" as="style" type="text/css" crossorigin>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#157878">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="stylesheet" href="/assets/css/style.css?v=55907d7f8d6513e2946fd86de9fa7652c005e9a1">
+    </head>
+    <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    
+    <header class="page-header" role="banner">
+    <h1 class="project-name">Entity Component System (ECS) 101</h1>
+    <h2 class="project-tagline">Entity Component System (ECS) is an architectural pattern widely used in game development and other software systems that require managing a large number of objects with varying properties and behaviors. It promotes flexibility, modularity, and separation of concerns by organizing code into three main categories: Entities, Components, and Systems.</h2>
+    
+        <a href="https://github.com/chippr-robotics/chippr-agi" class="btn">View on GitHub</a>
+    
+     
+    <div class="wrapper">
+        <nav class="site-nav">
+            <a href="#" class="menu-icon">
+                <svg viewbox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+                </svg>
+            </a>
+            <div class="trigger">
+                
+                    
+                
+                    
+                        <a class="page-link" href="/Start_here/">What is ECS</a>
+                    
+                
+                    
+                
+                    
+                        <a class="page-link" href="/">CHIPPR-AGI</a>
+                    
+                
+                    
+                        <a class="page-link" href="/walkthrough.html">Walkthrough</a>
+                    
+                
+                    
+                
+                    
+                
+            </div>
+        </nav>
+    </div>
+  </header>
+    
+
+    <main id="content" class="main-content" role="main">
+      <h3 id="entities">Entities</h3>
+<p>Entities are the basic building blocks of an ECS architecture. They are lightweight, unique identifiers that represent individual objects in your application. Entities have no logic or data attached to them; instead, they act as containers for components.</p>
+
+<h3 id="components">Components</h3>
+<p>Components are simple data structures that store the properties and state of an entity. They are decoupled from any logic, making them reusable and interchangeable. Components define the characteristics and attributes of an entity, such as position, velocity, or health. By combining different components, you can create a wide range of entities with varying behaviors and properties.</p>
+
+<h3 id="systems">Systems</h3>
+<p>Systems contain the logic and functionality of your application. They are responsible for processing and updating entities with specific components. Systems operate on a set of entities that have the required components, performing tasks such as rendering, physics, or AI. By separating logic from data, systems can be modular, reusable, and easily extended.</p>
+
+<h2 id="why-use-an-ecs">Why Use an ECS?</h2>
+<p>ECS offers several benefits that make it an attractive choice for building complex and scalable applications:</p>
+
+<ul>
+  <li>Modularity: ECS encourages a modular design, where components and systems can be easily added, removed, or modified without affecting other parts of the application.</li>
+  <li>Separation of Concerns: By organizing code into entities, components, and systems, ECS promotes a clean separation of concerns, making the codebase easier to understand and maintain.</li>
+  <li>Performance: ECS can offer performance benefits by allowing for data-oriented design and cache-friendly memory layouts, enabling efficient processing of large numbers of entities.</li>
+  <li>Reusability: Components and systems can be reused across different entities and projects, speeding up development and reducing code duplication.</li>
+</ul>
+
+      <table class="doctable">
+    <thread>
+        <tr>
+<th class="back">⏪ Back </th>
+<th class="next">Next ⏩</th>
+</tr>
+    </thread>
+    <tr>
+        <td class="link"><a href="/Start_here/">What is ECS</a></td>
+        <td class="link"><a href="/Start_here/Entities">Chippr-AGI Entity Lifecycle</a></td>
+    </tr>
+</table>
+    <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/chippr-robotics/chippr-agi">chippr-agi</a> is maintained by <a href="https://github.com/chippr-robotics">chippr-robotics</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

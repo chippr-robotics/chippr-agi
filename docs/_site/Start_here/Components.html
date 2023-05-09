@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Components in Chippr-AGI | Chippr-AGI Documents</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Components in Chippr-AGI">
+<meta property="og:locale" content="en">
+<meta name="description" content="Components in Chippr-AGI are the fundamental data structures that define the properties and attributes of entities within the Entity-Component-System (ECS) architecture. They work in conjunction with systems to create the behavior and functionality of the application.">
+<meta property="og:description" content="Components in Chippr-AGI are the fundamental data structures that define the properties and attributes of entities within the Entity-Component-System (ECS) architecture. They work in conjunction with systems to create the behavior and functionality of the application.">
+<link rel="canonical" href="http://localhost:4000/Start_here/Components">
+<meta property="og:url" content="http://localhost:4000/Start_here/Components">
+<meta property="og:site_name" content="Chippr-AGI Documents">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Components in Chippr-AGI">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Components in Chippr-AGI are the fundamental data structures that define the properties and attributes of entities within the Entity-Component-System (ECS) architecture. They work in conjunction with systems to create the behavior and functionality of the application.","headline":"Components in Chippr-AGI","url":"http://localhost:4000/Start_here/Components"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" as="style" type="text/css" crossorigin>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#157878">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="stylesheet" href="/assets/css/style.css?v=55907d7f8d6513e2946fd86de9fa7652c005e9a1">
+    </head>
+    <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    
+    <header class="page-header" role="banner">
+    <h1 class="project-name">Components in Chippr-AGI</h1>
+    <h2 class="project-tagline">Components in Chippr-AGI are the fundamental data structures that define the properties and attributes of entities within the Entity-Component-System (ECS) architecture. They work in conjunction with systems to create the behavior and functionality of the application.</h2>
+    
+        <a href="https://github.com/chippr-robotics/chippr-agi" class="btn">View on GitHub</a>
+    
+     
+    <div class="wrapper">
+        <nav class="site-nav">
+            <a href="#" class="menu-icon">
+                <svg viewbox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+                </svg>
+            </a>
+            <div class="trigger">
+                
+                    
+                
+                    
+                        <a class="page-link" href="/Start_here/">What is ECS</a>
+                    
+                
+                    
+                
+                    
+                        <a class="page-link" href="/">CHIPPR-AGI</a>
+                    
+                
+                    
+                        <a class="page-link" href="/walkthrough.html">Walkthrough</a>
+                    
+                
+                    
+                
+                    
+                
+            </div>
+        </nav>
+    </div>
+  </header>
+    
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="life-cycle-of-a-component">Life Cycle of a Component</h2>
+
+<p>The life cycle of a component in Chippr-AGI consists of several stages:</p>
+
+<ol>
+  <li>
+    <p><strong>Initialization:</strong> The component is registered with the Chippr-AGI core using <code class="language-plaintext highlighter-rouge">CHIPPRAGI.registerComponent()</code>. The <code class="language-plaintext highlighter-rouge">init</code> function is called, allowing the component to perform any necessary setup or data initialization.</p>
+  </li>
+  <li>
+    <p><strong>Update:</strong> When the data within the component changes, the <code class="language-plaintext highlighter-rouge">update</code> function is called. This provides an opportunity to perform any actions or update any internal state based on the new data.</p>
+  </li>
+  <li>
+    <p><strong>Remove:</strong> When a component is removed from an entity or the entity itself is removed, the <code class="language-plaintext highlighter-rouge">remove</code> function is called. This allows the component to clean up any resources or perform any necessary actions.</p>
+  </li>
+</ol>
+
+<h2 id="purpose-of-components">Purpose of Components</h2>
+
+<p>Components in Chippr-AGI serve the following purposes:</p>
+
+<ol>
+  <li>
+    <p><strong>Store Data:</strong> Components act as data containers, storing information about entities such as properties or attributes. They do not contain any logic themselves.</p>
+  </li>
+  <li>
+    <p><strong>Describe Entities:</strong> Components are used to define the state and characteristics of entities within the ECS architecture. By attaching components to an entity, you define what the entity represents and how it behaves within the application.</p>
+  </li>
+  <li>
+    <p><strong>Enable Flexibility and Modularity:</strong> Components allow for a flexible and modular application structure. By combining different components, you can create a wide variety of entities with unique behaviors and attributes, without the need for complex inheritance hierarchies.</p>
+  </li>
+</ol>
+
+<h2 id="relationship-between-components-and-entities">Relationship Between Components and Entities</h2>
+
+<p>Components and entities have a close relationship within the ECS architecture:</p>
+
+<ol>
+  <li>
+    <p><strong>Entity Composition:</strong> Entities are composed of one or more components, which define their properties and attributes. By attaching different components to an entity, you can create a wide range of unique entities with varying behaviors and characteristics.</p>
+  </li>
+  <li>
+    <p><strong>Entity Behavior:</strong> The behavior of an entity is determined by the components it is composed of and the systems that interact with those components. Systems use the data stored in components to perform calculations, manage interactions, and update the application state.</p>
+  </li>
+  <li>
+    <p><strong>Entity Identification:</strong> Components can be used to identify and categorize entities based on their properties and attributes. By querying entities based on their components, you can efficiently find and manage specific entities within your application.</p>
+  </li>
+</ol>
+
+<p>In Chippr-AGI, components play a crucial role in defining the structure and behavior of entities, providing a scalable and modular framework for building complex applications.</p>
+
+      <table class="doctable">
+    <thread>
+        <tr>
+<th class="back">⏪ Back </th>
+<th class="next">Next ⏩</th>
+</tr>
+    </thread>
+    <tr>
+        <td class="link"><a href=""></a></td>
+        <td class="link"><a href="/walkthrough/create"></a></td>
+    </tr>
+</table>
+    <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/chippr-robotics/chippr-agi">chippr-agi</a> is maintained by <a href="https://github.com/chippr-robotics">chippr-robotics</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
