@@ -1,0 +1,44 @@
+version: '3.7'
+services:
+  chippr-agi:
+    image: chipprbots/chippr-agi:latest
+    deploy:
+      replicas: 1
+    ports:
+      - "8082:8082"
+    depends_on:
+      - vector-db
+    environment:
+      # CORE
+      - CHIPPRAGI_DASHBOARD=1
+      # VECTORDB  
+      - CHIPPRAGI_VECTORDB_TYPE=redis
+      - CHIPPRAGI_VECTORDB_HOST=vector-db
+      - CHIPPRAGI_VECTORDB_PORT=6379
+      # LANGUAGE_MODEL:
+      - CHIPPRAGI_LANGUAGE_MODEL_ID=openai
+      - CHIPPRAGI_LANGUAGE_MODEL_RATE_LIMIT_TYPE=openAI_Free
+      #- CHIPPRAGI_LANGUAGE_MODEL_API_KEY=null
+      # MESSAGE_BUS:
+      - CHIPPRAGI_MESSAGE_BUS_TYPE=redis
+      - CHIPPRAGI_MESSAGE_BUS_WATCH=1
+
+  vector-db:
+    image: redis/redis-stack
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    environment:
+      - REDISEARCH_ARGS=CONCURRENT_WRITE_MODE
+    volumes:
+      - vector-db:/var/lib/redis
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "6379", "ping"]
+      interval: 2s
+      timeout: 1m30s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  vector-db:

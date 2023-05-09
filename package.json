@@ -1,0 +1,41 @@
+{
+  "name": "chippr-agi",
+  "version": "1.1.50",
+  "description": "Happy helpful autoGPT ",
+  "main": "index.js",
+  "private": false,
+  "scripts": {
+    "git": "git checkout main && git pull",
+    "start": "node src/index.js",
+    "test": "TESTING=true mocha test/**/*.test.js",
+    "demo": "node examples/simple_demo.js",
+    "build": "docker build -t chipprbots/chippr-agi:latest ."
+  },
+  "type": "module",
+  "keywords": [
+    "agi",
+    "gpt4",
+    "autogpt"
+  ],
+  "author": "Cody Burns",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.3",
+    "ipfs": "^0.66.0",
+    "ipfs-core": "^0.18.0",
+    "natural": "^6.2.0",
+    "node-fetch": "^3.3.1",
+    "openai": "^3.2.1",
+    "os": "^0.1.2",
+    "pubsub-js": "^1.9.4",
+    "redis": "^4.6.5",
+    "url": "^0.11.0",
+    "winston": "^3.8.2",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0"
+  }
+}
