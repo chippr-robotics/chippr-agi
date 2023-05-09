@@ -1,6 +1,11 @@
-# 3. Creating the Components
-
-In this section, we will create two components for our entity. Let's assume we are creating an entity that represents a simple task with a title and a status.
+---
+layout: default
+lang: en
+title: "3. Creating the Components"
+permalink: /walkthrough/create_components
+parent: walkThrough 
+description: "In this section, we will create two components for our entity. Let's assume we are creating an entity that represents a simple task with a title and a status."
+---
 
 ## 3.1. TaskTitle Component
 

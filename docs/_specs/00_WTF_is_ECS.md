@@ -1,5 +1,15 @@
-## What is an Entity Component System (ECS)?
-Entity Component System (ECS) is an architectural pattern widely used in game development and other software systems that require managing a large number of objects with varying properties and behaviors. It promotes flexibility, modularity, and separation of concerns by organizing code into three main categories: Entities, Components, and Systems.
+---
+layout: default
+lang: en
+title: "Entity Component System (ECS) 101"
+permalink: /Start_here/WHAT-IS-ECS
+parent: startHere 
+description: "Entity Component System (ECS) is an architectural pattern widely used in game development and other software systems that require managing a large number of objects with varying properties and behaviors. It promotes flexibility, modularity, and separation of concerns by organizing code into three main categories: Entities, Components, and Systems."
+prev: /Start_here/
+prev_name: "What is ECS"
+next: /Start_here/Entities
+next_name: "Chippr-AGI Entity Lifecycle"
+---
 
 ### Entities
 Entities are the basic building blocks of an ECS architecture. They are lightweight, unique identifiers that represent individual objects in your application. Entities have no logic or data attached to them; instead, they act as containers for components.

@@ -1,6 +1,11 @@
-# 2. Setting up the Project
-
-Before we start creating our entity and its components, let's set up the project by following the steps below.
+---
+layout: default
+lang: en
+title: "2. Setting up the Project"
+permalink: /walkthrough/setup
+parent: walkThrough 
+description: "Before we start creating our entity and its components, let's set up the project by following the steps below."
+---
 
 ## 2.1. Prerequisites
 

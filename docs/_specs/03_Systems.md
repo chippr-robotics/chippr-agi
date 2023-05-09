@@ -1,6 +1,11 @@
-# Systems in Chippr-AGI
-
-Systems in Chippr-AGI are the primary building blocks responsible for handling the logic and processing related to specific tasks or functionalities. They work in tandem with components to define the behavior of the application, forming a crucial part of the Entity-Component-System (ECS) architecture.
+---
+layout: default
+lang: en
+title: "Systems in Chippr-AGI"
+permalink: /Start_here/Systems
+parent: startHere 
+description: "Systems in Chippr-AGI are the primary building blocks responsible for handling the logic and processing related to specific tasks or functionalities. They work in tandem with components to define the behavior of the application, forming a crucial part of the Entity-Component-System (ECS) architecture."
+---
 
 ## Life Cycle of a System
 

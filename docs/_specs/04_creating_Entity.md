@@ -1,6 +1,11 @@
-# 4. Creating an Entity with Components
-
-Now that we have created our components, let's create an entity that uses the `TaskTitle` and `TaskStatus` components. We will also create a system to manage the task entities.
+---
+layout: default
+lang: en
+title: "4. Creating an Entity with Components"
+permalink: /walkthrough/create
+parent: walkThrough 
+description: "Now that we have created our components, let's create an entity that uses the `TaskTitle` and `TaskStatus` components. We will also create a system to manage the task entities."
+---
 
 ## 4.1. Creating a Task Entity
 

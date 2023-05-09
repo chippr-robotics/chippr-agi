@@ -1,8 +1,13 @@
+---
+layout: default
+lang: en
+title: "1. Introduction"
+permalink: /walkthrough/intro
+parent: walkThrough 
+description: "Welcome to this ChipprAGI walkthrough! In this tutorial, we will demonstrate how to create a basic entity with two components, providing you with a hands-on understanding of ChipprAGI's capabilities. By the end of this tutorial, you will have a solid foundation in creating and managing entities, components, and systems within the ChipprAGI framework."
+---
+
 # Creating a Basic Entity with Two Components in ChipprAGI: A Walkthrough
-
-## Introduction
-
-Welcome to this ChipprAGI walkthrough! In this tutorial, we will demonstrate how to create a basic entity with two components, providing you with a hands-on understanding of ChipprAGI's capabilities. By the end of this tutorial, you will have a solid foundation in creating and managing entities, components, and systems within the ChipprAGI framework.
 
 In this walkthrough, we will create an entity representing a simple task with a title and description. The entity will have two components:
 

@@ -1,6 +1,11 @@
-# 5. Final Steps and Testing
-
-After creating the components, entity, and system, we can now test our basic example to ensure everything works as expected.
+---
+layout: default
+lang: en
+title: "5. Final Steps and Testing"
+permalink: /walkthrough/final
+parent: walkThrough 
+description: "After creating the components, entity, and system, we can now test our basic example to ensure everything works as expected."
+---
 
 ## 5.1. Using the createTaskEntity Function
 

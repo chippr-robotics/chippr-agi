@@ -1,6 +1,11 @@
-# Components in Chippr-AGI
-
-Components in Chippr-AGI are the fundamental data structures that define the properties and attributes of entities within the Entity-Component-System (ECS) architecture. They work in conjunction with systems to create the behavior and functionality of the application.
+---
+layout: default
+lang: en
+title: "Components in Chippr-AGI"
+permalink: /Start_here/Components
+parent: startHere 
+description: "Components in Chippr-AGI are the fundamental data structures that define the properties and attributes of entities within the Entity-Component-System (ECS) architecture. They work in conjunction with systems to create the behavior and functionality of the application."
+---
 
 ## Life Cycle of a Component
 

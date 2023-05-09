@@ -1,6 +1,11 @@
-# Event-Driven Architecture in Chippr-AGI
-
-Event-driven architecture is a design pattern that promotes loose coupling and effective communication between different parts of an application. In Chippr-AGI, this architecture is used to manage interactions between systems and components while maintaining a modular and scalable structure.
+---
+layout: default
+lang: en
+title: "Event-Driven Architecture in Chippr-AGI"
+permalink: /Start_here/Events
+parent: startHere 
+description: "Event-driven architecture is a design pattern that promotes loose coupling and effective communication between different parts of an application. In Chippr-AGI, this architecture is used to manage interactions between systems and components while maintaining a modular and scalable structure."
+---
 
 ## The Basics of Event-Driven Architecture
 
@@ -18,21 +23,21 @@ The life cycle of an event in Chippr-AGI consists of the following stages:
 
 1. **Event Creation:** An event is created by an event producer when a specific action occurs or a state change happens. The event contains relevant information about what has occurred, such as the entity ID or any additional data needed for processing.
 
-```mermaid
+```mermaid!
 graph LR
   A(Event Creation) --> B(Event Emission)
 ```
 
 2. **Event Emission:** The event producer emits the event, sending it to the event bus.
 
-```mermaid
+```mermaid!
 graph LR
   B(Event Emission) --> C(Event Distribution)
 ```
 
 3. **Event Distribution:** The event bus distributes the event to all registered event consumers that have expressed interest in the specific event type. This allows multiple systems to react to the same event independently.
 
-```mermaid
+```mermaid!
 graph LR
   C(Event Distribution) --> D1(Event Processing System A)
   C --> D2(Event Processing System B)
@@ -41,7 +46,7 @@ graph LR
 
 4. **Event Processing:** Event consumers process the event, performing actions or updating their internal state as needed. The event processing stage is usually asynchronous and can happen in parallel across multiple systems.
 
-```mermaid
+```mermaid!
 graph LR
   D1(Event Processing System A) --> E1(Update State/System A)
   D2(Event Processing System B) --> E2(Update State/System B)

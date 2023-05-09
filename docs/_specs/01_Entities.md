@@ -1,6 +1,11 @@
-# Chippr-AGI Entity Lifecycle
-
-The lifecycle of an entity in Chippr-AGI consists of several stages, including creation, component addition and removal, updating, and deletion. This document will guide you through each stage, describing the processes involved and the interactions between entities, components, and systems in the Chippr-AGI architecture.
+---
+layout: default
+lang: en
+title: "Chippr-AGI Entity Lifecycle"
+permalink: /Start_here/Entities
+parent: startHere 
+description: "The lifecycle of an entity in Chippr-AGI consists of several stages, including creation, component addition and removal, updating, and deletion. This document will guide you through each stage, describing the processes involved and the interactions between entities, components, and systems in the Chippr-AGI architecture."
+---
 
 ## 1. Entity Creation
 

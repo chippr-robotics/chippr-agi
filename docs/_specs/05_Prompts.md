@@ -1,6 +1,14 @@
-# Prompts in Chippr-AGI
+---
+layout: default
+lang: en
+title: "Prompts in Chippr-AGI"
+permalink: /Start_here/Prompts
+parent: startHere 
+description: "Prompts are an essential part of Chippr-AGI, as they provide a way for systems to generate events, components, and entities based on user input or other external sources of information. They act as the bridge between the application and the outside world, allowing systems to adapt and respond to changes in the environment or user requirements."
+prev:
+next:
+---
 
-Prompts are an essential part of Chippr-AGI, as they provide a way for systems to generate events, components, and entities based on user input or other external sources of information. They act as the bridge between the application and the outside world, allowing systems to adapt and respond to changes in the environment or user requirements.
 
 ## How Prompts Work
 
