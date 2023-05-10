@@ -59,8 +59,6 @@ export class ChipprAGI {
     return await this.vectorDb.query(`idx:${componentName}:*`);
   }
 
-  addComponent
-
   addComponent(entityId, componentName, componentData) {
     //check if we store components in the db or not
     if(this.SWARM_MODE != true){

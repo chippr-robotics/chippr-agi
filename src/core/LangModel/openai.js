@@ -10,18 +10,21 @@ export class OpenAIApi {
     }
 
     async query( data ) {
+        const { api, payload } = data;
+        
         const response = await fetch(
-            data.api,
+            api,
             {
                 headers: { 
                     Authorization: `Bearer ${this.API_TOKEN}` ,
                     'Content-Type': "application/json",
                 },
                 method: "POST",
-                body: JSON.stringify(data.payload),
+                body: payload,
             }
         );
         const result = await response.json();
+        console.log(result);
         return result;
     }
     async createCompletion( prompt ) { 
@@ -31,7 +34,7 @@ export class OpenAIApi {
             temperature : prompt.temp || this.DEFAULT_TEMP,
             max_tokens : prompt.max_tokens || this.DEFAULT_MAX_TOKENS, 
         };
-        //console.log(`this is the data ${JSON.stringify(data)}`);
+        console.log(`this is the data ${payload}`);
         let results = await this.query({ api : `https://api.openai.com/v1/completions`, data : payload });
         //console.log("this is the results", results);
         //should return a string
