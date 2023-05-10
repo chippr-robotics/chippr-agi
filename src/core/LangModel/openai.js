@@ -38,7 +38,7 @@ export class OpenAIApi {
         return results.generated_text;  
     };
     
-    async createChat( prompt ){
+    async createChat( payload ){
         /* needs an object 
         
         {
@@ -66,28 +66,44 @@ export class OpenAIApi {
        process the system messages first
        
         */
-        
-        let messages = [];
-        
-        prompt.forEach()
+        const { prompt, convo } = payload;
+        const messages = [];
+      
+        // Add the prompt as the first message
+        messages.push({
+          role: 'prompt',
+          content: prompt,
+          name: '',
+        });
+      
+        // Combine the 'system', 'user', and 'assistant' arrays
+        const combinedConvo = convo.system.map((msg, i) => ({
+          role: 'system',
+          content: msg,
+          name: '',
+          index: i,
+        }))
+          .concat(convo.user.map((msg, i) => ({
+            role: 'user',
+            content: msg,
+            name: '',
+            index: i,
+          })))
+          .concat(convo.assistant.map((msg, i) => ({
+            role: 'assistant',
+            content: msg,
+            name: '',
+            index: i,
+          })));
+      
+        // Sort the combined conversation by index
+        combinedConvo.sort((a, b) => a.index - b.index);
+      
+        // Add the sorted messages to the result array
+        messages.push(...combinedConvo.map(({ role, content, name }) => ({ role, content, name })));
+      
 
-        let payload ={
-                inputs :{ 
-                    model = this.CHAT_NAME,
-                    text : prompt.prompt,
-                    generated_responses = prompt.responses || null,//an array
-                    past_user_inputs = prompt.past_prompts || null,//an array
-                },
-                parameters : {
-                    temperature : prompt.temp || this.DEFAULT_TEMP,
-                    max_new_tokens : prompt.max_tokens || this.DEFAULT_MAX_TOKENS, 
-                },
-                options : {
-                    use_cache : false,
-                    wait_for_model : true,
-                }
-            };
-        let results = await this.query( { api : `https://api.openai.com/v1/chat/completions`, data: payload} );
+        let results = await this.query( { api : `https://api.openai.com/v1/chat/completions`, data: messages} );
         //should return a string
         return results.generated_text;
     };
