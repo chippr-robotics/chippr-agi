@@ -3,9 +3,9 @@
 
 # Chippr-AGI
 
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/chippr-robotics/chippr-agi?include_prereleases)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/chippr-robotics/chippr-agi?include_prereleases)](https://github.com/chippr-robotics/chippr-agi/releases)
 [![License](https://img.shields.io/badge/license-Apache%202-blue)](LICENSE)
-![Discord](https://img.shields.io/discord/419537554673762306?logo=discord)
+[![Discord](https://img.shields.io/discord/419537554673762306?logo=discord)](https://discord.gg/3jmFYK2QGy)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/chipprbots.svg?style=social&label=Follow%20%40chipprbots)](https://twitter.com/chipprbots)
 
 
