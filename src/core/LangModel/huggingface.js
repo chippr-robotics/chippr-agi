@@ -45,7 +45,7 @@ export class HuggingFaceApi {
     
     //async createEmbedding( prompt ) { return  Promise.resolve(this.tests)};
     
-    createChat( prompt ){
+    async createChat( prompt ){
      /* needs an object {
             prompt : string latest prompt
             convo : {
@@ -61,8 +61,8 @@ export class HuggingFaceApi {
         let data = {
             inputs :{ 
                 text : prompt.prompt,
-                generated_responses = prompt.convo.system || null,//an array
-                past_user_inputs = prompt.convo.user || null,//an array
+                generated_responses : prompt.convo.system || null,//an array
+                past_user_inputs : prompt.convo.user || null,//an array
             },
             parameters : {
                 temperature : prompt.temp || this.DEFAULT_TEMP,
@@ -77,6 +77,7 @@ export class HuggingFaceApi {
         //should return a string
         return results.generated_text;
     };
+    /*
     createCodex(){return  Promise.resolve(this.tests)};
     createEdit(){return  Promise.resolve(this.tests)};
     createImage(){return  Promise.resolve(this.tests)};
