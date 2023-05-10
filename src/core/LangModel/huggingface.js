@@ -4,6 +4,7 @@ export class HuggingFaceApi {
     constructor(chipprConfig){
         this.API_TOKEN = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_API_KEY;
         this.GENERATE_NAME = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_GENERATE_NAME;
+        this.CHAT_NAME = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_CHAT_NAME;
         this.DEFAULT_TEMP = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_TEMP;
         this.DEFAULT_MAX_TOKENS = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_MAX_TOKENS;
         this.DEFAULT_MATCH_LENGTH = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_MATCH_LENGTH;
@@ -36,7 +37,7 @@ export class HuggingFaceApi {
             }
         };
             
-        let results = await this.query( data , this.GENERATE_NAME );
+        let results = await this.query( data , this.CHAT_NAME );
         //should return a string
         return results.generated_text;
         
@@ -44,7 +45,7 @@ export class HuggingFaceApi {
     
     //async createEmbedding( prompt ) { return  Promise.resolve(this.tests)};
     
-    createChat( data ){
+    createChat( prompt ){
      /* needs an object {
             prompt : string latest prompt
             convo : {
@@ -52,14 +53,16 @@ export class HuggingFaceApi {
                 user : [],
                 assistant : [] list of generated responses   
             }
+            temp,
+            max_tokens
         } 
         */
      
         let data = {
             inputs :{ 
                 text : prompt.prompt,
-                generated_responses = prompt.responses || null,//an array
-                past_user_inputs = prompt.past_prompts || null,//an array
+                generated_responses = prompt.convo.system || null,//an array
+                past_user_inputs = prompt.convo.user || null,//an array
             },
             parameters : {
                 temperature : prompt.temp || this.DEFAULT_TEMP,
