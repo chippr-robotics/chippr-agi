@@ -3,6 +3,12 @@
 
 # Chippr-AGI
 
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/chippr-robotics/chippr-agi?include_prereleases)
+[![License](https://img.shields.io/badge/license-Apache%202-blue)](LICENSE)
+![Discord](https://img.shields.io/discord/419537554673762306?logo=discord)
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/chipprbots.svg?style=social&label=Follow%20%40chipprbots)](https://twitter.com/chipprbots)
+
+
 Chippr-AGI is an open-source event-driven ECS framework that uses AI models to automate task creation and prioritization. This system is designed to run solo or as a swarm of containers. It combines the power of LLM with actor-critic reinforcement learning to optimize the order and allocation of tasks for a given objective.  
 
 
