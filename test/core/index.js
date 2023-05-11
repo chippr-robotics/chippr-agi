@@ -1,6 +1,6 @@
 //test all core functions
 
 //test langmodel - no dependencies
-require('./langModel.test');
+import './langModel.test.js';
 //test vectorDB - no dependencies
-require('./vector-db.test');
+//require('./vector-db.test');

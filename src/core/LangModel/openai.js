@@ -9,8 +9,10 @@ export class OpenAIApi {
         this.DEFAULT_MATCH_LENGTH = chipprConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_DEFAULT_MATCH_LENGTH;    
     }
 
-    async query( data ) {
-        const { api, payload } = data;
+    async query( api, payload ) {
+        //need to make the data into a JSON payload 
+        
+        console.log(`data:${payload}`)
         
         const response = await fetch(
             api,
@@ -20,7 +22,7 @@ export class OpenAIApi {
                     'Content-Type': "application/json",
                 },
                 method: "POST",
-                body: payload,
+                body: JSON.stringify(payload),
             }
         );
         const result = await response.json();
@@ -35,7 +37,7 @@ export class OpenAIApi {
             max_tokens : prompt.max_tokens || this.DEFAULT_MAX_TOKENS, 
         };
         console.log(`this is the data ${payload}`);
-        let results = await this.query({ api : `https://api.openai.com/v1/completions`, data : payload });
+        let results = await this.query( `https://api.openai.com/v1/completions`, payload );
         //console.log("this is the results", results);
         //should return a string
         return results.generated_text;  
@@ -106,7 +108,7 @@ export class OpenAIApi {
         messages.push(...combinedConvo.map(({ role, content, name }) => ({ role, content, name })));
       
 
-        let results = await this.query( { api : `https://api.openai.com/v1/chat/completions`, data: messages} );
+        let results = await this.query( `https://api.openai.com/v1/chat/completions`, messages );
         //should return a string
         return results.generated_text;
     };
