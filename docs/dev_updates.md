@@ -1,3 +1,5 @@
+5/16 - smoke test of langModel tests.
+
 
 5/4 - Added huggingface api support. use with caution for now. 
 
