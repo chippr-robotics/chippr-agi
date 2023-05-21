@@ -12,7 +12,7 @@ export class OpenAIApi {
     async query( api, payload ) {
         //need to make the data into a JSON payload 
         
-        console.log(`data:${payload}`)
+        //console.log(`data:${payload}`)
         
         const response = await fetch(
             api,
