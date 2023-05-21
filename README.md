@@ -1,7 +1,5 @@
-![You are a designer tasked with creating a simple, line art mascot for the Chippr-AGI open-source framework. The mascot should be a small robotic chipmunk with a single round eye. The chipmunk should have a rectangular body with rounded edges, and its limbs should be thin, straight lines. The tail should be a thin curved line, and the whole design should be in a single color of your choice. The mascot should convey the intelligence and efficiency of the software, while still being approachable and friendly. Once you have created the mascot, submit it as a PNG file with a transparent background.
-](src/core/lib/splashLogo.png )
 
-# Chippr-AGI
+![Chipp-agi](docs/20230521_152433_0000.png)
 
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/chippr-robotics/chippr-agi?include_prereleases)](https://github.com/chippr-robotics/chippr-agi/releases)
 [![License](https://img.shields.io/badge/license-Apache%202-blue)](LICENSE)
