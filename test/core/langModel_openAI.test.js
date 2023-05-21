@@ -32,7 +32,7 @@ describe("Langmodel: openai testing", function() {
         testConfig = {
             LANGUAGE_MODEL: {
                 LANGUAGE_MODEL_API_KEY : process.env.CHIPPRAGI_LANGUAGE_MODEL_API_KEY,
-                LANGUAGE_MODEL_GENERATE_NAME :process.env.CHIPPRAGI_LANGUAGE_MODEL_GENERATE_NAME,
+                LANGUAGE_MODEL_GENERATE_NAME : "text-ada-001",
                 LANGUAGE_MODEL_CHAT_NAME: process.env.CHIPPRAGI_LANGUAGE_MODEL_CHAT_NAME    
         }
     }
@@ -46,6 +46,7 @@ describe("Langmodel: openai testing", function() {
     });
     describe("Function Testing", function() {
         beforeEach(()=> {
+           console.log(JSON.stringify(testConfig)) 
            testModel = new OpenAIApi(testConfig);  
         });
         describe("query function testing", () => {
@@ -53,7 +54,20 @@ describe("Langmodel: openai testing", function() {
                 let test = testModel.query(`https://api.openai.com/v1/completions`, completionTest); 
                 expect(test).to.not.be.undefined;
             })       
-        })
+        });
+        describe("createCompletion function testing", () => {
+            it("should return a payload" , () => {
+                let test = testModel.createCompletion(completionTest.prompt); 
+                expect(test).to.not.be.undefined;
+            })       
+        });
+        describe("createChat function testing", () => {
+            it("should return a payload" , () => {
+                let test = testModel.createChat(completionTest.prompt); 
+                expect(test).to.not.be.undefined;
+            })       
+        });
+        
     })
     
 });
