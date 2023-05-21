@@ -8,5 +8,8 @@ export const chatTest = {
 }
 
 export const completionTest = {
-    prompt: "You are a test AI that returns true every time. response:"
+    model : "text-ada-001",
+    prompt: "You are a test AI that returns true every time. response:",
+    temperature : .5,
+    max_tokens : 5
 }

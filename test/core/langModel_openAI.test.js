@@ -46,18 +46,11 @@ describe("Langmodel: openai testing", function() {
     });
     describe("Function Testing", function() {
         beforeEach(()=> {
-            
            testModel = new OpenAIApi(testConfig);  
         });
         describe("query function testing", () => {
             it("should return a payload" , () => {
-                let payload ={
-                    model : testConfig.LANGUAGE_MODEL.LANGUAGE_MODEL_GENERATE_NAME,
-                    prompt : "this is a test of the system. respond with true.",
-                    temperature : .5,
-                    max_tokens : 5, 
-                };
-                let test = testModel.query(`https://api.openai.com/v1/completions`, payload); 
+                let test = testModel.query(`https://api.openai.com/v1/completions`, completionTest); 
                 expect(test).to.not.be.undefined;
             })       
         })
