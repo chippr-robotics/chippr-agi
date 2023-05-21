@@ -1,5 +1,5 @@
 
-![Chipp-agi](docs/20230521_152433_0000.png)
+![Chippr-agi](src/core/lib/svg_20230521_153513_0000.svg)
 
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/chippr-robotics/chippr-agi?include_prereleases)](https://github.com/chippr-robotics/chippr-agi/releases)
 [![License](https://img.shields.io/badge/license-Apache%202-blue)](LICENSE)
