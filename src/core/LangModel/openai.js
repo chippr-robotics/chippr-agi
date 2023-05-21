@@ -11,8 +11,8 @@ export class OpenAIApi {
 
     async query( api, payload ) {
         //need to make the data into a JSON payload 
-        
-        //console.log(`data:${payload}`)
+
+        console.log(`data:${JSON.stringify(payload)}`)
         
         const response = await fetch(
             api,
@@ -36,7 +36,7 @@ export class OpenAIApi {
             temperature : prompt.temp || this.DEFAULT_TEMP,
             max_tokens : prompt.max_tokens || this.DEFAULT_MAX_TOKENS, 
         };
-        console.log(`this is the data ${payload}`);
+        //console.log(`this is the data ${payload}`);
         let results = await this.query( `https://api.openai.com/v1/completions`, payload );
         //console.log("this is the results", results);
         //should return a string
@@ -107,8 +107,12 @@ export class OpenAIApi {
         // Add the sorted messages to the result array
         messages.push(...combinedConvo.map(({ role, content, name }) => ({ role, content, name })));
       
-
-        let results = await this.query( `https://api.openai.com/v1/chat/completions`, messages );
+        payload = {
+            "model" : this.CHAT_NAME || "gpt-3.5-turbo-0301",
+            "messages" : messages
+        }
+        console.log("sendind create chat")
+        let results = await this.query( `https://api.openai.com/v1/chat/completions`, payload );
         //should return a string
         return results.generated_text;
     };

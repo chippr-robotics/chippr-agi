@@ -1,6 +1,6 @@
 import  {expect} from  "chai";
 import { OpenAIApi } from '../../src/core/LangModel/openai.js';
-import {completionTest} from './testData.js';
+import { completionTest, chatTest } from './testData.js';
 import * as dotenv from "dotenv";
 
 /*{
@@ -32,9 +32,7 @@ describe("Langmodel: openai testing", function() {
         testConfig = {
             LANGUAGE_MODEL: {
                 LANGUAGE_MODEL_API_KEY : process.env.CHIPPRAGI_LANGUAGE_MODEL_API_KEY,
-                LANGUAGE_MODEL_GENERATE_NAME : "text-ada-001",
-                LANGUAGE_MODEL_CHAT_NAME: process.env.CHIPPRAGI_LANGUAGE_MODEL_CHAT_NAME    
-        }
+         }
     }
     });
     describe("Class testing", function() {
@@ -46,12 +44,16 @@ describe("Langmodel: openai testing", function() {
     });
     describe("Function Testing", function() {
         beforeEach(()=> {
-           console.log(JSON.stringify(testConfig)) 
+           //console.log(JSON.stringify(testConfig)) 
            testModel = new OpenAIApi(testConfig);  
         });
         describe("query function testing", () => {
-            it("should return a payload" , () => {
+            it("should return a payload for completion" , () => {
                 let test = testModel.query(`https://api.openai.com/v1/completions`, completionTest); 
+                expect(test).to.not.be.undefined;
+            })
+            it("should return a payload for chat" , () => {             
+                let test = testModel.query(`https://api.openai.com/v1/chat/completions`, { "model": chatTest.model , "messages" : chatTest.messages}); 
                 expect(test).to.not.be.undefined;
             })       
         });
@@ -63,7 +65,7 @@ describe("Langmodel: openai testing", function() {
         });
         describe("createChat function testing", () => {
             it("should return a payload" , () => {
-                let test = testModel.createChat(completionTest.prompt); 
+                let test = testModel.createChat({prompt:chatTest.prompt, convo: chatTest.convo}); 
                 expect(test).to.not.be.undefined;
             })       
         });
