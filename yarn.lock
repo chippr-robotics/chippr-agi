@@ -441,10 +441,10 @@
     "@multiformats/mafmt" "^12.0.0"
     "@multiformats/multiaddr" "^12.0.0"
 
-"@libp2p/crypto@^1.0.0", "@libp2p/crypto@^1.0.11", "@libp2p/crypto@^1.0.3", "@libp2p/crypto@^1.0.4":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@libp2p/crypto/-/crypto-1.0.15.tgz#bd004c0389399adb432ed2fd648014e88af37c05"
-  integrity sha512-5X7K0eXmq1wJJqjYn6bJnGeanQHrkOnJawoRgCRfzgbQS5h+BK1lVSpJEBHoe/IU6aqsnDNrkPSE5cOffgz6+A==
+"@libp2p/crypto@^1.0.0", "@libp2p/crypto@^1.0.11", "@libp2p/crypto@^1.0.3", "@libp2p/crypto@^1.0.4", "@libp2p/crypto@^1.0.7":
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/@libp2p/crypto/-/crypto-1.0.17.tgz#e64043328c0c866bf7f4cc8560b4f483e9c745dc"
+  integrity sha512-Oeg0Eb/EvAho0gVkOgemXEgrVxWaT3x/DpFgkBdZ9qGxwq75w/E/oPc7souqBz+l1swfz37GWnwV7bIb4Xv5Ag==
   dependencies:
     "@libp2p/interface-keys" "^1.0.2"
     "@libp2p/interfaces" "^3.2.0"
@@ -3431,14 +3431,14 @@ ipfs-cli@^0.16.0:
     uint8arrays "^4.0.2"
     yargs "^17.4.0"
 
-ipfs-core-config@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/ipfs-core-config/-/ipfs-core-config-0.7.0.tgz#81f77adf411633bbe0fbd96745d20926bf44fcc1"
-  integrity sha512-sVPH9FsXLMtZE7DYwHM2yH/AJivP31OtW1iwsbsu/c1J3RcFsbICQdfflwnOz1dfOPXNBbdGG+4M0qH1b9nTAw==
+ipfs-core-config@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/ipfs-core-config/-/ipfs-core-config-0.7.1.tgz#533e79694b823d37997dbbb4e09fff1db67b3028"
+  integrity sha512-WLtqYf6AOOrOfixwDM6qXI0oAewEJs2Yve2g5sxD69Q0/FupYHTvTYzH6dpJj9nvW63S7cub6gV9xME6FPIpRg==
   dependencies:
     "@chainsafe/libp2p-gossipsub" "^6.0.0"
     "@libp2p/floodsub" "^6.0.0"
-    "@libp2p/logger" "^2.0.2"
+    "@libp2p/logger" "^2.0.5"
     "@libp2p/mdns" "^6.0.0"
     "@libp2p/prometheus-metrics" "^1.0.1"
     "@libp2p/tcp" "^6.0.2"
@@ -3459,35 +3459,35 @@ ipfs-core-config@^0.7.0:
     p-queue "^7.2.0"
     uint8arrays "^4.0.2"
 
-ipfs-core-types@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/ipfs-core-types/-/ipfs-core-types-0.14.0.tgz#a301d534f5261aad2254da393cb09f9cd36b6742"
-  integrity sha512-qO1xVO3n5m7scTXXtMz8hDTLdwXInnwqadIDQpXC446BIlaYyRWUvLcFQ2bOjQql9/CPNTaPHzjzr5Y1XxqpJw==
+ipfs-core-types@^0.14.0, ipfs-core-types@^0.14.1:
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/ipfs-core-types/-/ipfs-core-types-0.14.1.tgz#c69f4dd873324e975ef43c391c0692b96863b13c"
+  integrity sha512-4ujF8NlM9bYi2I6AIqPP9wfGGX0x/gRCkMoFdOQfxxrFg6HcAdfS+0/irK8mp4e7znOHWReOHeWqCGw+dAPwsw==
   dependencies:
     "@ipld/dag-pb" "^4.0.0"
     "@libp2p/interface-keychain" "^2.0.0"
     "@libp2p/interface-peer-id" "^2.0.0"
     "@libp2p/interface-peer-info" "^1.0.2"
     "@libp2p/interface-pubsub" "^3.0.0"
-    "@multiformats/multiaddr" "^11.0.0"
+    "@multiformats/multiaddr" "^11.1.5"
     "@types/node" "^18.0.0"
     interface-datastore "^7.0.0"
     ipfs-unixfs "^9.0.0"
     multiformats "^11.0.0"
 
-ipfs-core-utils@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/ipfs-core-utils/-/ipfs-core-utils-0.18.0.tgz#c528c6cfb231d3a1a0d5420d0a3506615d26f4b4"
-  integrity sha512-7N/KfsOPGJu9mwN8EQwrW9HXgS5RNM3WUyjIMWk49KlpYmsXectXuC9i6npI1vn1W/oUaIOZt3lHx37jecnepw==
+ipfs-core-utils@^0.18.0, ipfs-core-utils@^0.18.1:
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/ipfs-core-utils/-/ipfs-core-utils-0.18.1.tgz#d5fae11bfdb511749c6f905b0d0da3174eb50909"
+  integrity sha512-P7jTpdfvlyBG3JR4o+Th3QJADlmXmwMxbkjszXry6VAjfSfLIIqXsdeYPoVRkV69GFEeQozuz2k/jR+U8cUH/Q==
   dependencies:
-    "@libp2p/logger" "^2.0.0"
-    "@multiformats/multiaddr" "^11.0.0"
+    "@libp2p/logger" "^2.0.5"
+    "@multiformats/multiaddr" "^11.1.5"
     "@multiformats/multiaddr-to-uri" "^9.0.1"
     any-signal "^3.0.0"
     blob-to-it "^2.0.0"
     browser-readablestream-to-it "^2.0.0"
     err-code "^3.0.1"
-    ipfs-core-types "^0.14.0"
+    ipfs-core-types "^0.14.1"
     ipfs-unixfs "^9.0.0"
     ipfs-utils "^9.0.13"
     it-all "^2.0.0"
@@ -3502,9 +3502,9 @@ ipfs-core-utils@^0.18.0:
     uint8arrays "^4.0.2"
 
 ipfs-core@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/ipfs-core/-/ipfs-core-0.18.0.tgz#7e9563c7d1984817c30537e373d75014ed55966a"
-  integrity sha512-VkBTXT77pRFN0/mQ3OB6PmTlRIA2rKRjRZ4Tgh+pWwzAZiTj6Qz/TLO862vKflncOWG7Znq6oYxW1GQdhx1dbg==
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/ipfs-core/-/ipfs-core-0.18.1.tgz#e165762f02bce9f90723879af2adcfeceb9e3c54"
+  integrity sha512-87nLL9my6mFiR3woW5XEZ8D5SbHljXWDNc5Udxx79AFs3tzne68VPg87oFO6bxmOwM/1e7+7UkMevEy5t/s0lQ==
   dependencies:
     "@chainsafe/libp2p-noise" "^11.0.0"
     "@ipld/car" "^5.0.0"
@@ -3512,7 +3512,7 @@ ipfs-core@^0.18.0:
     "@ipld/dag-json" "^10.0.0"
     "@ipld/dag-pb" "^4.0.0"
     "@libp2p/bootstrap" "^6.0.0"
-    "@libp2p/crypto" "^1.0.0"
+    "@libp2p/crypto" "^1.0.7"
     "@libp2p/delegated-content-routing" "^4.0.0"
     "@libp2p/delegated-peer-routing" "^4.0.0"
     "@libp2p/interface-dht" "^2.0.0"
@@ -3545,15 +3545,15 @@ ipfs-core@^0.18.0:
     interface-blockstore "^4.0.0"
     interface-datastore "^7.0.0"
     ipfs-bitswap "^15.0.0"
-    ipfs-core-config "^0.7.0"
-    ipfs-core-types "^0.14.0"
-    ipfs-core-utils "^0.18.0"
-    ipfs-http-client "^60.0.0"
+    ipfs-core-config "^0.7.1"
+    ipfs-core-types "^0.14.1"
+    ipfs-core-utils "^0.18.1"
+    ipfs-http-client "^60.0.1"
     ipfs-repo "^17.0.0"
     ipfs-unixfs "^9.0.0"
     ipfs-unixfs-exporter "^10.0.0"
     ipfs-unixfs-importer "^12.0.0"
-    ipfs-utils "^9.0.9"
+    ipfs-utils "^9.0.13"
     ipns "^5.0.1"
     is-domain-name "^1.0.1"
     is-ipfs "^8.0.0"
@@ -3627,22 +3627,22 @@ ipfs-grpc-server@^0.12.0:
     uint8arrays "^4.0.2"
     ws "^8.5.0"
 
-ipfs-http-client@^60.0.0:
-  version "60.0.0"
-  resolved "https://registry.yarnpkg.com/ipfs-http-client/-/ipfs-http-client-60.0.0.tgz#429ca98544ee1fde79f96ee055d95a789384247c"
-  integrity sha512-d6Rqc1UP5nWhp7j0PumK80CA5LvbTvskro+qGw7hgWvbfQ0rX/5ddig7ELvVYJbJM4YBxCJSaSHDEOGoSpzzKg==
+ipfs-http-client@^60.0.0, ipfs-http-client@^60.0.1:
+  version "60.0.1"
+  resolved "https://registry.yarnpkg.com/ipfs-http-client/-/ipfs-http-client-60.0.1.tgz#d2e9ab430aad43a92a6e44008e534afba4fd22b9"
+  integrity sha512-amwM5TNuf077J+/q27jPHfatC05vJuIbX6ZnlYLjc2QsjOCKsORNBqV3brNw7l+fPrijV1yrwEDLG3JEnKsfMw==
   dependencies:
     "@ipld/dag-cbor" "^9.0.0"
     "@ipld/dag-json" "^10.0.0"
     "@ipld/dag-pb" "^4.0.0"
-    "@libp2p/logger" "^2.0.0"
+    "@libp2p/logger" "^2.0.5"
     "@libp2p/peer-id" "^2.0.0"
-    "@multiformats/multiaddr" "^11.0.0"
+    "@multiformats/multiaddr" "^11.1.5"
     any-signal "^3.0.0"
     dag-jose "^4.0.0"
     err-code "^3.0.1"
-    ipfs-core-types "^0.14.0"
-    ipfs-core-utils "^0.18.0"
+    ipfs-core-types "^0.14.1"
+    ipfs-core-utils "^0.18.1"
     ipfs-utils "^9.0.13"
     it-first "^2.0.0"
     it-last "^2.0.0"
@@ -3831,7 +3831,7 @@ ipfs-unixfs@^9.0.0:
     err-code "^3.0.1"
     protobufjs "^7.0.0"
 
-ipfs-utils@^9.0.13, ipfs-utils@^9.0.9:
+ipfs-utils@^9.0.13:
   version "9.0.14"
   resolved "https://registry.yarnpkg.com/ipfs-utils/-/ipfs-utils-9.0.14.tgz#24f5fda1f4567685eb32bca2543d518f95fd8704"
   integrity sha512-zIaiEGX18QATxgaS0/EOQNoo33W0islREABAcxXE8n7y2MGAlB+hdsxXn4J0hGZge8IqVQhW8sWIb+oJz2yEvg==
