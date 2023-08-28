@@ -4940,9 +4940,9 @@ native-fetch@^4.0.2:
   integrity sha512-4QcVlKFtv2EYVS5MBgsGX5+NWKtbDbIECdUXDBGDMAZXq3Jkv9zf+y8iS7Ub8fEdga3GpYeazp9gauNqXHJOCg==
 
 natural@^6.2.0:
-  version "6.3.0"
-  resolved "https://registry.npmjs.org/natural/-/natural-6.3.0.tgz"
-  integrity sha512-+Gt08Vj2I3h6c4MnZzFPuz+/y1yfNhY8nvhQm69KsQMsYnURd+eRY7cKYXGzT7NMQSN3j/CxluCCXwHpg3gtPw==
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/natural/-/natural-6.7.0.tgz#71463127837502f6a1cb9117f7fa1ed154fa17cf"
+  integrity sha512-Z5gvSnDEDF9IMSi8K70GY5cnIg0h4f1p/oIcrN9BPqcn22reexJSEsakDPpEJvs2Qv38PHjICExL0UHvvl7oig==
   dependencies:
     afinn-165 "^1.0.2"
     afinn-165-financialmarketnews "^3.0.0"
