@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { Store } from '../../src/store/db.js';
+import type { EmbeddingProvider } from '../../src/model/embedding.js';
 
 describe('Store', () => {
   let store: Store;
@@ -120,6 +121,71 @@ describe('Store', () => {
       store.addMemory('ctx2', 'user', 'World');
       expect(store.getMemory('ctx1')).toHaveLength(1);
       expect(store.getMemory('ctx2')).toHaveLength(1);
+    });
+  });
+
+  describe('embedding memory', () => {
+    it('stores and searches memory with embeddings', () => {
+      // Manually insert memories with known embeddings
+      store.addMemoryWithEmbedding('ctx1', 'user', 'I like cats', [1, 0, 0]);
+      store.addMemoryWithEmbedding('ctx1', 'user', 'I like dogs', [0.9, 0.1, 0]);
+      store.addMemoryWithEmbedding('ctx1', 'user', 'The weather is nice', [0, 0, 1]);
+
+      // Search with a query vector close to cats/dogs
+      const results = store.searchMemoryByVector([1, 0, 0], 2);
+      expect(results).toHaveLength(2);
+      expect(results[0].content).toBe('I like cats');
+      expect(results[0].score).toBeCloseTo(1, 5);
+      expect(results[1].content).toBe('I like dogs');
+    });
+
+    it('filters by context_id', () => {
+      store.addMemoryWithEmbedding('ctx1', 'user', 'ctx1 memory', [1, 0, 0]);
+      store.addMemoryWithEmbedding('ctx2', 'user', 'ctx2 memory', [1, 0, 0]);
+
+      const results = store.searchMemoryByVector([1, 0, 0], 10, 'ctx1');
+      expect(results).toHaveLength(1);
+      expect(results[0].content).toBe('ctx1 memory');
+    });
+
+    it('skips rows without embeddings', () => {
+      store.addMemory('ctx1', 'user', 'no embedding');
+      store.addMemoryWithEmbedding('ctx1', 'user', 'has embedding', [1, 0, 0]);
+
+      const results = store.searchMemoryByVector([1, 0, 0], 10);
+      expect(results).toHaveLength(1);
+      expect(results[0].content).toBe('has embedding');
+    });
+
+    it('addMemoryEmbedded uses provider when set', async () => {
+      const fakeProvider: EmbeddingProvider = {
+        embed: async (_text: string) => [0.5, 0.5, 0],
+        embedBatch: async (texts: string[]) => texts.map(() => [0.5, 0.5, 0]),
+      };
+      store.setEmbeddingProvider(fakeProvider);
+
+      await store.addMemoryEmbedded('ctx1', 'user', 'test content');
+
+      const results = store.searchMemoryByVector([0.5, 0.5, 0], 10);
+      expect(results).toHaveLength(1);
+      expect(results[0].content).toBe('test content');
+      expect(results[0].score).toBeCloseTo(1, 5);
+    });
+
+    it('addMemoryEmbedded falls back to plain storage without provider', async () => {
+      await store.addMemoryEmbedded('ctx1', 'user', 'no provider');
+
+      const mem = store.getMemory('ctx1');
+      expect(mem).toHaveLength(1);
+      expect(mem[0].content).toBe('no provider');
+
+      // No embedding stored, so vector search returns nothing
+      const results = store.searchMemoryByVector([1, 0, 0], 10);
+      expect(results).toHaveLength(0);
+    });
+
+    it('searchMemory throws without provider', async () => {
+      await expect(store.searchMemory('query')).rejects.toThrow('No embedding provider configured');
     });
   });
 });

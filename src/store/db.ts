@@ -1,13 +1,33 @@
 import Database from 'better-sqlite3';
 import { runMigrations } from './migrations.js';
 import type { ECSEvent, EntityId } from '../ecs/types.js';
+import {
+  type EmbeddingProvider,
+  serializeEmbedding,
+  deserializeEmbedding,
+  cosineSimilarity,
+} from '../model/embedding.js';
+
+export interface MemorySearchResult {
+  id: number;
+  context_id: string;
+  role: string;
+  content: string;
+  score: number;
+  created_at: number;
+}
 
 export class Store {
   readonly db: Database.Database;
+  private embeddingProvider: EmbeddingProvider | null = null;
 
   constructor(dbPath: string) {
     this.db = new Database(dbPath);
     runMigrations(this.db);
+  }
+
+  setEmbeddingProvider(provider: EmbeddingProvider): void {
+    this.embeddingProvider = provider;
   }
 
   // --- Entities ---
@@ -110,10 +130,65 @@ export class Store {
       .run(contextId, role, content);
   }
 
+  /** Add memory with a pre-computed embedding vector. */
+  addMemoryWithEmbedding(contextId: string, role: string, content: string, embedding: number[]): void {
+    this.db
+      .prepare('INSERT INTO memory (context_id, role, content, embedding) VALUES (?, ?, ?, ?)')
+      .run(contextId, role, content, serializeEmbedding(embedding));
+  }
+
+  /** Add memory, automatically generating an embedding if a provider is configured. */
+  async addMemoryEmbedded(contextId: string, role: string, content: string): Promise<void> {
+    if (this.embeddingProvider) {
+      const embedding = await this.embeddingProvider.embed(content);
+      this.addMemoryWithEmbedding(contextId, role, content, embedding);
+    } else {
+      this.addMemory(contextId, role, content);
+    }
+  }
+
   getMemory(contextId: string, limit = 50): Array<{ role: string; content: string; created_at: number }> {
     return this.db
       .prepare('SELECT role, content, created_at FROM memory WHERE context_id = ? ORDER BY created_at DESC LIMIT ?')
       .all(contextId, limit) as Array<{ role: string; content: string; created_at: number }>;
+  }
+
+  /** Search memory by semantic similarity to a query embedding. */
+  searchMemoryByVector(queryEmbedding: number[], limit = 10, contextId?: string): MemorySearchResult[] {
+    const query = contextId
+      ? 'SELECT id, context_id, role, content, embedding, created_at FROM memory WHERE context_id = ? AND embedding IS NOT NULL'
+      : 'SELECT id, context_id, role, content, embedding, created_at FROM memory WHERE embedding IS NOT NULL';
+    const params = contextId ? [contextId] : [];
+
+    const rows = this.db.prepare(query).all(...params) as Array<{
+      id: number;
+      context_id: string;
+      role: string;
+      content: string;
+      embedding: Buffer;
+      created_at: number;
+    }>;
+
+    const scored = rows.map((row) => ({
+      id: row.id,
+      context_id: row.context_id,
+      role: row.role,
+      content: row.content,
+      score: cosineSimilarity(queryEmbedding, deserializeEmbedding(row.embedding)),
+      created_at: row.created_at,
+    }));
+
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, limit);
+  }
+
+  /** Search memory by text query — embeds the query then performs vector search. */
+  async searchMemory(query: string, limit = 10, contextId?: string): Promise<MemorySearchResult[]> {
+    if (!this.embeddingProvider) {
+      throw new Error('No embedding provider configured. Set GEMINI_API_KEY to enable semantic search.');
+    }
+    const queryEmbedding = await this.embeddingProvider.embed(query);
+    return this.searchMemoryByVector(queryEmbedding, limit, contextId);
   }
 
   // --- Scheduled Tasks ---

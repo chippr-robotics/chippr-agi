@@ -1,6 +1,7 @@
 import { loadConfig } from './util/config.js';
 import { createLogger } from './util/logger.js';
 import { createProvider } from './model/provider.js';
+import { GeminiEmbeddingProvider } from './model/embedding.js';
 import { Store } from './store/db.js';
 import { Engine } from './ecs/engine.js';
 import { loadSystems } from './systems/loader.js';
@@ -14,6 +15,13 @@ async function main() {
   const logger = createLogger(config);
   const provider = createProvider(config);
   const store = new Store(config.DB_PATH);
+
+  if (config.GEMINI_API_KEY) {
+    const embeddingProvider = new GeminiEmbeddingProvider(config.GEMINI_API_KEY, config.GEMINI_EMBEDDING_MODEL);
+    store.setEmbeddingProvider(embeddingProvider);
+    logger.info({ model: config.GEMINI_EMBEDDING_MODEL }, 'Gemini embedding provider enabled');
+  }
+
   const engine = new Engine(store, provider, logger);
 
   logger.info('chippr-agi v2 starting');
