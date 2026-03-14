@@ -22,6 +22,9 @@ dist/
 # Coverage
 coverage/
 
+# Uploads
+uploads/
+
 # OS
 .DS_Store
 

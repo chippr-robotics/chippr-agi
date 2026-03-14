@@ -191,6 +191,71 @@ export class Store {
     return this.searchMemoryByVector(queryEmbedding, limit, contextId);
   }
 
+  // --- Media ---
+
+  addMedia(media: {
+    id: string;
+    entityId?: string;
+    filename: string;
+    mimeType: string;
+    size: number;
+    source: string;
+    contextId?: string;
+    extractedText?: string;
+    storagePath: string;
+  }): void {
+    this.db
+      .prepare(
+        'INSERT INTO media (id, entity_id, filename, mime_type, size, source, context_id, extracted_text, storage_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      )
+      .run(
+        media.id,
+        media.entityId ?? null,
+        media.filename,
+        media.mimeType,
+        media.size,
+        media.source,
+        media.contextId ?? null,
+        media.extractedText ?? null,
+        media.storagePath,
+      );
+  }
+
+  getMedia(id: string): {
+    id: string;
+    entity_id: string | null;
+    filename: string;
+    mime_type: string;
+    size: number;
+    source: string;
+    context_id: string | null;
+    extracted_text: string | null;
+    storage_path: string;
+    created_at: number;
+  } | null {
+    return (
+      this.db
+        .prepare('SELECT * FROM media WHERE id = ?')
+        .get(id) as ReturnType<Store['getMedia']> ?? null
+    );
+  }
+
+  getMediaByContext(contextId: string): Array<{
+    id: string;
+    filename: string;
+    mime_type: string;
+    size: number;
+    source: string;
+    extracted_text: string | null;
+    created_at: number;
+  }> {
+    return this.db
+      .prepare(
+        'SELECT id, filename, mime_type, size, source, extracted_text, created_at FROM media WHERE context_id = ? ORDER BY created_at DESC',
+      )
+      .all(contextId) as ReturnType<Store['getMediaByContext']>;
+  }
+
   // --- Scheduled Tasks ---
 
   getScheduledTasks(): Array<{ id: string; cron: string; prompt: string; context_id: string | null; last_run: number | null }> {
