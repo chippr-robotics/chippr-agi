@@ -5,7 +5,7 @@ A modern TypeScript ECS agent framework. Ground-up rewrite of chippr-robotics/ch
 ## Architecture
 
 - **ECS core** (`src/ecs/`): Entities, Components, Systems, and a typed EventBus
-- **Model providers** (`src/model/`): Claude API (primary) + OpenAI-compatible local models (BitNet/Ollama/llama.cpp)
+- **Model providers** (`src/model/`): Claude API (primary) + OpenAI-compatible local models (BitNet/Ollama/llama.cpp) + Gemini embeddings
 - **Storage** (`src/store/`): SQLite via better-sqlite3 (entities, components, events, memory)
 - **Systems** (`src/systems/`): Self-registering ECS systems (task generation, routing, judging, scheduling)
 - **Container isolation** (`src/container/`): Docker/Apple Container per agent context
@@ -33,6 +33,9 @@ npm start -- "objective"     # Submit an objective via CLI
 | `CHIPPR_CONTAINER_IMAGE` | `chippr-agent:latest` | Agent container image |
 | `CHIPPR_LOG_LEVEL` | `info` | `debug`, `info`, `warn`, `error` |
 | `ANTHROPIC_API_KEY` | — | Required for Claude provider |
+| `GEMINI_API_KEY` | — | Enables Gemini embedding for semantic memory search |
+| `CHIPPR_GEMINI_EMBEDDING_MODEL` | `gemini-embedding-001` | Gemini embedding model name |
+| `CHIPPR_GEMINI_EMBEDDING_DIMENSIONS` | — | Optional output dimensionality (e.g. 768) |
 
 ## Design Principles
 

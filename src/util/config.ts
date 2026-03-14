@@ -9,6 +9,9 @@ const ConfigSchema = z.object({
   CONTAINER_RUNTIME: z.enum(['docker', 'apple-container']).default('docker'),
   CONTAINER_IMAGE: z.string().default('chippr-agent:latest'),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+  GEMINI_API_KEY: z.string().optional(),
+  GEMINI_EMBEDDING_MODEL: z.string().default('gemini-embedding-001'),
+  GEMINI_EMBEDDING_DIMENSIONS: z.coerce.number().optional(),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;
@@ -23,5 +26,8 @@ export function loadConfig(): Config {
     CONTAINER_RUNTIME: process.env.CHIPPR_CONTAINER_RUNTIME,
     CONTAINER_IMAGE: process.env.CHIPPR_CONTAINER_IMAGE,
     LOG_LEVEL: process.env.CHIPPR_LOG_LEVEL,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    GEMINI_EMBEDDING_MODEL: process.env.CHIPPR_GEMINI_EMBEDDING_MODEL,
+    GEMINI_EMBEDDING_DIMENSIONS: process.env.CHIPPR_GEMINI_EMBEDDING_DIMENSIONS,
   });
 }

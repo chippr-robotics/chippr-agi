@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="chip" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4aa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00b4d8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4aa;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#00b4d8;stop-opacity:0" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="8" flood-color="#00d4aa" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="64" fill="url(#bg)"/>
+
+  <!-- Outer glow ring -->
+  <circle cx="256" cy="240" r="160" fill="none" stroke="url(#glow)" stroke-width="2" opacity="0.5"/>
+
+  <!-- Circuit traces - left -->
+  <line x1="60" y1="180" x2="136" y2="180" stroke="#00d4aa" stroke-width="2.5" opacity="0.6"/>
+  <line x1="60" y1="240" x2="136" y2="240" stroke="#00d4aa" stroke-width="2.5" opacity="0.6"/>
+  <line x1="60" y1="300" x2="136" y2="300" stroke="#00d4aa" stroke-width="2.5" opacity="0.6"/>
+  <circle cx="60" cy="180" r="4" fill="#00d4aa" opacity="0.8"/>
+  <circle cx="60" cy="240" r="4" fill="#00d4aa" opacity="0.8"/>
+  <circle cx="60" cy="300" r="4" fill="#00d4aa" opacity="0.8"/>
+
+  <!-- Circuit traces - right -->
+  <line x1="376" y1="180" x2="452" y2="180" stroke="#00b4d8" stroke-width="2.5" opacity="0.6"/>
+  <line x1="376" y1="240" x2="452" y2="240" stroke="#00b4d8" stroke-width="2.5" opacity="0.6"/>
+  <line x1="376" y1="300" x2="452" y2="300" stroke="#00b4d8" stroke-width="2.5" opacity="0.6"/>
+  <circle cx="452" cy="180" r="4" fill="#00b4d8" opacity="0.8"/>
+  <circle cx="452" cy="240" r="4" fill="#00b4d8" opacity="0.8"/>
+  <circle cx="452" cy="300" r="4" fill="#00b4d8" opacity="0.8"/>
+
+  <!-- Circuit traces - top -->
+  <line x1="196" y1="60" x2="196" y2="120" stroke="#00d4aa" stroke-width="2.5" opacity="0.6"/>
+  <line x1="256" y1="60" x2="256" y2="120" stroke="#00d4aa" stroke-width="2.5" opacity="0.6"/>
+  <line x1="316" y1="60" x2="316" y2="120" stroke="#00b4d8" stroke-width="2.5" opacity="0.6"/>
+  <circle cx="196" cy="60" r="4" fill="#00d4aa" opacity="0.8"/>
+  <circle cx="256" cy="60" r="4" fill="#00d4aa" opacity="0.8"/>
+  <circle cx="316" cy="60" r="4" fill="#00b4d8" opacity="0.8"/>
+
+  <!-- Circuit traces - bottom -->
+  <line x1="196" y1="360" x2="196" y2="420" stroke="#00d4aa" stroke-width="2.5" opacity="0.6"/>
+  <line x1="256" y1="360" x2="256" y2="420" stroke="#00b4d8" stroke-width="2.5" opacity="0.6"/>
+  <line x1="316" y1="360" x2="316" y2="420" stroke="#00b4d8" stroke-width="2.5" opacity="0.6"/>
+  <circle cx="196" cy="420" r="4" fill="#00d4aa" opacity="0.8"/>
+  <circle cx="256" cy="420" r="4" fill="#00b4d8" opacity="0.8"/>
+  <circle cx="316" cy="420" r="4" fill="#00b4d8" opacity="0.8"/>
+
+  <!-- Main chip body -->
+  <rect x="136" y="120" width="240" height="240" rx="16" fill="#141428" stroke="url(#chip)" stroke-width="3" filter="url(#shadow)"/>
+
+  <!-- Inner chip detail -->
+  <rect x="160" y="144" width="192" height="192" rx="8" fill="none" stroke="#00d4aa" stroke-width="1" opacity="0.3"/>
+
+  <!-- Brain/AI neural network pattern inside chip -->
+  <!-- Central node -->
+  <circle cx="256" cy="240" r="12" fill="url(#chip)" opacity="0.9"/>
+
+  <!-- Inner ring nodes -->
+  <circle cx="210" cy="200" r="6" fill="#00d4aa" opacity="0.7"/>
+  <circle cx="302" cy="200" r="6" fill="#00b4d8" opacity="0.7"/>
+  <circle cx="210" cy="280" r="6" fill="#00b4d8" opacity="0.7"/>
+  <circle cx="302" cy="280" r="6" fill="#00d4aa" opacity="0.7"/>
+  <circle cx="256" cy="180" r="6" fill="#00d4aa" opacity="0.7"/>
+  <circle cx="256" cy="300" r="6" fill="#00b4d8" opacity="0.7"/>
+  <circle cx="186" cy="240" r="6" fill="#00d4aa" opacity="0.7"/>
+  <circle cx="326" cy="240" r="6" fill="#00b4d8" opacity="0.7"/>
+
+  <!-- Neural connections -->
+  <line x1="256" y1="240" x2="210" y2="200" stroke="#00d4aa" stroke-width="1.5" opacity="0.5"/>
+  <line x1="256" y1="240" x2="302" y2="200" stroke="#00b4d8" stroke-width="1.5" opacity="0.5"/>
+  <line x1="256" y1="240" x2="210" y2="280" stroke="#00b4d8" stroke-width="1.5" opacity="0.5"/>
+  <line x1="256" y1="240" x2="302" y2="280" stroke="#00d4aa" stroke-width="1.5" opacity="0.5"/>
+  <line x1="256" y1="240" x2="256" y2="180" stroke="#00d4aa" stroke-width="1.5" opacity="0.5"/>
+  <line x1="256" y1="240" x2="256" y2="300" stroke="#00b4d8" stroke-width="1.5" opacity="0.5"/>
+  <line x1="256" y1="240" x2="186" y2="240" stroke="#00d4aa" stroke-width="1.5" opacity="0.5"/>
+  <line x1="256" y1="240" x2="326" y2="240" stroke="#00b4d8" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Cross connections -->
+  <line x1="210" y1="200" x2="256" y2="180" stroke="#00d4aa" stroke-width="1" opacity="0.3"/>
+  <line x1="302" y1="200" x2="256" y2="180" stroke="#00b4d8" stroke-width="1" opacity="0.3"/>
+  <line x1="210" y1="280" x2="256" y2="300" stroke="#00b4d8" stroke-width="1" opacity="0.3"/>
+  <line x1="302" y1="280" x2="256" y2="300" stroke="#00d4aa" stroke-width="1" opacity="0.3"/>
+  <line x1="210" y1="200" x2="186" y2="240" stroke="#00d4aa" stroke-width="1" opacity="0.3"/>
+  <line x1="302" y1="200" x2="326" y2="240" stroke="#00b4d8" stroke-width="1" opacity="0.3"/>
+  <line x1="210" y1="280" x2="186" y2="240" stroke="#00b4d8" stroke-width="1" opacity="0.3"/>
+  <line x1="302" y1="280" x2="326" y2="240" stroke="#00d4aa" stroke-width="1" opacity="0.3"/>
+
+  <!-- Text -->
+  <text x="256" y="465" font-family="monospace" font-size="36" font-weight="bold" fill="url(#chip)" text-anchor="middle" letter-spacing="4">CHIPPR</text>
+</svg>
