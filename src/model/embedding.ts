@@ -1,30 +1,59 @@
+/** Task types supported by Gemini embedding models. */
+export type EmbeddingTaskType =
+  | 'RETRIEVAL_DOCUMENT'
+  | 'RETRIEVAL_QUERY'
+  | 'SEMANTIC_SIMILARITY'
+  | 'CLASSIFICATION'
+  | 'CLUSTERING';
+
 export interface EmbeddingProvider {
-  embed(text: string): Promise<number[]>;
-  embedBatch(texts: string[]): Promise<number[][]>;
+  embed(text: string, taskType?: EmbeddingTaskType): Promise<number[]>;
+  embedBatch(texts: string[], taskType?: EmbeddingTaskType): Promise<number[][]>;
+}
+
+export interface GeminiEmbeddingConfig {
+  apiKey: string;
+  model?: string;
+  outputDimensionality?: number;
 }
 
 export class GeminiEmbeddingProvider implements EmbeddingProvider {
   private readonly apiKey: string;
   private readonly model: string;
+  private readonly outputDimensionality: number | undefined;
   private readonly baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
 
-  constructor(apiKey: string, model = 'gemini-embedding-exp-03-07') {
-    this.apiKey = apiKey;
-    this.model = model;
+  constructor(config: GeminiEmbeddingConfig);
+  constructor(apiKey: string, model?: string);
+  constructor(configOrKey: GeminiEmbeddingConfig | string, model?: string) {
+    if (typeof configOrKey === 'string') {
+      this.apiKey = configOrKey;
+      this.model = model ?? 'gemini-embedding-001';
+      this.outputDimensionality = undefined;
+    } else {
+      this.apiKey = configOrKey.apiKey;
+      this.model = configOrKey.model ?? 'gemini-embedding-001';
+      this.outputDimensionality = configOrKey.outputDimensionality;
+    }
   }
 
-  async embed(text: string): Promise<number[]> {
-    const [result] = await this.embedBatch([text]);
+  async embed(text: string, taskType?: EmbeddingTaskType): Promise<number[]> {
+    const [result] = await this.embedBatch([text], taskType);
     return result;
   }
 
-  async embedBatch(texts: string[]): Promise<number[][]> {
+  async embedBatch(texts: string[], taskType?: EmbeddingTaskType): Promise<number[][]> {
     const url = `${this.baseUrl}/models/${this.model}:batchEmbedContents?key=${this.apiKey}`;
     const body = {
-      requests: texts.map((text) => ({
-        model: `models/${this.model}`,
-        content: { parts: [{ text }] },
-      })),
+      requests: texts.map((text) => {
+        const req: Record<string, unknown> = {
+          model: `models/${this.model}`,
+          content: { parts: [{ text }] },
+        };
+        if (taskType) req.taskType = taskType;
+        if (this.outputDimensionality) req.outputDimensionality = this.outputDimensionality;
+        return req;
+      }),
     };
 
     const res = await fetch(url, {

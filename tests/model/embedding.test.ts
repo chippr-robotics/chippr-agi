@@ -1,9 +1,31 @@
 import { describe, it, expect } from 'vitest';
 import {
+  GeminiEmbeddingProvider,
   serializeEmbedding,
   deserializeEmbedding,
   cosineSimilarity,
 } from '../../src/model/embedding.js';
+
+describe('GeminiEmbeddingProvider', () => {
+  it('accepts string constructor for backwards compatibility', () => {
+    const provider = new GeminiEmbeddingProvider('test-key', 'custom-model');
+    expect(provider).toBeInstanceOf(GeminiEmbeddingProvider);
+  });
+
+  it('accepts config object constructor', () => {
+    const provider = new GeminiEmbeddingProvider({
+      apiKey: 'test-key',
+      model: 'gemini-embedding-001',
+      outputDimensionality: 768,
+    });
+    expect(provider).toBeInstanceOf(GeminiEmbeddingProvider);
+  });
+
+  it('defaults model to gemini-embedding-001', () => {
+    const provider = new GeminiEmbeddingProvider('test-key');
+    expect(provider).toBeInstanceOf(GeminiEmbeddingProvider);
+  });
+});
 
 describe('embedding utilities', () => {
   describe('serializeEmbedding / deserializeEmbedding', () => {

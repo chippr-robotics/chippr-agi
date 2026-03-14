@@ -34,7 +34,8 @@ npm start -- "objective"     # Submit an objective via CLI
 | `CHIPPR_LOG_LEVEL` | `info` | `debug`, `info`, `warn`, `error` |
 | `ANTHROPIC_API_KEY` | — | Required for Claude provider |
 | `GEMINI_API_KEY` | — | Enables Gemini embedding for semantic memory search |
-| `CHIPPR_GEMINI_EMBEDDING_MODEL` | `gemini-embedding-exp-03-07` | Gemini embedding model name |
+| `CHIPPR_GEMINI_EMBEDDING_MODEL` | `gemini-embedding-001` | Gemini embedding model name |
+| `CHIPPR_GEMINI_EMBEDDING_DIMENSIONS` | — | Optional output dimensionality (e.g. 768) |
 
 ## Design Principles
 

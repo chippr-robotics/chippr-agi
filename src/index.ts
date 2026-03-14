@@ -17,7 +17,11 @@ async function main() {
   const store = new Store(config.DB_PATH);
 
   if (config.GEMINI_API_KEY) {
-    const embeddingProvider = new GeminiEmbeddingProvider(config.GEMINI_API_KEY, config.GEMINI_EMBEDDING_MODEL);
+    const embeddingProvider = new GeminiEmbeddingProvider({
+      apiKey: config.GEMINI_API_KEY,
+      model: config.GEMINI_EMBEDDING_MODEL,
+      outputDimensionality: config.GEMINI_EMBEDDING_DIMENSIONS,
+    });
     store.setEmbeddingProvider(embeddingProvider);
     logger.info({ model: config.GEMINI_EMBEDDING_MODEL }, 'Gemini embedding provider enabled');
   }

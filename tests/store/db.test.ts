@@ -157,15 +157,20 @@ describe('Store', () => {
       expect(results[0].content).toBe('has embedding');
     });
 
-    it('addMemoryEmbedded uses provider when set', async () => {
+    it('addMemoryEmbedded uses provider with RETRIEVAL_DOCUMENT task type', async () => {
+      let capturedTaskType: string | undefined;
       const fakeProvider: EmbeddingProvider = {
-        embed: async (_text: string) => [0.5, 0.5, 0],
+        embed: async (_text: string, taskType?: string) => {
+          capturedTaskType = taskType;
+          return [0.5, 0.5, 0];
+        },
         embedBatch: async (texts: string[]) => texts.map(() => [0.5, 0.5, 0]),
       };
       store.setEmbeddingProvider(fakeProvider);
 
       await store.addMemoryEmbedded('ctx1', 'user', 'test content');
 
+      expect(capturedTaskType).toBe('RETRIEVAL_DOCUMENT');
       const results = store.searchMemoryByVector([0.5, 0.5, 0], 10);
       expect(results).toHaveLength(1);
       expect(results[0].content).toBe('test content');
@@ -182,6 +187,23 @@ describe('Store', () => {
       // No embedding stored, so vector search returns nothing
       const results = store.searchMemoryByVector([1, 0, 0], 10);
       expect(results).toHaveLength(0);
+    });
+
+    it('searchMemory uses RETRIEVAL_QUERY task type', async () => {
+      let capturedTaskType: string | undefined;
+      const fakeProvider: EmbeddingProvider = {
+        embed: async (_text: string, taskType?: string) => {
+          capturedTaskType = taskType;
+          return [1, 0, 0];
+        },
+        embedBatch: async (texts: string[]) => texts.map(() => [1, 0, 0]),
+      };
+      store.setEmbeddingProvider(fakeProvider);
+      store.addMemoryWithEmbedding('ctx1', 'user', 'stored', [1, 0, 0]);
+
+      await store.searchMemory('query');
+
+      expect(capturedTaskType).toBe('RETRIEVAL_QUERY');
     });
 
     it('searchMemory throws without provider', async () => {

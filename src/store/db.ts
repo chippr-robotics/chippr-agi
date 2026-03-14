@@ -140,7 +140,7 @@ export class Store {
   /** Add memory, automatically generating an embedding if a provider is configured. */
   async addMemoryEmbedded(contextId: string, role: string, content: string): Promise<void> {
     if (this.embeddingProvider) {
-      const embedding = await this.embeddingProvider.embed(content);
+      const embedding = await this.embeddingProvider.embed(content, 'RETRIEVAL_DOCUMENT');
       this.addMemoryWithEmbedding(contextId, role, content, embedding);
     } else {
       this.addMemory(contextId, role, content);
@@ -187,7 +187,7 @@ export class Store {
     if (!this.embeddingProvider) {
       throw new Error('No embedding provider configured. Set GEMINI_API_KEY to enable semantic search.');
     }
-    const queryEmbedding = await this.embeddingProvider.embed(query);
+    const queryEmbedding = await this.embeddingProvider.embed(query, 'RETRIEVAL_QUERY');
     return this.searchMemoryByVector(queryEmbedding, limit, contextId);
   }
 
