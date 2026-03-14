@@ -336,6 +336,31 @@
 
 <script>
 (function() {
+  // Safe DOM helpers — never use innerHTML with untrusted data
+  function el(tag, attrs, children) {
+    const node = document.createElement(tag);
+    if (attrs) {
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'className') node.className = v;
+        else if (k === 'textContent') node.textContent = v;
+        else if (k.startsWith('data-')) node.setAttribute(k, v);
+        else if (k === 'style') node.setAttribute('style', v);
+        else node[k] = v;
+      }
+    }
+    if (children) {
+      for (const child of children) {
+        if (typeof child === 'string') node.appendChild(document.createTextNode(child));
+        else if (child) node.appendChild(child);
+      }
+    }
+    return node;
+  }
+
+  function clearEl(node) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+
   // Tabs
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -354,16 +379,14 @@
   const uploadBtn = document.getElementById('uploadBtn');
 
   function updateFileList() {
-    fileList.innerHTML = '';
+    clearEl(fileList);
     selectedFiles.forEach((file, i) => {
-      const li = document.createElement('li');
-      li.className = 'file-item';
-      li.innerHTML = `
-        <span class="icon">${fileIcon(file.type)}</span>
-        <span class="name">${esc(file.name)}</span>
-        <span class="size">${formatSize(file.size)}</span>
-        <button class="remove" data-idx="${i}">&times;</button>
-      `;
+      const li = el('li', { className: 'file-item' }, [
+        el('span', { className: 'icon', textContent: fileIcon(file.type) }),
+        el('span', { className: 'name', textContent: file.name }),
+        el('span', { className: 'size', textContent: formatSize(file.size) }),
+        el('button', { className: 'remove', 'data-idx': String(i), textContent: '\u00D7' }),
+      ]);
       fileList.appendChild(li);
     });
     uploadBtn.disabled = selectedFiles.length === 0;
@@ -445,14 +468,12 @@
 
   function showUploadResults(items) {
     const container = document.getElementById('uploadResults');
-    container.innerHTML = '';
+    clearEl(container);
     items.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'result-card';
-      card.innerHTML = `
-        <div class="label">${esc(item.category)} — ${esc(item.mediaId)}</div>
-        <div class="preview">${esc(item.extractedTextPreview)}</div>
-      `;
+      const card = el('div', { className: 'result-card' }, [
+        el('div', { className: 'label', textContent: item.category + ' \u2014 ' + item.mediaId }),
+        el('div', { className: 'preview', textContent: item.extractedTextPreview }),
+      ]);
       container.appendChild(card);
     });
   }
@@ -470,7 +491,7 @@
       });
       const data = await res.json();
       if (res.ok) {
-        showStatus('objectiveResult', `Entity ${data.entityId} created`, 'success');
+        showStatus('objectiveResult', 'Entity ' + data.entityId + ' created', 'success');
         document.getElementById('objectiveText').value = '';
       } else {
         showStatus('objectiveResult', data.error, 'error');
@@ -491,29 +512,30 @@
     if (!q) return;
 
     const container = document.getElementById('searchResults');
-    container.innerHTML = '<div style="color: var(--dim)">Searching...</div>';
+    clearEl(container);
+    container.appendChild(el('div', { style: 'color: var(--dim)', textContent: 'Searching...' }));
 
     try {
-      const res = await fetch(`/api/memory/search?q=${encodeURIComponent(q)}`);
+      const res = await fetch('/api/memory/search?q=' + encodeURIComponent(q));
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
-      container.innerHTML = '';
+      clearEl(container);
       if (data.results.length === 0) {
-        container.innerHTML = '<div style="color: var(--dim)">No results found</div>';
+        container.appendChild(el('div', { style: 'color: var(--dim)', textContent: 'No results found' }));
         return;
       }
       data.results.forEach(r => {
-        const card = document.createElement('div');
-        card.className = 'result-card';
-        card.innerHTML = `
-          <div class="label">Score: ${r.score.toFixed(4)} — ${esc(r.role)} (${esc(r.context_id)})</div>
-          <div class="preview">${esc(r.content.slice(0, 300))}</div>
-        `;
+        const card = el('div', { className: 'result-card' }, [
+          el('div', { className: 'label', textContent: 'Score: ' + r.score.toFixed(4) + ' \u2014 ' + r.role + ' (' + r.context_id + ')' }),
+          el('div', { className: 'preview', textContent: r.content.slice(0, 300) }),
+        ]);
         container.appendChild(card);
       });
     } catch (err) {
-      container.innerHTML = `<div class="status-msg error">${esc(err.message)}</div>`;
+      clearEl(container);
+      const msg = el('div', { className: 'status-msg error', textContent: err.message });
+      container.appendChild(msg);
     }
   }
 
@@ -524,20 +546,19 @@
   function connectSSE() {
     const es = new EventSource('/api/events');
     es.onopen = () => {
-      eventLog.innerHTML = '<div style="color: var(--dim); padding: 0.5rem;">Connected. Waiting for events...</div>';
+      clearEl(eventLog);
+      eventLog.appendChild(el('div', { style: 'color: var(--dim); padding: 0.5rem;', textContent: 'Connected. Waiting for events...' }));
     };
     es.onmessage = (e) => {
       try {
         const event = JSON.parse(e.data);
-        const entry = document.createElement('div');
-        entry.className = 'event-entry';
         const time = new Date(event.timestamp).toLocaleTimeString();
-        entry.innerHTML = `
-          <span class="time">${time}</span>
-          <span class="type">${esc(event.type)}</span>
-          <span class="detail">${esc(event.entityId || '')} ${esc(JSON.stringify(event.data || {}).slice(0, 80))}</span>
-        `;
-        if (eventCount === 0) eventLog.innerHTML = '';
+        const entry = el('div', { className: 'event-entry' }, [
+          el('span', { className: 'time', textContent: time }),
+          el('span', { className: 'type', textContent: event.type }),
+          el('span', { className: 'detail', textContent: (event.entityId || '') + ' ' + JSON.stringify(event.data || {}).slice(0, 80) }),
+        ]);
+        if (eventCount === 0) clearEl(eventLog);
         eventLog.prepend(entry);
         eventCount++;
         // Keep max 200 entries
@@ -567,15 +588,12 @@
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   }
 
-  function esc(s) {
-    const d = document.createElement('div');
-    d.textContent = s || '';
-    return d.innerHTML;
-  }
-
   function showStatus(containerId, msg, type) {
     const container = document.getElementById(containerId);
-    container.innerHTML = `<div class="status-msg ${type}">${esc(msg)}</div>`;
+    clearEl(container);
+    const validTypes = ['success', 'error'];
+    const safeType = validTypes.includes(type) ? type : '';
+    container.appendChild(el('div', { className: 'status-msg ' + safeType, textContent: msg }));
   }
 })();
 </script>
