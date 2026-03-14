@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chippr-agi</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #2a2a3a;
+    --text: #e0e0e8;
+    --dim: #6a6a7a;
+    --accent: #6c63ff;
+    --accent-hover: #7d75ff;
+    --success: #4caf50;
+    --error: #ef5350;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .app {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+  header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  header .version {
+    color: var(--dim);
+    font-size: 0.8rem;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    padding: 0.75rem 1.25rem;
+    background: none;
+    border: none;
+    color: var(--dim);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Upload zone */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    margin-bottom: 1rem;
+  }
+  .upload-zone:hover,
+  .upload-zone.dragover {
+    border-color: var(--accent);
+    background: rgba(108, 99, 255, 0.05);
+  }
+  .upload-zone h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .upload-zone p { color: var(--dim); font-size: 0.8rem; }
+  .upload-zone input[type="file"] { display: none; }
+
+  /* File list */
+  .file-list {
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .file-item .icon { font-size: 1.2rem; }
+  .file-item .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file-item .size { color: var(--dim); font-size: 0.75rem; }
+  .file-item .remove {
+    background: none;
+    border: none;
+    color: var(--error);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0 0.25rem;
+  }
+
+  /* Message input */
+  .message-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .message-row input {
+    flex: 1;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+  }
+  .message-row input:focus { border-color: var(--accent); }
+  .message-row input::placeholder { color: var(--dim); }
+
+  /* Buttons */
+  .btn {
+    padding: 0.6rem 1.25rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: var(--accent-hover); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-secondary:hover { border-color: var(--accent); }
+
+  /* Progress */
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    display: none;
+  }
+  .progress-bar.active { display: block; }
+  .progress-bar .fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0;
+    transition: width 0.3s;
+  }
+
+  /* Results */
+  .results {
+    margin-top: 1rem;
+  }
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+  }
+  .result-card .label {
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+  .result-card .preview {
+    color: var(--dim);
+    white-space: pre-wrap;
+    max-height: 100px;
+    overflow-y: auto;
+  }
+
+  /* Objective panel */
+  .objective-form {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .objective-form textarea {
+    flex: 1;
+    padding: 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+  }
+  .objective-form textarea:focus { border-color: var(--accent); }
+  .objective-form textarea::placeholder { color: var(--dim); }
+
+  /* Event log */
+  .event-log {
+    max-height: 500px;
+    overflow-y: auto;
+    font-size: 0.75rem;
+  }
+  .event-entry {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0.5rem;
+  }
+  .event-entry .time { color: var(--dim); white-space: nowrap; }
+  .event-entry .type { color: var(--accent); font-weight: 500; white-space: nowrap; }
+  .event-entry .detail { color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Search */
+  .search-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .search-row input {
+    flex: 1;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+  }
+  .search-row input:focus { border-color: var(--accent); }
+
+  .status-msg {
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+  .status-msg.success { background: rgba(76,175,80,0.1); color: var(--success); border: 1px solid rgba(76,175,80,0.3); }
+  .status-msg.error { background: rgba(239,83,80,0.1); color: var(--error); border: 1px solid rgba(239,83,80,0.3); }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>chippr-agi</h1>
+    <span class="version">v2</span>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-panel="upload">Upload</button>
+    <button class="tab" data-panel="objective">Objective</button>
+    <button class="tab" data-panel="search">Memory Search</button>
+    <button class="tab" data-panel="events">Events</button>
+  </div>
+
+  <!-- Upload Panel -->
+  <div id="upload" class="panel active">
+    <div class="upload-zone" id="dropzone">
+      <h3>Drop files here or click to browse</h3>
+      <p>Images, documents, PDFs, text, audio, video — up to 50 MB</p>
+      <input type="file" id="fileInput" multiple>
+    </div>
+
+    <ul class="file-list" id="fileList"></ul>
+
+    <div class="message-row">
+      <input type="text" id="uploadMessage" placeholder="Optional: describe what to do with these files...">
+    </div>
+
+    <div class="progress-bar" id="uploadProgress"><div class="fill" id="uploadFill"></div></div>
+
+    <button class="btn" id="uploadBtn" disabled>Upload & Process</button>
+
+    <div class="results" id="uploadResults"></div>
+  </div>
+
+  <!-- Objective Panel -->
+  <div id="objective" class="panel">
+    <div class="objective-form">
+      <textarea id="objectiveText" placeholder="Enter an objective for the agent..."></textarea>
+    </div>
+    <br>
+    <button class="btn" id="objectiveBtn">Submit Objective</button>
+    <div id="objectiveResult"></div>
+  </div>
+
+  <!-- Search Panel -->
+  <div id="search" class="panel">
+    <div class="search-row">
+      <input type="text" id="searchQuery" placeholder="Search embedded memory...">
+      <button class="btn" id="searchBtn">Search</button>
+    </div>
+    <div class="results" id="searchResults"></div>
+  </div>
+
+  <!-- Events Panel -->
+  <div id="events" class="panel">
+    <div class="event-log" id="eventLog">
+      <div style="color: var(--dim); padding: 1rem; text-align: center;">Connecting to event stream...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Tabs
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.panel).classList.add('active');
+    });
+  });
+
+  // File upload state
+  let selectedFiles = [];
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('fileInput');
+  const fileList = document.getElementById('fileList');
+  const uploadBtn = document.getElementById('uploadBtn');
+
+  function updateFileList() {
+    fileList.innerHTML = '';
+    selectedFiles.forEach((file, i) => {
+      const li = document.createElement('li');
+      li.className = 'file-item';
+      li.innerHTML = `
+        <span class="icon">${fileIcon(file.type)}</span>
+        <span class="name">${esc(file.name)}</span>
+        <span class="size">${formatSize(file.size)}</span>
+        <button class="remove" data-idx="${i}">&times;</button>
+      `;
+      fileList.appendChild(li);
+    });
+    uploadBtn.disabled = selectedFiles.length === 0;
+  }
+
+  function addFiles(files) {
+    for (const f of files) {
+      if (!selectedFiles.some(s => s.name === f.name && s.size === f.size)) {
+        selectedFiles.push(f);
+      }
+    }
+    updateFileList();
+  }
+
+  dropzone.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', () => { addFiles(fileInput.files); fileInput.value = ''; });
+
+  dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    addFiles(e.dataTransfer.files);
+  });
+
+  fileList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove')) {
+      selectedFiles.splice(parseInt(e.target.dataset.idx), 1);
+      updateFileList();
+    }
+  });
+
+  // Upload
+  uploadBtn.addEventListener('click', async () => {
+    if (selectedFiles.length === 0) return;
+
+    const form = new FormData();
+    selectedFiles.forEach(f => form.append('files', f));
+    const msg = document.getElementById('uploadMessage').value.trim();
+    if (msg) form.append('message', msg);
+
+    const progressBar = document.getElementById('uploadProgress');
+    const fill = document.getElementById('uploadFill');
+    progressBar.classList.add('active');
+    fill.style.width = '10%';
+    uploadBtn.disabled = true;
+
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload');
+
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          fill.style.width = Math.round((e.loaded / e.total) * 90) + '%';
+        }
+      });
+
+      const result = await new Promise((resolve, reject) => {
+        xhr.onload = () => {
+          fill.style.width = '100%';
+          if (xhr.status === 200) resolve(JSON.parse(xhr.responseText));
+          else reject(new Error(JSON.parse(xhr.responseText).error || 'Upload failed'));
+        };
+        xhr.onerror = () => reject(new Error('Network error'));
+        xhr.send(form);
+      });
+
+      showUploadResults(result.uploaded);
+      selectedFiles = [];
+      updateFileList();
+      document.getElementById('uploadMessage').value = '';
+    } catch (err) {
+      showStatus('uploadResults', err.message, 'error');
+    } finally {
+      setTimeout(() => { progressBar.classList.remove('active'); fill.style.width = '0'; }, 1000);
+      uploadBtn.disabled = false;
+    }
+  });
+
+  function showUploadResults(items) {
+    const container = document.getElementById('uploadResults');
+    container.innerHTML = '';
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'result-card';
+      card.innerHTML = `
+        <div class="label">${esc(item.category)} — ${esc(item.mediaId)}</div>
+        <div class="preview">${esc(item.extractedTextPreview)}</div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Objective
+  document.getElementById('objectiveBtn').addEventListener('click', async () => {
+    const text = document.getElementById('objectiveText').value.trim();
+    if (!text) return;
+
+    try {
+      const res = await fetch('/api/objective', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ objective: text }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showStatus('objectiveResult', `Entity ${data.entityId} created`, 'success');
+        document.getElementById('objectiveText').value = '';
+      } else {
+        showStatus('objectiveResult', data.error, 'error');
+      }
+    } catch (err) {
+      showStatus('objectiveResult', err.message, 'error');
+    }
+  });
+
+  // Memory search
+  document.getElementById('searchBtn').addEventListener('click', doSearch);
+  document.getElementById('searchQuery').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  async function doSearch() {
+    const q = document.getElementById('searchQuery').value.trim();
+    if (!q) return;
+
+    const container = document.getElementById('searchResults');
+    container.innerHTML = '<div style="color: var(--dim)">Searching...</div>';
+
+    try {
+      const res = await fetch(`/api/memory/search?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      container.innerHTML = '';
+      if (data.results.length === 0) {
+        container.innerHTML = '<div style="color: var(--dim)">No results found</div>';
+        return;
+      }
+      data.results.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.innerHTML = `
+          <div class="label">Score: ${r.score.toFixed(4)} — ${esc(r.role)} (${esc(r.context_id)})</div>
+          <div class="preview">${esc(r.content.slice(0, 300))}</div>
+        `;
+        container.appendChild(card);
+      });
+    } catch (err) {
+      container.innerHTML = `<div class="status-msg error">${esc(err.message)}</div>`;
+    }
+  }
+
+  // SSE event stream
+  const eventLog = document.getElementById('eventLog');
+  let eventCount = 0;
+
+  function connectSSE() {
+    const es = new EventSource('/api/events');
+    es.onopen = () => {
+      eventLog.innerHTML = '<div style="color: var(--dim); padding: 0.5rem;">Connected. Waiting for events...</div>';
+    };
+    es.onmessage = (e) => {
+      try {
+        const event = JSON.parse(e.data);
+        const entry = document.createElement('div');
+        entry.className = 'event-entry';
+        const time = new Date(event.timestamp).toLocaleTimeString();
+        entry.innerHTML = `
+          <span class="time">${time}</span>
+          <span class="type">${esc(event.type)}</span>
+          <span class="detail">${esc(event.entityId || '')} ${esc(JSON.stringify(event.data || {}).slice(0, 80))}</span>
+        `;
+        if (eventCount === 0) eventLog.innerHTML = '';
+        eventLog.prepend(entry);
+        eventCount++;
+        // Keep max 200 entries
+        while (eventLog.children.length > 200) eventLog.removeChild(eventLog.lastChild);
+      } catch {}
+    };
+    es.onerror = () => {
+      es.close();
+      setTimeout(connectSSE, 3000);
+    };
+  }
+  connectSSE();
+
+  // Helpers
+  function fileIcon(type) {
+    if (type.startsWith('image/')) return '\u{1F5BC}';
+    if (type.startsWith('audio/')) return '\u{1F3B5}';
+    if (type.startsWith('video/')) return '\u{1F3AC}';
+    if (type === 'application/pdf') return '\u{1F4C4}';
+    if (type.startsWith('text/')) return '\u{1F4DD}';
+    return '\u{1F4CE}';
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+
+  function showStatus(containerId, msg, type) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = `<div class="status-msg ${type}">${esc(msg)}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

@@ -12,6 +12,9 @@ const ConfigSchema = z.object({
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_EMBEDDING_MODEL: z.string().default('gemini-embedding-001'),
   GEMINI_EMBEDDING_DIMENSIONS: z.coerce.number().optional(),
+  WEB_PORT: z.coerce.number().default(3000),
+  WEB_ENABLED: z.enum(['true', 'false']).default('true'),
+  UPLOAD_DIR: z.string().default('./uploads'),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;
@@ -29,5 +32,8 @@ export function loadConfig(): Config {
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     GEMINI_EMBEDDING_MODEL: process.env.CHIPPR_GEMINI_EMBEDDING_MODEL,
     GEMINI_EMBEDDING_DIMENSIONS: process.env.CHIPPR_GEMINI_EMBEDDING_DIMENSIONS,
+    WEB_PORT: process.env.CHIPPR_WEB_PORT,
+    WEB_ENABLED: process.env.CHIPPR_WEB_ENABLED,
+    UPLOAD_DIR: process.env.CHIPPR_UPLOAD_DIR,
   });
 }

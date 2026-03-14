@@ -56,6 +56,28 @@ const MIGRATIONS = [
       );
     `,
   },
+  {
+    version: 2,
+    up: `
+      CREATE TABLE IF NOT EXISTS media (
+        id TEXT PRIMARY KEY,
+        entity_id TEXT,
+        filename TEXT NOT NULL,
+        mime_type TEXT NOT NULL,
+        size INTEGER NOT NULL,
+        source TEXT NOT NULL,
+        context_id TEXT,
+        extracted_text TEXT,
+        storage_path TEXT NOT NULL,
+        created_at INTEGER DEFAULT (unixepoch()),
+        FOREIGN KEY (entity_id) REFERENCES entities(id) ON DELETE SET NULL
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_media_entity ON media(entity_id);
+      CREATE INDEX IF NOT EXISTS idx_media_context ON media(context_id);
+      CREATE INDEX IF NOT EXISTS idx_media_source ON media(source);
+    `,
+  },
 ];
 
 export function runMigrations(db: Database.Database): void {

@@ -5,8 +5,10 @@ import { GeminiEmbeddingProvider } from './model/embedding.js';
 import { Store } from './store/db.js';
 import { Engine } from './ecs/engine.js';
 import { loadSystems } from './systems/loader.js';
+import { IngestPipeline } from './ingest/pipeline.js';
+import { startWebServer } from './web/server.js';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -39,6 +41,14 @@ async function main() {
   engine.on('*', (event) => {
     logger.debug({ event: event.type, entityId: event.entityId, source: event.source }, 'Event');
   });
+
+  // Start ingestion pipeline
+  const pipeline = new IngestPipeline(engine, logger, resolve(config.UPLOAD_DIR));
+
+  // Start web server
+  if (config.WEB_ENABLED === 'true') {
+    startWebServer({ port: config.WEB_PORT, engine, pipeline, logger });
+  }
 
   // If an objective was provided via CLI args, create an entity for it
   const objective = process.argv[2];
