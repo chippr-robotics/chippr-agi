@@ -40,6 +40,7 @@ interface ImprovementLoopData {
   bestScore: number;
   stoppedReason?: string;
   improvements: Array<{ hypothesis: string; change: string; score: number }>;
+  [key: string]: unknown;
 }
 
 /** How many consecutive non-improvements before we stop early. */
@@ -122,7 +123,7 @@ export default function createRecursiveImprover(engine: Engine): System {
         const stoppedReason = checkStoppingCriteria(updated);
         if (stoppedReason) {
           updated.stoppedReason = stoppedReason;
-          engine.setComponent(loopEntityId, 'ImprovementLoop', updated as unknown as Record<string, unknown>);
+          engine.setComponent(loopEntityId, 'ImprovementLoop', updated);
 
           logger.info(
             { reason: stoppedReason, bestScore: updated.bestScore, improvements: updated.improvements.length },
@@ -155,7 +156,7 @@ export default function createRecursiveImprover(engine: Engine): System {
           return;
         }
 
-        engine.setComponent(loopEntityId, 'ImprovementLoop', updated as unknown as Record<string, unknown>);
+        engine.setComponent(loopEntityId, 'ImprovementLoop', updated);
         await runNextIteration(engine, loopEntityId, updated);
       }
     },
@@ -213,7 +214,7 @@ async function bootstrapLoop(
     improvements: [],
   };
 
-  engine.addComponent(entityId, 'ImprovementLoop', loopData as unknown as Record<string, unknown>);
+  engine.addComponent(entityId, 'ImprovementLoop', loopData);
   return loopData;
 }
 
@@ -282,7 +283,7 @@ async function runNextIteration(
   engine.setComponent(loopEntityId, 'ImprovementLoop', {
     ...loopData,
     iteration: nextIteration,
-  } as unknown as Record<string, unknown>);
+  });
 
   logger.info(
     { experimentId, iteration: nextIteration, hypothesis: parsed.data.hypothesis },
