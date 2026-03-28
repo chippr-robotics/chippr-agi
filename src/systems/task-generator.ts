@@ -46,6 +46,13 @@ export default function createTaskGenerator(engine: Engine): System {
         parsed = TaskListSchema.safeParse(JSON.parse(response.content));
       } catch {
         engine.getLogger().warn({ content: response.content }, 'TaskGenerator: failed to parse response');
+        engine.emit({
+          type: 'system:error',
+          entityId: event.entityId,
+          data: { system: 'TaskGenerator', error: 'Failed to parse LLM response as JSON' },
+          source: 'TaskGenerator',
+          timestamp: Date.now(),
+        });
         return;
       }
 

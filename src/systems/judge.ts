@@ -42,6 +42,13 @@ export default function createJudge(engine: Engine): System {
         parsed = JudgementSchema.safeParse(JSON.parse(response.content));
       } catch {
         engine.getLogger().warn({ content: response.content }, 'TheJudge: failed to parse response');
+        engine.emit({
+          type: 'system:error',
+          entityId: event.entityId,
+          data: { system: 'TheJudge', error: 'Failed to parse LLM response as JSON' },
+          source: 'TheJudge',
+          timestamp: Date.now(),
+        });
         return;
       }
 

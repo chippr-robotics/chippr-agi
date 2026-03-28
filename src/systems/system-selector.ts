@@ -54,6 +54,15 @@ export default function createSystemSelector(engine: Engine): System {
           source: 'SystemSelector',
           timestamp: Date.now(),
         });
+      } else {
+        engine.getLogger().warn({ entityId: event.entityId }, 'SystemSelector: no system selected by LLM');
+        engine.emit({
+          type: 'system:error',
+          entityId: event.entityId,
+          data: { system: 'SystemSelector', error: 'LLM did not select a system' },
+          source: 'SystemSelector',
+          timestamp: Date.now(),
+        });
       }
     },
   };
