@@ -37,7 +37,7 @@ export class Engine {
     this.store.addComponent(entityId, name, data);
   }
 
-  getComponent<T extends Record<string, unknown> = Record<string, unknown>>(
+  getComponent<T = Record<string, unknown>>(
     entityId: EntityId,
     name: string,
   ): T | null {

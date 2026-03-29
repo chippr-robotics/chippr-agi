@@ -55,7 +55,7 @@ export class Store {
       .run(entityId, name, JSON.stringify(data));
   }
 
-  getComponent<T extends Record<string, unknown> = Record<string, unknown>>(
+  getComponent<T = Record<string, unknown>>(
     entityId: EntityId,
     name: string,
   ): T | null {

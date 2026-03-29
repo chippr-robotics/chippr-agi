@@ -20,7 +20,7 @@ export function createInterAgentMessageSystem(engine: Engine): System {
       if (event.type === 'messaging:flush') {
         flushMessages(engine);
       } else if (event.type === 'message:send') {
-        const msg = event.data as AgentMessage;
+        const msg = event.data as unknown as AgentMessage;
         deliverMessage(engine, msg);
       }
     },
