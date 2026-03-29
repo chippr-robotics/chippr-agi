@@ -78,6 +78,64 @@ const MIGRATIONS = [
       CREATE INDEX IF NOT EXISTS idx_media_source ON media(source);
     `,
   },
+  {
+    version: 3,
+    up: `
+      CREATE TABLE IF NOT EXISTS semantic_memory (
+        id TEXT PRIMARY KEY,
+        entity_id TEXT NOT NULL,
+        content TEXT NOT NULL,
+        category TEXT,
+        embedding BLOB,
+        created_at INTEGER DEFAULT (unixepoch()),
+        last_accessed INTEGER DEFAULT (unixepoch()),
+        access_count INTEGER DEFAULT 0
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_semantic_entity ON semantic_memory(entity_id);
+      CREATE INDEX IF NOT EXISTS idx_semantic_category ON semantic_memory(category);
+
+      CREATE TABLE IF NOT EXISTS episodic_memory (
+        id TEXT PRIMARY KEY,
+        entity_id TEXT NOT NULL,
+        episode_summary TEXT NOT NULL,
+        full_episode TEXT,
+        novelty_score REAL,
+        embedding BLOB,
+        tick_number INTEGER,
+        created_at INTEGER DEFAULT (unixepoch())
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_episodic_entity ON episodic_memory(entity_id);
+      CREATE INDEX IF NOT EXISTS idx_episodic_novelty ON episodic_memory(novelty_score);
+
+      CREATE TABLE IF NOT EXISTS procedural_memory (
+        id TEXT PRIMARY KEY,
+        entity_id TEXT NOT NULL,
+        skill_name TEXT NOT NULL,
+        description TEXT,
+        tool_sequence TEXT,
+        success_count INTEGER DEFAULT 0,
+        failure_count INTEGER DEFAULT 0,
+        avg_reward REAL DEFAULT 0.0,
+        source TEXT,
+        created_at INTEGER DEFAULT (unixepoch()),
+        updated_at INTEGER DEFAULT (unixepoch())
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_procedural_entity ON procedural_memory(entity_id);
+      CREATE INDEX IF NOT EXISTS idx_procedural_skill ON procedural_memory(skill_name);
+
+      CREATE TABLE IF NOT EXISTS entity_snapshots (
+        entity_id TEXT NOT NULL,
+        snapshot_time INTEGER NOT NULL,
+        components TEXT NOT NULL,
+        PRIMARY KEY (entity_id, snapshot_time)
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_snapshots_entity ON entity_snapshots(entity_id);
+    `,
+  },
 ];
 
 export function runMigrations(db: Database.Database): void {

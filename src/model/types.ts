@@ -36,5 +36,6 @@ export interface AgentEvent {
 
 export interface ModelProvider {
   generate(messages: ModelMessage[], tools?: ToolDefinition[]): Promise<ModelResponse>;
+  embed?(text: string): Promise<number[]>;
   agentLoop?(prompt: string, tools: ToolDefinition[], executor: ToolExecutor): AsyncGenerator<AgentEvent>;
 }
