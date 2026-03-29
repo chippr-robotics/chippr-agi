@@ -5,6 +5,7 @@ import type {
   GoalComponent,
   ConstraintComponent,
   DecisionComponent,
+  ActionOption,
 } from '../core/components.js';
 
 /**
@@ -47,19 +48,25 @@ export async function decide(engine: Engine, entityId: EntityId): Promise<void> 
   let decision: DecisionComponent;
 
   if (orientation.novelty < NOVELTY_THRESHOLD && orientation.implicitOptions.length > 0) {
-    // Fast path — pick highest confidence implicit option that satisfies goals
-    const bestOption = orientation.implicitOptions.reduce((best, opt) =>
-      opt.confidence > best.confidence ? opt : best,
-    );
+    // Fast path — pick highest confidence option that doesn't violate hard constraints
+    const viable = filterByConstraints(orientation.implicitOptions, constraints);
+    const bestOption = viable.length > 0
+      ? viable.reduce((best, opt) => opt.confidence > best.confidence ? opt : best)
+      : null;
 
-    decision = {
-      selectedAction: bestOption.action,
-      rationale: `Fast path (novelty=${orientation.novelty.toFixed(2)}): ${bestOption.rationale}`,
-      deliberate: false,
-      tick: orientation.tick,
-    };
-
-    logger.debug({ entityId, action: decision.selectedAction }, 'DecideSystem: fast path');
+    if (bestOption) {
+      decision = {
+        selectedAction: bestOption.action,
+        rationale: `Fast path (novelty=${orientation.novelty.toFixed(2)}): ${bestOption.rationale}`,
+        deliberate: false,
+        tick: orientation.tick,
+      };
+      logger.debug({ entityId, action: decision.selectedAction }, 'DecideSystem: fast path');
+    } else {
+      // All options violate constraints — escalate to deliberate path
+      decision = await deliberate(engine, entityId, orientation, goals, constraints);
+      logger.debug({ entityId, action: decision.selectedAction }, 'DecideSystem: fast path escalated to deliberate (constraint violation)');
+    }
   } else {
     // Slow path — deliberate via ModelProvider
     decision = await deliberate(engine, entityId, orientation, goals, constraints);
@@ -121,6 +128,20 @@ Respond with valid JSON:
       tick: orientation.tick,
     };
   }
+}
+
+/**
+ * Filters implicit options against hard constraints.
+ * An option is excluded if its action text matches a hard constraint keyword.
+ * When no constraints exist, all options pass through.
+ */
+function filterByConstraints(
+  options: ActionOption[],
+  constraints: ConstraintComponent | null,
+): ActionOption[] {
+  if (!constraints?.hard) return options;
+  const forbidden = String(constraints.constraint).toLowerCase();
+  return options.filter((opt) => !opt.action.toLowerCase().includes(forbidden));
 }
 
 export default createDecideSystem;

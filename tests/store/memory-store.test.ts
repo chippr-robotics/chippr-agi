@@ -104,6 +104,18 @@ describe('MemoryStore', () => {
       const missing = memStore.getProceduralByName('agent-1', 'nonexistent');
       expect(missing).toBeNull();
     });
+
+    it('looks up skill by id', () => {
+      memStore.addProcedural('agent-1', 'sk-42', 'my-skill', 'A skill', [], 'learned');
+
+      const skill = memStore.getProceduralById('sk-42');
+      expect(skill).not.toBeNull();
+      expect(skill!.skillName).toBe('my-skill');
+      expect(skill!.entityId).toBe('agent-1');
+
+      const missing = memStore.getProceduralById('nonexistent');
+      expect(missing).toBeNull();
+    });
   });
 
   describe('Entity Snapshots', () => {

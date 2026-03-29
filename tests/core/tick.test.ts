@@ -95,19 +95,18 @@ describe('OODA Tick Orchestrator', () => {
     expect(handler.mock.calls[0][0].data.tickNumber).toBe(1);
   });
 
-  it('detects worldmodel update from high novelty orientation', async () => {
+  it('detects worldmodel update from WorldModel.updateCount change', async () => {
     const entityId = engine.createEntity('agent-1');
+    engine.addComponent(entityId, 'WorldModel', { beliefs: {}, lastUpdated: 0, updateCount: 0 });
 
     const systems: OodaSystemRef = {
       observe: vi.fn(async () => {}),
       orient: vi.fn(async () => {
-        // Simulate orient setting high novelty
-        engine.setComponent(entityId, 'Orientation', {
-          situationFrame: 'novel',
-          novelty: 0.9,
-          attentionShift: [],
-          implicitOptions: [],
-          tick: 1,
+        // Simulate orient updating the world model (incrementing updateCount)
+        engine.setComponent(entityId, 'WorldModel', {
+          beliefs: { updated: true },
+          lastUpdated: Date.now(),
+          updateCount: 1,
         });
       }),
       decide: vi.fn(async () => {}),
@@ -116,6 +115,21 @@ describe('OODA Tick Orchestrator', () => {
 
     const meta = await runOodaTick(engine, entityId, systems, 1);
     expect(meta.worldModelUpdated).toBe(true);
+  });
+
+  it('worldModelUpdated is false when WorldModel unchanged', async () => {
+    const entityId = engine.createEntity('agent-1');
+    engine.addComponent(entityId, 'WorldModel', { beliefs: {}, lastUpdated: 0, updateCount: 5 });
+
+    const systems: OodaSystemRef = {
+      observe: vi.fn(async () => {}),
+      orient: vi.fn(async () => {}), // does not update WorldModel
+      decide: vi.fn(async () => {}),
+      act: vi.fn(async () => {}),
+    };
+
+    const meta = await runOodaTick(engine, entityId, systems, 1);
+    expect(meta.worldModelUpdated).toBe(false);
   });
 
   it('runOodaTickAll processes all OodaAgent entities', async () => {

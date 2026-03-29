@@ -155,7 +155,7 @@ export function createSkillImprovementSystem(engine: Engine): System {
         memoryStore.updateProceduralStats(skillId, success, reward);
 
         // Check if skill needs re-synthesis
-        const skill = memoryStore.getProceduralByName(event.entityId, skillId);
+        const skill = memoryStore.getProceduralById(skillId);
         if (skill && skill.failureCount >= FAILURE_RESYNTHESIZE_THRESHOLD) {
           engine.emit({
             type: 'skill:needs-resynth',

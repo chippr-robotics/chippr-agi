@@ -1,6 +1,6 @@
 import type { Engine } from '../ecs/engine.js';
 import type { EntityId } from '../ecs/types.js';
-import type { TickMetadataComponent } from './components.js';
+import type { TickMetadataComponent, WorldModelComponent } from './components.js';
 
 export type OodaPhase = 'observe' | 'orient' | 'decide' | 'act';
 
@@ -14,6 +14,7 @@ export interface OodaSystemRef {
 /**
  * Runs one full OODA tick for a single entity.
  * Phases execute sequentially: Observe → Orient → Decide → Act.
+ * Writes TickMetadata.tickNumber before phases so phase systems can read it.
  */
 export async function runOodaTick(
   engine: Engine,
@@ -24,6 +25,18 @@ export async function runOodaTick(
   const startTime = Date.now();
   const durations = { observe: 0, orient: 0, decide: 0, act: 0 };
 
+  // Write tickNumber before phases so ObserveSystem (and others) can read it
+  engine.setComponent(entityId, 'TickMetadata', {
+    tickNumber,
+    startTime,
+    phaseDurations: durations,
+    worldModelUpdated: false,
+  } as unknown as Record<string, unknown>);
+
+  // Capture WorldModel.updateCount before Orient runs
+  const wmBefore = engine.getComponent<WorldModelComponent>(entityId, 'WorldModel');
+  const updateCountBefore = wmBefore?.updateCount ?? 0;
+
   const phases: OodaPhase[] = ['observe', 'orient', 'decide', 'act'];
   for (const phase of phases) {
     const phaseStart = performance.now();
@@ -31,8 +44,9 @@ export async function runOodaTick(
     durations[phase] = Math.round(performance.now() - phaseStart);
   }
 
-  const orientation = engine.getComponent(entityId, 'Orientation');
-  const worldModelUpdated = orientation ? (orientation as Record<string, unknown>).novelty as number > 0.5 : false;
+  // Determine if Orient actually updated the world model (by updateCount delta)
+  const wmAfter = engine.getComponent<WorldModelComponent>(entityId, 'WorldModel');
+  const worldModelUpdated = (wmAfter?.updateCount ?? 0) > updateCountBefore;
 
   const metadata: TickMetadataComponent = {
     tickNumber,

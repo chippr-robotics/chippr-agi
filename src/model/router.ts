@@ -77,15 +77,16 @@ export class ModelProviderRouter implements ModelProvider {
 
   private async timed<T>(name: string, fn: () => Promise<T>): Promise<T> {
     const start = performance.now();
-    const result = await fn();
-    const elapsed = performance.now() - start;
     const s = this.stats.get(name)!;
     s.requests++;
-    s.totalLatencyMs += elapsed;
-    return result;
-  }
-
-  private recordError(name: string): void {
-    this.stats.get(name)!.errors++;
+    try {
+      const result = await fn();
+      s.totalLatencyMs += performance.now() - start;
+      return result;
+    } catch (err) {
+      s.totalLatencyMs += performance.now() - start;
+      s.errors++;
+      throw err;
+    }
   }
 }

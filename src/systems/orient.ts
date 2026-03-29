@@ -101,11 +101,11 @@ Respond with valid JSON only, matching this schema:
     }
 
     // Update attention filter for next Observe cycle (Boyd feedback)
+    // Sets both priorities and activeSensors so ObserveSystem filters accordingly
     if (parsed.attentionShift.length > 0) {
-      const currentFilter = engine.getComponent<AttentionFilterComponent>(entityId, 'AttentionFilter');
       engine.setComponent(entityId, 'AttentionFilter', {
         priorities: parsed.attentionShift,
-        activeSensors: currentFilter?.activeSensors ?? [],
+        activeSensors: parsed.attentionShift,
       } as unknown as Record<string, unknown>);
     }
 

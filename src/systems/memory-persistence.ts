@@ -66,10 +66,12 @@ async function persistMemory(engine: Engine, memoryStore: MemoryStore, entityId:
   // Add to ring buffer
   episodic.episodes.push(episode);
 
-  // Prune if buffer is full — keep high-novelty episodes
+  // Prune if buffer is full — keep high-novelty episodes while preserving chronological order
   if (episodic.episodes.length > episodic.maxEpisodes) {
-    episodic.episodes.sort((a, b) => b.noveltyScore - a.noveltyScore);
-    episodic.episodes = episodic.episodes.slice(0, episodic.maxEpisodes);
+    const indexed = episodic.episodes.map((ep, idx) => ({ ep, idx }));
+    indexed.sort((a, b) => b.ep.noveltyScore - a.ep.noveltyScore);
+    const keepIndices = new Set(indexed.slice(0, episodic.maxEpisodes).map((item) => item.idx));
+    episodic.episodes = episodic.episodes.filter((_, idx) => keepIndices.has(idx));
   }
 
   engine.setComponent(entityId, 'EpisodicMemory', episodic as unknown as Record<string, unknown>);

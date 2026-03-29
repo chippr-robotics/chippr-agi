@@ -245,6 +245,42 @@ export class MemoryStore {
     }
   }
 
+  getProceduralById(id: string): ProceduralEntry | null {
+    const row = this.db
+      .prepare(
+        'SELECT id, entity_id, skill_name, description, tool_sequence, success_count, failure_count, avg_reward, source, created_at, updated_at FROM procedural_memory WHERE id = ?',
+      )
+      .get(id) as {
+      id: string;
+      entity_id: string;
+      skill_name: string;
+      description: string | null;
+      tool_sequence: string | null;
+      success_count: number;
+      failure_count: number;
+      avg_reward: number;
+      source: string | null;
+      created_at: number;
+      updated_at: number;
+    } | undefined;
+
+    if (!row) return null;
+
+    return {
+      id: row.id,
+      entityId: row.entity_id,
+      skillName: row.skill_name,
+      description: row.description,
+      toolSequence: row.tool_sequence ? JSON.parse(row.tool_sequence) : [],
+      successCount: row.success_count,
+      failureCount: row.failure_count,
+      avgReward: row.avg_reward,
+      source: row.source,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    };
+  }
+
   getProceduralByName(entityId: EntityId, skillName: string): ProceduralEntry | null {
     const row = this.db
       .prepare(
