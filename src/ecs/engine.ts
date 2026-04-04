@@ -78,6 +78,10 @@ export class Engine {
     this.eventBus.on(eventType, handler);
   }
 
+  off(eventType: string, handler: (event: ECSEvent) => void | Promise<void>): void {
+    this.eventBus.off(eventType, handler);
+  }
+
   emit(event: ECSEvent): void {
     this.store.logEvent(event);
     this.eventBus.emit(event);

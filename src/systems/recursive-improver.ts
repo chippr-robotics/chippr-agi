@@ -293,8 +293,11 @@ async function runNextIteration(
   // Route the experiment for execution — the experiment goes through the normal
   // system-selector → execution → judge pipeline. We listen for the judgement
   // back via task:judged on this entity, then evaluate it in the loop context.
-  engine.on('task:judged', async function onJudged(judgedEvent) {
+  const onJudged = async (judgedEvent: import('../ecs/types.js').ECSEvent) => {
     if (judgedEvent.entityId !== experimentId) return;
+
+    // Unregister this one-shot listener
+    engine.off('task:judged', onJudged);
 
     // Evaluate the experiment result in the context of the improvement loop
     const judgement = engine.getComponent(experimentId, 'Judgement');
@@ -353,7 +356,8 @@ async function runNextIteration(
       source: 'RecursiveImprover',
       timestamp: Date.now(),
     });
-  });
+  };
+  engine.on('task:judged', onJudged);
 
   // Route the experiment through the standard pipeline
   engine.emit({
